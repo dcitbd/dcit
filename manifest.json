@@ -1,0 +1,27 @@
+{
+  "name": "Dream Career IT (ড্রিম ক্যারিয়ার আইটি)",
+  "short_name": "Dream Career IT",
+  "description": "সেরা কম্পিউটার ও আইটি প্রশিক্ষণ কেন্দ্র, পদুয়ার বাজার, বিশ্বরোড, কুমিল্লা। ফোনঃ 01771770044",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#151442",
+  "theme_color": "#151442",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "assets/img/favicon.png",
+      "sizes": "64x64",
+      "type": "image/png"
+    },
+    {
+      "src": "assets/img/apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    },
+    {
+      "src": "assets/img/logo.jpg",
+      "sizes": "300x300",
+      "type": "image/jpeg"
+    }
+  ]
+}

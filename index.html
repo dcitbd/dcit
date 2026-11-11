@@ -15,6 +15,7 @@
     <meta name="author" content="Dream Career IT">
     <meta name="robots" content="index, follow, max-image-preview:large">
     <link rel="canonical" href="https://dcitbd.github.io/">
+    <link rel="manifest" href="manifest.json">
 
     <!-- Title Bar Logo / Favicon -->
     <link rel="icon" type="image/x-icon" href="favicon.ico">
@@ -115,7 +116,8 @@
             <a href="https://www.youtube.com/channel/UCbYQ17l6_mf6ilwlJGvsFSg" target="_blank" rel="noopener noreferrer" title="YouTube"><i class="fa fa-youtube"></i></a>
             <a href="https://www.instagram.com/jasagor2020/" target="_blank" rel="noopener noreferrer" title="Instagram"><i class="fa fa-instagram"></i></a>
             <a href="https://github.com/jasagor2020" target="_blank" rel="noopener noreferrer" title="GitHub"><i class="fa fa-github"></i></a>
-            <a href="admin/index.html" class="dcp-btn" style="width:auto; border-radius:20px; padding:4px 14px; background:linear-gradient(135deg,#ea580c,#dc2626); font-weight:700; font-size:0.8rem; gap:5px; color:#fff;"><i class="fa fa-lock"></i> এডমিন প্যানেল</a>
+            <button onclick="triggerPwaInstall()" class="btn btn-primary btn-xs" style="border-radius:20px; padding:4px 12px; font-size:0.78rem; background:#0f766e; color:#fff; border:none; cursor:pointer;"><i class="fa fa-download"></i> অ্যাপ ইনস্টল</button>
+            <a href="admin/index.html" id="topAdminPanelBtn" class="dcp-btn" style="width:auto; border-radius:20px; padding:4px 14px; background:linear-gradient(135deg,#ea580c,#dc2626); font-weight:700; font-size:0.8rem; gap:5px; color:#fff;"><i class="fa fa-lock"></i> এডমিন প্যানেল</a>
         </div>
     </div>
 </div>
@@ -223,6 +225,26 @@
 </div>
 
 <!-- Main Site Footer (Preserved Design) -->
+
+<!-- Floating Up-to-Down & Down-to-Up Scroll Buttons -->
+<div class="scroll-nav-float">
+    <button class="scroll-nav-btn" onclick="window.scrollTo({top:0, behavior:'smooth'})" title="উপরে যান (Scroll Up)">
+        <i class="fa fa-arrow-up"></i>
+    </button>
+    <button class="scroll-nav-btn" onclick="window.scrollTo({top:document.body.scrollHeight, behavior:'smooth'})" title="নিচে যান (Scroll Down)">
+        <i class="fa fa-arrow-down"></i>
+    </button>
+</div>
+
+<!-- Native Mobile App Bottom Navigation Bar -->
+<nav class="mobile-app-bottom-nav">
+    <a href="#home" onclick="navigateView('home')"><i class="fa fa-home"></i><span>হোম</span></a>
+    <a href="#courses" onclick="navigateView('courses')"><i class="fa fa-book"></i><span>কোর্স</span></a>
+    <a href="#admission" onclick="navigateView('admission')" class="app-cta"><i class="fa fa-paper-plane"></i><span>এপ্লাই নাও</span></a>
+    <a href="#result" onclick="navigateView('result')"><i class="fa fa-trophy"></i><span>রেজাল্ট</span></a>
+    <a href="#notices" onclick="navigateView('notices')"><i class="fa fa-bell"></i><span>নোটিশ</span></a>
+</nav>
+
 <footer class="site-footer">
     <div class="container">
         <div class="footer-grid">
