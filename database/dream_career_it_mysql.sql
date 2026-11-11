@@ -1,5 +1,5 @@
 -- ==========================================================
--- DREAM CAREER IT - Complete MySQL Database Dump
+-- DREAM CAREER IT - Complete MySQL Database Dump (v3.0)
 -- Phone: 01771770044 | Poduar Bazar, Cumilla
 -- ==========================================================
 
@@ -16,57 +16,71 @@ CREATE TABLE admins (
     role VARCHAR(50) DEFAULT 'Administrator',
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP
 );
-INSERT INTO "admins" VALUES(1,'admin','dc13edubd@gmail.com','240be518fabd2724ddb6f04eeb1da5967448d7e831c08c8fa822809f74c720a9','DR. A.K.M Lokman','Chief Administrator','2026-11-11 16:39:43');
-INSERT INTO "admins" VALUES(2,'sagor','gsctcbmcmrjas@gmail.com','240be518fabd2724ddb6f04eeb1da5967448d7e831c08c8fa822809f74c720a9','Jainal Abedin (Sagor)','System Admin & Developer','2026-11-11 16:39:43');
+INSERT INTO "admins" VALUES(1,'admin','dc13edubd@gmail.com','240be518fabd2724ddb6f04eeb1da5967448d7e831c08c8fa822809f74c720a9','DR. A.K.M Lokman','Chief Administrator','2026-11-11 19:34:14');
+INSERT INTO "admins" VALUES(2,'sagor','gsctcbmcmrjas@gmail.com','240be518fabd2724ddb6f04eeb1da5967448d7e831c08c8fa822809f74c720a9','Jainal Abedin (Sagor)','System Admin & Developer','2026-11-11 19:34:14');
 CREATE TABLE admissions (
     id INT AUTO_INCREMENT PRIMARY KEY,
     application_no VARCHAR(40) UNIQUE NOT NULL,
+    secret_code VARCHAR(50),
     full_name VARCHAR(120) NOT NULL,
     father_name VARCHAR(120),
+    mother_name VARCHAR(120),
+    nid_birth_reg VARCHAR(60),
     email VARCHAR(120),
     phone VARCHAR(50) NOT NULL,
     address TEXT NOT NULL,
     school_college VARCHAR(150),
     religion VARCHAR(50) DEFAULT 'Muslim',
     education VARCHAR(80) DEFAULT 'HSC',
+    how_heard VARCHAR(100) DEFAULT 'Facebook',
+    has_disability VARCHAR(10) DEFAULT 'না',
+    medical_report VARCHAR(255) DEFAULT '',
+    discount_percent DECIMAL(5,2) DEFAULT 0,
     course_name VARCHAR(120) NOT NULL,
+    course_fee DECIMAL(10,2) DEFAULT 1500,
+    course_duration VARCHAR(50) DEFAULT '3 Months',
     preferred_slot VARCHAR(80) DEFAULT '9:30 AM - 11:00 AM',
     session_quarter VARCHAR(60) DEFAULT 'January to March',
     batch_year INTEGER DEFAULT 2026,
     dob VARCHAR(30),
-    document_path VARCHAR(255),
+    photo VARCHAR(255) DEFAULT 'assets/img/logo.jpg',
     payment_method VARCHAR(40) DEFAULT 'bKash',
     trx_id VARCHAR(80),
     paid_amount DECIMAL(10,2) DEFAULT 0,
+    due_amount DECIMAL(10,2) DEFAULT 0,
+    oath_accepted INTEGER DEFAULT 1,
     status VARCHAR(20) DEFAULT 'Pending',
     enrolled_reg_no VARCHAR(30),
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP
 );
-INSERT INTO "admissions" VALUES(1,'REG-2026-101','Sadia Afrin','Md. Kamal Uddin','sadia.cumilla@gmail.com','01799112233','Poduar Bazar, Cumilla','Ibne Taimiya School & College','Muslim','HSC','Advance Microsoft Office','9:30 AM - 11:00 AM','January to March',2026,'2004-06-12','','bKash','BK11223344',500,'Pending','','2026-11-11 16:39:43');
-INSERT INTO "admissions" VALUES(2,'REG-2026-102','Ariful Islam','Md. Sirajul Islam','ariful.gfx@gmail.com','01855443311','Suagazi, Sadar Dakshin, Cumilla','Cumilla Polytechnic Institute','Muslim','HSC','Graphic Design','11:00 AM - 12:30 PM','January to March',2026,'2003-09-21','','Nagad','NG99887766',1000,'Pending','','2026-11-11 16:39:43');
-INSERT INTO "admissions" VALUES(3,'REG-2026-100','Md. Rakibul Hasan','Md. Abdul Karim','rakib.cumilla@gmail.com','01712345678','Poduar Bazar, Bishwo Road, Cumilla','Cumilla Victoria Govt. College','Muslim','HSC','Advance Microsoft Office','8:00 AM - 9:30 AM','January to March',2026,'2002-05-14','','bKash','BK9823412A',1500,'Approved','000002','2026-11-11 16:39:43');
+INSERT INTO "admissions" VALUES(1,'REG-2026-101','DCIT-SADIA-ADV26-101','Sadia Afrin','Md. Kamal Uddin','amenah Begum','2004351234999','sadia.cumilla@gmail.com','01799112233','Poduar Bazar, Cumilla','Ibne Taimiya School & College','Muslim','HSC','Facebook','না','',0,'Advance Microsoft Office',1500,'3 Months','9:30 AM - 11:00 AM','January to March',2026,'2004-06-12','assets/img/logo.jpg','bKash (01771770044)','BK11223344',500,1000,1,'Pending','','2026-11-11 19:34:14');
+INSERT INTO "admissions" VALUES(2,'REG-2026-102','DCIT-ARIFUL-GFX26-102','Ariful Islam','Md. Sirajul Islam','Fatema Begum','2003358877665','ariful.gfx@gmail.com','01855443311','Suagazi, Sadar Dakshin, Cumilla','Cumilla Polytechnic Institute','Muslim','HSC','Friend / Former Student','হ্যাঁ','Medical-Certificate-Verified.pdf',25,'Graphic Design',2250,'3 Months','11:00 AM - 12:30 PM','January to March',2026,'2003-09-21','assets/img/logo.jpg','Nagad (01771770044)','NG99887766',1000,1250,1,'Pending','','2026-11-11 19:34:14');
 CREATE TABLE certificates (
     id INT AUTO_INCREMENT PRIMARY KEY,
     cert_no VARCHAR(50) UNIQUE NOT NULL,
     student_id INTEGER,
     reg_no VARCHAR(30) NOT NULL,
+    roll_no VARCHAR(20) DEFAULT '01',
+    secret_code VARCHAR(50) NOT NULL,
     student_name VARCHAR(120) NOT NULL,
     father_name VARCHAR(120),
     mother_name VARCHAR(120),
     course_name VARCHAR(120) NOT NULL,
-    batch_year INTEGER DEFAULT 2020,
+    batch_no VARCHAR(40) DEFAULT 'Batch-2026-01',
+    batch_year INTEGER DEFAULT 2026,
     session_quarter VARCHAR(60) DEFAULT 'January to March',
     duration VARCHAR(50) DEFAULT '3 Months',
     grade VARCHAR(20) DEFAULT 'A+',
+    cgpa VARCHAR(20) DEFAULT '5.00',
     issue_date DATE NOT NULL,
     verification_code VARCHAR(60) UNIQUE NOT NULL,
     status VARCHAR(20) DEFAULT 'Issued',
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP
 );
-INSERT INTO "certificates" VALUES(1,'DCIT-2020-000001',1,'000001','Jainal Abedin (Sagor)','Faridul Alam','Husneara','Advance Microsoft Office',2020,'January to March','3 Months','A+','2020-04-05','VER-DCIT-000001','Issued','2026-11-11 16:39:43');
-INSERT INTO "certificates" VALUES(2,'DCIT-2026-000002',2,'000002','Md. Rakibul Hasan','Md. Abdul Karim','Rokeya Begum','Advance Microsoft Office',2026,'January to March','3 Months','A+','2026-04-10','VER-DCIT-000002','Issued','2026-11-11 16:39:43');
-INSERT INTO "certificates" VALUES(3,'DCIT-2026-000003',3,'000003','Nusrat Jahan Mim','Md. Shafiqul Islam','Nasreen Akter','Graphic Design',2026,'January to March','3 Months','A+','2026-04-12','VER-DCIT-000003','Issued','2026-11-11 16:39:43');
-INSERT INTO "certificates" VALUES(4,'DCIT-2026-000004',4,'000004','Tanvir Ahmed Chowdhury','Mahbubul Alam','Salma Khatun','Web Design & Development',2026,'January to March','4 Months','A','2026-05-01','VER-DCIT-000004','Issued','2026-11-11 16:39:43');
+INSERT INTO "certificates" VALUES(1,'DCIT-2020-000001',1,'000001','01','DCIT-SAGOR-ADV20-001','Jainal Abedin (Sagor)','Faridul Alam','Husneara','Advance Microsoft Office','Batch-2020-01',2020,'January to March','3 Months','A+','5.00','2020-04-05','VER-DCIT-000001','Issued','2026-11-11 19:34:14');
+INSERT INTO "certificates" VALUES(2,'DCIT-2026-000002',2,'000002','02','DCIT-RAKIB-ADV26-002','Md. Rakibul Hasan','Md. Abdul Karim','Rokeya Begum','Advance Microsoft Office','Batch-2026-01',2026,'January to March','3 Months','A+','5.00','2026-04-10','VER-DCIT-000002','Issued','2026-11-11 19:34:14');
+INSERT INTO "certificates" VALUES(3,'DCIT-2026-000003',3,'000003','03','DCIT-NUSRAT-GFX26-003','Nusrat Jahan Mim','Md. Shafiqul Islam','Nasreen Akter','Graphic Design','Batch-2026-01',2026,'January to March','3 Months','A+','5.00','2026-04-12','VER-DCIT-000003','Issued','2026-11-11 19:34:14');
+INSERT INTO "certificates" VALUES(4,'DCIT-2026-000004',4,'000004','04','DCIT-TANVIR-WEB26-004','Tanvir Ahmed Chowdhury','Mahbubul Alam','Salma Khatun','Web Design & Development','Batch-2026-01',2026,'January to March','4 Months','A','4.75','2026-05-01','VER-DCIT-000004','Issued','2026-11-11 19:34:14');
 CREATE TABLE classes (
     id INT AUTO_INCREMENT PRIMARY KEY,
     slot_code VARCHAR(30) UNIQUE NOT NULL,
@@ -77,7 +91,7 @@ CREATE TABLE classes (
     course_name VARCHAR(120) DEFAULT 'All Courses',
     teacher_name VARCHAR(120) DEFAULT 'DR. A.K.M Lokman',
     room_no VARCHAR(50) DEFAULT 'Lab-01 (2nd Floor)',
-    days_of_week VARCHAR(100) DEFAULT 'Sat, Mon, Wed / Sun, Tue, Thu',
+    days_of_week VARCHAR(100) DEFAULT 'Sat, Mon, Wed',
     rules_text TEXT,
     max_seats INTEGER DEFAULT 20,
     status VARCHAR(20) DEFAULT 'Active',
@@ -126,16 +140,34 @@ CREATE TABLE messages (
     is_read INTEGER DEFAULT 0,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP
 );
-INSERT INTO "messages" VALUES(1,'Mahmudul Hasan','mahmud@gmail.com','01700112233','Course Information','আসসালামু আলাইকুম, আমি Dream Career IT-তে ওয়েব ডিজাইন ও ডেভেলপমেন্ট কোর্সের পরবর্তী ব্যাচে ভর্তি হতে চাই।','Office',0,'2026-11-11 16:39:43');
-INSERT INTO "messages" VALUES(2,'Rafiqul Islam','rafiq@yahoo.com','01800998877','Certificate Verification','আমি এডভান্স অফিস কোর্সের ছাত্র ছিলাম, আমার রেজিস্ট্রেশন নম্বর 000001। অনলাইনে সার্টিফিকেট ভেরিফিকেশন সিস্টেমটি খুব চমৎকার হয়েছে!','Designer',1,'2026-11-11 16:39:43');
+INSERT INTO "messages" VALUES(1,'Mahmudul Hasan','mahmud@gmail.com','01700112233','Course Information','আসসালামু আলাইকুম, আমি Dream Career IT-তে ওয়েব ডিজাইন ও ডেভেলপমেন্ট কোর্সের পরবর্তী ব্যাচে ভর্তি হতে চাই।','Office',0,'2026-11-11 19:34:14');
+INSERT INTO "messages" VALUES(2,'Rafiqul Islam','rafiq@yahoo.com','01800998877','Certificate Verification','আমি এডভান্স অফিস কোর্সের ছাত্র ছিলাম, আমার রেজিস্ট্রেশন নম্বর 000001। অনলাইনে গোপন কোড দিয়ে সার্টিফিকেট প্রিন্ট সিস্টেমটি অসাধারণ হয়েছে!','Designer',1,'2026-11-11 19:34:14');
+CREATE TABLE notices (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    title VARCHAR(200) NOT NULL,
+    category VARCHAR(60) DEFAULT 'ভর্তি ও ক্লাস নোটিশ',
+    publish_date DATE NOT NULL,
+    details TEXT NOT NULL,
+    is_pinned INTEGER DEFAULT 1,
+    status VARCHAR(20) DEFAULT 'Active',
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+INSERT INTO "notices" VALUES(1,'২০২৬ সালের নতুন সেশনে (জানুয়ারি-মার্চ ও এপ্রিল-জুন) ভর্তি চলছে!','ভর্তি বিজ্ঞপ্তি','2026-01-05','Dream Career IT-তে Microsoft Office, Advance MS Office, Graphic Design, Web Design & Development, Spoken English এবং IELTS কোর্সে নতুন ব্যাচে ভর্তি চলছে। বিশেষ চাহিদাসম্পন্ন (Disabilities) শিক্ষার্থীদের জন্য রয়েছে ২৫% বিশেষ ডিসকাউন্ট।',1,'Active','2026-11-11 19:34:14');
+INSERT INTO "notices" VALUES(2,'সার্টিফিকেট ভেরিফিকেশন ও গোপন কোড (Secret Code) সংক্রান্ত বিজ্ঞপ্তি','পরীক্ষা ও সার্টিফিকেট','2026-02-10','সকল উত্তীর্ণ শিক্ষার্থীদের জানানো যাচ্ছে যে, এখন থেকে রেজিস্ট্রেশন নম্বর এবং নিজস্ব গোপন কোড (Secret Code) ব্যবহার করে ওয়েবসাইটের রেজাল্ট ও সার্টিফিকেট পেজ থেকে সরাসরি ল্যান্ডস্কেপ লেটার সাইজে অফিশিয়াল সার্টিফিকেট প্রিন্ট করা যাবে।',1,'Active','2026-11-11 19:34:14');
+INSERT INTO "notices" VALUES(3,'শুক্রবার সাপ্তাহিক ফ্রি ফ্রিল্যান্সিং ও ক্যারিয়ার গাইডলাইন সেমিনার','সেমিনার ও ওয়ার্কশপ','2026-03-01','আগামী শুক্রবার সকাল ১০:০০ ঘটিকায় Dream Career IT ল্যাবে (পদুয়ার বাজার, বিশ্বরোড, কুমিল্লা) ফ্রি ফ্রিল্যান্সিং ও জব প্রস্তুতি সেমিনার অনুষ্ঠিত হবে। সকল বর্তমান ও প্রাক্তন শিক্ষার্থীদের উপস্থিত থাকার জন্য আমন্ত্রণ জানানো হলো।',1,'Active','2026-11-11 19:34:14');
 CREATE TABLE payments (
     id INT AUTO_INCREMENT PRIMARY KEY,
     receipt_no VARCHAR(40) UNIQUE NOT NULL,
     student_id INTEGER,
     reg_no VARCHAR(30) NOT NULL,
     student_name VARCHAR(120) NOT NULL,
+    phone VARCHAR(50) DEFAULT '01771770044',
     course_name VARCHAR(120) NOT NULL,
+    batch_name VARCHAR(60) DEFAULT 'Batch-2026-01',
+    payment_month VARCHAR(20) DEFAULT 'January',
+    payment_year INTEGER DEFAULT 2026,
     total_fee DECIMAL(10,2) NOT NULL DEFAULT 0,
+    discount_amount DECIMAL(10,2) NOT NULL DEFAULT 0,
     paid_amount DECIMAL(10,2) NOT NULL DEFAULT 0,
     due_amount DECIMAL(10,2) NOT NULL DEFAULT 0,
     payment_type VARCHAR(50) DEFAULT 'Course Fee',
@@ -147,16 +179,18 @@ CREATE TABLE payments (
     status VARCHAR(20) DEFAULT 'Paid',
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP
 );
-INSERT INTO "payments" VALUES(1,'INV-2020-001',1,'000001','Jainal Abedin (Sagor)','Advance Microsoft Office',1500,1500,0,'Full Course Fee','Cash','CASH-001','2020-01-10','Paid in full','DR. A.K.M Lokman','Paid','2026-11-11 16:39:43');
-INSERT INTO "payments" VALUES(2,'INV-2026-002',2,'000002','Md. Rakibul Hasan','Advance Microsoft Office',1500,1500,0,'Full Course Fee','bKash','BK9823412A','2026-01-15','Full fee received via bKash','DR. A.K.M Lokman','Paid','2026-11-11 16:39:43');
-INSERT INTO "payments" VALUES(3,'INV-2026-003',3,'000003','Nusrat Jahan Mim','Graphic Design',3000,2000,1000,'Installment','Nagad','NG7741290X','2026-01-18','1st installment paid, 1000 Tk due','Jainal Abedin (Sagor)','Partial','2026-11-11 16:39:43');
-INSERT INTO "payments" VALUES(4,'INV-2026-004',4,'000004','Tanvir Ahmed Chowdhury','Web Design & Development',5000,3500,1500,'Installment','bKash','BK4412983C','2026-01-20','1st installment paid','DR. A.K.M Lokman','Partial','2026-11-11 16:39:43');
-INSERT INTO "payments" VALUES(5,'INV-2026-005',5,'000005','Mehedi Hasan Shuvo','Microsoft Office',1000,1000,0,'Full Course Fee','Cash','CASH-005','2026-01-22','Paid at office counter','Jainal Abedin (Sagor)','Paid','2026-11-11 16:39:43');
+INSERT INTO "payments" VALUES(1,'INV-2020-001',1,'000001','Jainal Abedin (Sagor)','01879653143','Advance Microsoft Office','Batch-2020-01','January',2020,1500,0,1500,0,'Full Course Fee','Cash','CASH-001','2020-01-10','Paid in full','DR. A.K.M Lokman','Paid','2026-11-11 19:34:14');
+INSERT INTO "payments" VALUES(2,'INV-2026-002',2,'000002','Md. Rakibul Hasan','01712345678','Advance Microsoft Office','Batch-2026-01','January',2026,1500,0,1500,0,'Full Course Fee','bKash (01771770044)','BK9823412A','2026-01-15','Full fee received via bKash','DR. A.K.M Lokman','Paid','2026-11-11 19:34:14');
+INSERT INTO "payments" VALUES(3,'INV-2026-003',3,'000003','Nusrat Jahan Mim','01819223344','Graphic Design','Batch-2026-01','January',2026,3000,0,2000,1000,'Installment','Nagad (01771770044)','NG7741290X','2026-01-18','1st installment paid, 1000 Tk due','Jainal Abedin (Sagor)','Partial','2026-11-11 19:34:14');
+INSERT INTO "payments" VALUES(4,'INV-2026-004',4,'000004','Tanvir Ahmed Chowdhury','01911887766','Web Design & Development','Batch-2026-01','January',2026,5000,0,3500,1500,'Installment','bKash (01771770044)','BK4412983C','2026-01-20','1st installment paid','DR. A.K.M Lokman','Partial','2026-11-11 19:34:14');
+INSERT INTO "payments" VALUES(5,'INV-2026-005',5,'000005','Mehedi Hasan Shuvo','01615443322','Microsoft Office','Batch-2026-01','January',2026,1000,0,1000,0,'Full Course Fee','Cash','CASH-005','2026-01-22','Paid at office counter','Jainal Abedin (Sagor)','Paid','2026-11-11 19:34:14');
 CREATE TABLE settings (
     setting_key VARCHAR(100) PRIMARY KEY,
     setting_value TEXT
 );
 INSERT INTO "settings" VALUES('site_name','Dream Career IT');
+INSERT INTO "settings" VALUES('site_name_bn','ড্রিম ক্যারিয়ার আইটি');
+INSERT INTO "settings" VALUES('site_slogan','দক্ষ জনশক্তি ও স্মার্ট ক্যারিয়ার গড়ার প্রত্যয়ে — প্রযুক্তি শিখুন, স্বাবলম্বী হোন');
 INSERT INTO "settings" VALUES('site_subtitle','ড্রিম ক্যারিয়ার আইটি | Poduar Bazar, Cumilla');
 INSERT INTO "settings" VALUES('address_bn','ভাই ভাই সুপার মার্কেট, (নতুন পদুয়ার বাজার মসজিদের পাশে), পদুয়ার বাজার, বিশ্বরোড, কুমিল্লা। ফোনঃ- ০১৭৭১৭৭০০৪৪।');
 INSERT INTO "settings" VALUES('address_en','Near New Poduar Bazar Mosque, Vai Vai Super Market (2nd Floor), Poduar Bazar, Bishwo Road, Cumilla - 3500.');
@@ -172,21 +206,33 @@ INSERT INTO "settings" VALUES('designer_gh','https://github.com/jasagor2020');
 INSERT INTO "settings" VALUES('designer_tw','https://twitter.com/SagorJainal');
 INSERT INTO "settings" VALUES('designer_ig','https://www.instagram.com/jasagor2020/');
 INSERT INTO "settings" VALUES('designer_li','https://www.linkedin.com/in/jainal-abedin-sagor-448b121a9/');
-INSERT INTO "settings" VALUES('notice_text','ভর্তি চলছে! Dream Career IT (ড্রিম ক্যারিয়ার আইটি)-তে Microsoft Office, Advance MS Office, Graphic Design, Web Design, Spoken English এবং IELTS কোর্সে নতুন ব্যাচে ভর্তি চলছে। হটলাইনঃ ০১৭৭১৭৭০০৪৪।');
+INSERT INTO "settings" VALUES('notice_text','📢 ভর্তি চলছে! Dream Career IT (ড্রিম ক্যারিয়ার আইটি)-তে Microsoft Office, Advance MS Office, Graphic Design, Web Design, Spoken English এবং IELTS কোর্সে নতুন ব্যাচে অনলাইন ও অফলাইনে ভর্তি চলছে! বিশেষ সুবিধাসম্পন্ন শিক্ষার্থীদের জন্য রয়েছে বিশেষ স্কলারশিপ ডিসকাউন্ট। হটলাইনঃ ০১৭৭১৭৭০০৪৪।');
+INSERT INTO "settings" VALUES('disability_discount_percent','25');
+INSERT INTO "settings" VALUES('payment_methods_json','["bKash (01771770044)", "Nagad (01771770044)", "Rocket (01771770044)", "Bank Transfer", "Cash"]');
 INSERT INTO "settings" VALUES('stat_experience','11');
 INSERT INTO "settings" VALUES('stat_team','10');
 INSERT INTO "settings" VALUES('stat_courses','21');
 INSERT INTO "settings" VALUES('stat_students','20,785');
-INSERT INTO "settings" VALUES('about_intro','In this age of information technology, it is very important for everyone to have knowledge about computers. At Dream Career IT, we believe that everyone deserves practical computer and IT skills. Our goal is to remove any technical or financial barriers that may hinder the acquisition of IT skills and help you build your dream career.');
-INSERT INTO "settings" VALUES('mission_text','Dream Career IT is working with a dedicated team to support quality training, practical skills development, freelancing, and employment opportunities for everyone.');
-INSERT INTO "settings" VALUES('vision_text','Dream Career IT provides innovative, effective, and well-integrated training opportunities for students who need modern IT skills to achieve career success, independence, and self-reliance.');
+INSERT INTO "settings" VALUES('about_intro','তথ্যপ্রযুক্তির এই যুগে প্রত্যেকেরই কম্পিউটার ও আইটি বিষয়ে বাস্তবমুখী দক্ষতা থাকা অত্যন্ত জরুরি। Dream Career IT বিশ্বাস করে সঠিক গাইডলাইন ও হাতে-কলমে প্রশিক্ষণের মাধ্যমে যে কেউ নিজেকে দক্ষ প্রফেশনাল বা ফ্রিল্যান্সার হিসেবে গড়ে তুলতে পারে।');
+INSERT INTO "settings" VALUES('mission_text','মানসম্মত কম্পিউটার ও কারিগরি প্রশিক্ষণ, দক্ষতা উন্নয়ন এবং তরুণ সমাজের জন্য কর্মসংস্থান ও ফ্রিল্যান্সিংয়ের সুযোগ তৈরি করা আমাদের প্রধান লক্ষ্য।');
+INSERT INTO "settings" VALUES('vision_text','ডিজিটাল বাংলাদেশ বিনির্মাণে প্রতিটি শিক্ষার্থীকে আধুনিক তথ্যপ্রযুক্তিতে দক্ষ, আত্মনির্ভরশীল এবং সফল ক্যারিয়ারের অধিকারী হিসেবে গড়ে তোলা।');
+INSERT INTO "settings" VALUES('terms_text','১. ভর্তির সময় নির্ধারিত ফর্ম পূরণ ও প্রয়োজনীয় কাগজপত্র জমা দিতে হবে।
+২. প্রতিটি ক্লাসে ন্যূনতম ৮০% উপস্থিতি এবং নির্ধারিত প্র্যাকটিক্যাল অ্যাসাইনমেন্ট সম্পন্ন করা বাধ্যতামূলক।
+৩. কোর্স শেষে চূড়ান্ত মূল্যায়ন পরীক্ষায় উত্তীর্ণদের অনলাইন ভেরিফাইড সার্টিফিকেট ও গোপন কোড প্রদান করা হবে।
+৪. প্রতিষ্ঠানের কম্পিউটার ল্যাব ও শৃঙ্খলার নিয়মাবলী সকল শিক্ষার্থীকে মেনে চলতে হবে।');
+INSERT INTO "settings" VALUES('license_text','প্রতিষ্ঠানের নাম: Dream Career IT (ড্রিম ক্যারিয়ার আইটি)
+রেজিস্ট্রেশন ও ট্রেড অনুমোদন: কুমিল্লা সদর দক্ষিণ / পদুয়ার বাজার, বিশ্বরোড, কুমিল্লা - ৩৫০০।
+সার্টিফিকেট ভেরিফিকেশন সিস্টেম: DCIT Online Verification & Secret Code Auth v3.0
+অফিসিয়াল হটলাইন: 01771770044 | ইমেইল: dc13edubd@gmail.com');
 CREATE TABLE students (
     id INT AUTO_INCREMENT PRIMARY KEY,
     reg_no VARCHAR(30) UNIQUE NOT NULL,
     roll_no VARCHAR(20) NOT NULL,
+    secret_code VARCHAR(50) UNIQUE NOT NULL,
     name VARCHAR(120) NOT NULL,
     father_name VARCHAR(120),
     mother_name VARCHAR(120),
+    nid_birth_reg VARCHAR(60),
     present_address TEXT,
     permanent_address TEXT,
     phone VARCHAR(50),
@@ -200,9 +246,14 @@ CREATE TABLE students (
     education VARCHAR(150),
     school_college VARCHAR(150),
     experience TEXT,
+    has_disability VARCHAR(10) DEFAULT 'না',
+    disability_discount DECIMAL(5,2) DEFAULT 0,
     course_id INTEGER,
     course_name VARCHAR(120) NOT NULL,
-    batch_year INTEGER DEFAULT 2020,
+    course_duration VARCHAR(50) DEFAULT '3 Months',
+    batch_no VARCHAR(40) DEFAULT 'Batch-2026-01',
+    batch_year INTEGER DEFAULT 2026,
+    admission_month VARCHAR(20) DEFAULT 'January',
     session_quarter VARCHAR(60) DEFAULT 'January to March',
     batch_type VARCHAR(30) DEFAULT 'New Batch',
     class_slot VARCHAR(80) DEFAULT '8:00 AM - 9:30 AM',
@@ -213,22 +264,42 @@ CREATE TABLE students (
     status VARCHAR(20) DEFAULT 'Active',
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP
 );
-INSERT INTO "students" VALUES(1,'000001','01','Jainal Abedin (Sagor)','Faridul Alam','Husneara','Fhakira khata, Boro Moheshkhali, Moheshkhali, Cox''s Bazar','Boro Moheshkhali, Moheshkhali, Cox''s Bazar','01879653143','gsctcbmcmrjas@gmail.com','2000-02-06','Muslim','Un-Married','5.10"','55 KG','O+','Honours 2nd Year (Political Science)','Cox''s Bazar Govt. College','I have good experience in MS Office, Graphic Design, Web Design, Logo Design, Web Browsing, Email, and Freelancing.',2,'Advance Microsoft Office',2020,'January to March','Old Batch','8:00 AM - 9:30 AM','A+','5.00','assets/img/teacher-sagor.jpg','240be518fabd2724ddb6f04eeb1da5967448d7e831c08c8fa822809f74c720a9','Completed','2026-11-11 16:39:43');
-INSERT INTO "students" VALUES(2,'000002','02','Md. Rakibul Hasan','Md. Abdul Karim','Rokeya Begum','Poduar Bazar, Bishwo Road, Cumilla','Sadar Dakshin, Cumilla','01712345678','rakib.cumilla@gmail.com','2002-05-14','Muslim','Un-Married','5.7"','60 KG','B+','HSC Passed','Cumilla Victoria Govt. College','Skilled in MS Word, MS Excel, PowerPoint, and Bangla/English Typing.',2,'Advance Microsoft Office',2026,'January to March','New Batch','8:00 AM - 9:30 AM','A+','5.00','assets/img/logo.png','240be518fabd2724ddb6f04eeb1da5967448d7e831c08c8fa822809f74c720a9','Active','2026-11-11 16:39:43');
-INSERT INTO "students" VALUES(3,'000003','03','Nusrat Jahan Mim','Md. Shafiqul Islam','Nasreen Akter','Shaktola, Cumilla Sadar','Laksham, Cumilla','01819223344','nusrat.mim@gmail.com','2003-11-20','Muslim','Un-Married','5.3"','50 KG','A+','B.A (Honours)','Cumilla Govt. Women''s College','Adobe Illustrator, Photoshop, Logo & Brand Design.',3,'Graphic Design',2026,'January to March','New Batch','11:00 AM - 12:30 PM','A+','5.00','assets/img/logo.png','240be518fabd2724ddb6f04eeb1da5967448d7e831c08c8fa822809f74c720a9','Active','2026-11-11 16:39:43');
-INSERT INTO "students" VALUES(4,'000004','04','Tanvir Ahmed Chowdhury','Mahbubul Alam','Salma Khatun','Jangalia, Poduar Bazar, Cumilla','Chauddagram, Cumilla','01911887766','tanvir.web@gmail.com','2001-08-09','Muslim','Un-Married','5.8"','64 KG','O+','B.Sc in CSE (Running)','CCN University of Science & Technology','HTML5, CSS3, JavaScript, Bootstrap, PHP & MySQL.',4,'Web Design & Development',2026,'January to March','New Batch','12:30 PM - 2:00 PM','A','4.75','assets/img/logo.png','240be518fabd2724ddb6f04eeb1da5967448d7e831c08c8fa822809f74c720a9','Active','2026-11-11 16:39:43');
-INSERT INTO "students" VALUES(5,'000005','05','Mehedi Hasan Shuvo','Md. Rafiqul Islam','Amena Begum','Tomsom Bridge, Cumilla','Barura, Cumilla','01615443322','mehedi.shuvo@gmail.com','2004-01-25','Muslim','Un-Married','5.6"','58 KG','AB+','SSC Passed','Cumilla Zilla School','Computer Fundamentals, MS Word, Excel, Internet & Email.',1,'Microsoft Office',2026,'January to March','New Batch','9:30 AM - 11:00 AM','A+','5.00','assets/img/logo.png','240be518fabd2724ddb6f04eeb1da5967448d7e831c08c8fa822809f74c720a9','Active','2026-11-11 16:39:43');
-INSERT INTO "students" VALUES(6,'000006','06','Farhana Yeasmin','Anwar Hossain','Rehana Parvin','Kotbari Road, Cumilla','Burichang, Cumilla','01755667788','farhana.english@gmail.com','2002-03-18','Muslim','Un-Married','5.4"','52 KG','B+','BBS (Honours)','National University','Spoken English, Business Communication & Presentation.',5,'Spoken English',2020,'July to September','Old Batch','4:00 PM - 5:30 PM','A+','5.00','assets/img/logo.png','240be518fabd2724ddb6f04eeb1da5967448d7e831c08c8fa822809f74c720a9','Completed','2026-11-11 16:39:43');
+INSERT INTO "students" VALUES(1,'000001','01','DCIT-SAGOR-ADV20-001','Jainal Abedin (Sagor)','Faridul Alam','Husneara','1920000187965','Fhakira khata, Boro Moheshkhali, Moheshkhali, Cox''s Bazar','Boro Moheshkhali, Moheshkhali, Cox''s Bazar','01879653143','gsctcbmcmrjas@gmail.com','2000-02-06','Muslim','Un-Married','5.10"','55 KG','O+','Honours 2nd Year (Political Science)','Cox''s Bazar Govt. College','I have good experience in MS Office, Graphic Design, Web Design, Logo Design, Web Browsing, Email, and Freelancing.','না',0,2,'Advance Microsoft Office','3 Months','Batch-2020-01',2020,'January','January to March','Old Batch','8:00 AM - 9:30 AM','A+','5.00','assets/img/teacher-sagor.jpg','240be518fabd2724ddb6f04eeb1da5967448d7e831c08c8fa822809f74c720a9','Completed','2026-11-11 19:34:14');
+INSERT INTO "students" VALUES(2,'000002','02','DCIT-RAKIB-ADV26-002','Md. Rakibul Hasan','Md. Abdul Karim','Rokeya Begum','2002351234567','Poduar Bazar, Bishwo Road, Cumilla','Sadar Dakshin, Cumilla','01712345678','rakib.cumilla@gmail.com','2002-05-14','Muslim','Un-Married','5.7"','60 KG','B+','HSC Passed','Cumilla Victoria Govt. College','Skilled in MS Word, MS Excel, PowerPoint, and Bangla/English Typing.','না',0,2,'Advance Microsoft Office','3 Months','Batch-2026-01',2026,'January','January to March','New Batch','8:00 AM - 9:30 AM','A+','5.00','assets/img/logo.jpg','240be518fabd2724ddb6f04eeb1da5967448d7e831c08c8fa822809f74c720a9','Active','2026-11-11 19:34:14');
+INSERT INTO "students" VALUES(3,'000003','03','DCIT-NUSRAT-GFX26-003','Nusrat Jahan Mim','Md. Shafiqul Islam','Nasreen Akter','2003359876543','Shaktola, Cumilla Sadar','Laksham, Cumilla','01819223344','nusrat.mim@gmail.com','2003-11-20','Muslim','Un-Married','5.3"','50 KG','A+','B.A (Honours)','Cumilla Govt. Women''s College','Adobe Illustrator, Photoshop, Logo & Brand Design.','না',0,3,'Graphic Design','3 Months','Batch-2026-01',2026,'January','January to March','New Batch','11:00 AM - 12:30 PM','A+','5.00','assets/img/logo.jpg','240be518fabd2724ddb6f04eeb1da5967448d7e831c08c8fa822809f74c720a9','Active','2026-11-11 19:34:14');
+INSERT INTO "students" VALUES(4,'000004','04','DCIT-TANVIR-WEB26-004','Tanvir Ahmed Chowdhury','Mahbubul Alam','Salma Khatun','2001351122334','Jangalia, Poduar Bazar, Cumilla','Chauddagram, Cumilla','01911887766','tanvir.web@gmail.com','2001-08-09','Muslim','Un-Married','5.8"','64 KG','O+','B.Sc in CSE (Running)','CCN University of Science & Technology','HTML5, CSS3, JavaScript, Bootstrap, PHP & MySQL.','না',0,4,'Web Design & Development','4 Months','Batch-2026-01',2026,'January','January to March','New Batch','12:30 PM - 2:00 PM','A','4.75','assets/img/logo.jpg','240be518fabd2724ddb6f04eeb1da5967448d7e831c08c8fa822809f74c720a9','Active','2026-11-11 19:34:14');
+INSERT INTO "students" VALUES(5,'000005','05','DCIT-MEHEDI-MSO26-005','Mehedi Hasan Shuvo','Md. Rafiqul Islam','Amena Begum','2004354455667','Tomsom Bridge, Cumilla','Barura, Cumilla','01615443322','mehedi.shuvo@gmail.com','2004-01-25','Muslim','Un-Married','5.6"','58 KG','AB+','SSC Passed','Cumilla Zilla School','Computer Fundamentals, MS Word, Excel, Internet & Email.','না',0,1,'Microsoft Office','3 Months','Batch-2026-01',2026,'January','January to March','New Batch','9:30 AM - 11:00 AM','A+','5.00','assets/img/logo.jpg','240be518fabd2724ddb6f04eeb1da5967448d7e831c08c8fa822809f74c720a9','Active','2026-11-11 19:34:14');
+INSERT INTO "students" VALUES(6,'000006','06','DCIT-FARHANA-ENG20-006','Farhana Yeasmin','Anwar Hossain','Rehana Parvin','2002357788990','Kotbari Road, Cumilla','Burichang, Cumilla','01755667788','farhana.english@gmail.com','2002-03-18','Muslim','Un-Married','5.4"','52 KG','B+','BBS (Honours)','National University','Spoken English, Business Communication & Presentation.','না',0,5,'Spoken English','3 Months','Batch-2020-03',2020,'July','July to September','Old Batch','4:00 PM - 5:30 PM','A+','5.00','assets/img/logo.jpg','240be518fabd2724ddb6f04eeb1da5967448d7e831c08c8fa822809f74c720a9','Completed','2026-11-11 19:34:14');
+CREATE TABLE subscribers (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    contact_info VARCHAR(150) NOT NULL,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+CREATE TABLE success_stories (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    student_name VARCHAR(120) NOT NULL,
+    reg_no VARCHAR(30),
+    course_name VARCHAR(120) NOT NULL,
+    batch_info VARCHAR(60),
+    designation VARCHAR(150) NOT NULL,
+    story TEXT NOT NULL,
+    photo VARCHAR(255) DEFAULT 'assets/img/teacher-sagor.jpg',
+    status VARCHAR(20) DEFAULT 'Active'
+);
+INSERT INTO "success_stories" VALUES(1,'Jainal Abedin (Sagor)','000001','Web Design & Advance MS Office','Batch 2020','Full-Stack Web Designer & Trainer','Dream Career IT থেকে প্রশিক্ষণ গ্রহণ করে আমি বর্তমানে একজন প্রফেশনাল ওয়েব ডিজাইনার, ওয়ার্ডপ্রেস থিম ডেভেলপার এবং আইটি প্রশিক্ষক হিসেবে সফলভাবে কাজ করছি।','assets/img/teacher-sagor.jpg','Active');
+INSERT INTO "success_stories" VALUES(2,'Nusrat Jahan Mim','000003','Graphic Design','Batch 2026','Freelance Brand & UI Designer (Fiverr Level-2)','গ্রাফিক্স ডিজাইন কোর্স সম্পন্ন করে ফটোশপ ও ইলাস্ট্রেটরের বাস্তব প্রজেক্টের মাধ্যমে এখন আমি আন্তর্জাতিক মার্কেটপ্লেসে লোগো ও ব্র্যান্ডিং ডিজাইনার হিসেবে কাজ করছি।','assets/img/course-graphic.jpg','Active');
+INSERT INTO "success_stories" VALUES(3,'Tanvir Ahmed Chowdhury','000004','Web Design & Development','Batch 2026','Frontend & PHP Developer','হাতে-কলমে HTML, CSS, JavaScript এবং PHP-MySQL শেখার ফলে আমি নিজের পোর্টফোলিও তৈরি করেছি এবং লোকাল ও আন্তর্জাতিক ক্লায়েন্টদের ওয়েবসাইট তৈরি করছি।','assets/img/course-webdesign.jpg','Active');
 CREATE TABLE teachers (
     id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(120) NOT NULL,
     designation VARCHAR(120) NOT NULL,
-    role_type VARCHAR(50) DEFAULT 'teacher',
+    role_type VARCHAR(50) DEFAULT 'শিক্ষক',
     qualification VARCHAR(200),
     phone VARCHAR(100),
     email VARCHAR(120),
     address TEXT,
     bio TEXT,
+    schedule_info TEXT,
     photo VARCHAR(255) DEFAULT 'assets/img/teacher-lokman.jpg',
     facebook VARCHAR(255),
     youtube VARCHAR(255),
@@ -240,5 +311,8 @@ CREATE TABLE teachers (
     status VARCHAR(20) DEFAULT 'Active',
     sort_order INTEGER DEFAULT 1
 );
-INSERT INTO "teachers" VALUES(1,'DR. A.K.M Lokman','Senior Teacher and Administrator','director','Chief Trainer & Director, Dream Career IT','01771770044','dc13edubd@gmail.com','Main Town, Sylhet / Poduar Bazar, Cumilla, Bangladesh.','Senior Teacher and Chief Administrator of Dream Career IT. Dedicated to building a skilled Digital Bangladesh through accessible, high-quality computer & IT education.','assets/img/teacher-lokman.jpg','https://www.facebook.com/profile.php?id=100000567091781','','','','','','','Active',1);
-INSERT INTO "teachers" VALUES(2,'Jainal Abedin (Sagor)','Junior Teacher & Web Designer','designer','B.S.S (Honours) in Political Science | Web Designer & Full-Stack Developer','01879653143, 01875122169','gsctcbmcmrjas@gmail.com','Boro Moheshkhali, Moheshkhali, Cox''s Bazar, Bangladesh.','Hi, I''m a Professional Web Designer and WordPress Theme Developer. Experienced in HTML5, CSS3, JavaScript, jQuery, Bootstrap, PHP, and MySQL, as well as MS Office and Graphic Design training at Dream Career IT.','assets/img/teacher-sagor.jpg','https://www.facebook.com/jainalabedin.sagor.143','https://www.youtube.com/channel/UCbYQ17l6_mf6ilwlJGvsFSg','https://twitter.com/SagorJainal','https://www.instagram.com/jasagor2020/','https://github.com/jasagor2020','https://www.linkedin.com/in/jainal-abedin-sagor-448b121a9/','https://dcitbd.github.io','Active',2);
+INSERT INTO "teachers" VALUES(1,'DR. A.K.M Lokman','ফাউন্ডার ও প্রধান পরিচালক (Founder & Director)','ফাউন্ডার','Chief Trainer, Founder & Director, Dream Career IT','01771770044','dc13edubd@gmail.com','Main Town, Sylhet / Poduar Bazar, Cumilla, Bangladesh.','Founder, Senior Teacher and Chief Administrator of Dream Career IT. Dedicated to building a skilled Digital Bangladesh through accessible, high-quality computer & IT education.','সকাল ৮:০০ - ১১:০০ এবং বিকাল ৪:০০ - রাত ৮:৩০ (Advance MS Office, Spoken English & IELTS)','assets/img/teacher-lokman.jpg','https://www.facebook.com/profile.php?id=100000567091781','','','','','','https://dcitbd.github.io','Active',1);
+INSERT INTO "teachers" VALUES(2,'Jainal Abedin (Sagor)','সিনিয়র ট্রেইনার ও ওয়েব ডেভেলপার (Trainer & Designer)','ট্রেইনার','B.S.S (Honours) in Political Science | Full-Stack Web Designer & Trainer','01879653143, 01875122169','gsctcbmcmrjas@gmail.com','Boro Moheshkhali, Moheshkhali, Cox''s Bazar, Bangladesh.','Professional Web Designer, WordPress Developer, and Trainer in HTML5, CSS3, JavaScript, Bootstrap, PHP, MySQL, Graphic Design, and MS Office at Dream Career IT.','সকাল ৯:৩০ - দুপুর ২:০০ (Microsoft Office, Graphic Design & Web Design)','assets/img/teacher-sagor.jpg','https://www.facebook.com/jainalabedin.sagor.143','https://www.youtube.com/channel/UCbYQ17l6_mf6ilwlJGvsFSg','https://twitter.com/SagorJainal','https://www.instagram.com/jasagor2020/','https://github.com/jasagor2020','https://www.linkedin.com/in/jainal-abedin-sagor-448b121a9/','https://dcitbd.github.io','Active',2);
+INSERT INTO "teachers" VALUES(3,'DR. A.K.M Lokman','প্রধান প্রশাসক ও পরিচালক (Managing Director)','পরিচালক','Director of Academic & Administrative Affairs, Dream Career IT','01771770044','dc13edubd@gmail.com','Poduar Bazar, Bishwo Road, Cumilla - 3500.','প্রশাসনিক কার্যক্রম, সার্টিফিকেট অনুমোদন, পরীক্ষা নিয়ন্ত্রণ ও সার্বিক ব্যবস্থাপনা পরিচালক।','সকাল ৮:০০ - রাত ৮:৩০ (সার্বিক তত্ত্বাবধান ও প্রশাসন)','assets/img/teacher-lokman.jpg','https://www.facebook.com/profile.php?id=100000567091781','','','','','','https://dcitbd.github.io','Active',3);
+INSERT INTO "teachers" VALUES(4,'Jainal Abedin (Sagor)','আইটি ও একাডেমিক শিক্ষক (Senior IT Teacher)','শিক্ষক','Instructor of Computer Application, Graphic & Web Technology','01879653143','gsctcbmcmrjas@gmail.com','Poduar Bazar, Cumilla / Moheshkhali, Cox''s Bazar.','কম্পিউটার অ্যাপ্লিকেশন, গ্রাফিক্স ডিজাইন ও ওয়েব ডেভেলপমেন্ট বিভাগের শিক্ষক।','সকাল ৯:৩০ - দুপুর ২:০০ এবং অনলাইন সাপোর্ট ২৪/৭','assets/img/teacher-sagor.jpg','https://www.facebook.com/jainalabedin.sagor.143','','','','https://github.com/jasagor2020','','https://dcitbd.github.io','Active',4);
+INSERT INTO "teachers" VALUES(5,'Md. Rakibul Hasan','একাডেমিক ও ল্যাব সদস্য (Executive Member)','সদস্য','Computer Lab Coordinator & Student Support Member','01771770044','dc13edubd@gmail.com','Poduar Bazar, Bishwo Road, Cumilla.','কম্পিউটার ল্যাব ব্যবস্থাপনা, শিক্ষার্থীদের প্র্যাকটিস সাপোর্ট ও ভর্তি সহায়তা সদস্য।','সকাল ৮:০০ - সন্ধ্যা ৭:০০ (ল্যাব কো-অর্ডিনেশন)','assets/img/logo.jpg','','','','','','','https://dcitbd.github.io','Active',5);

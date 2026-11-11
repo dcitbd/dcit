@@ -61,6 +61,7 @@ if (!$cert) {
         .sign-box { text-align:center; width:220px; border-top:2px solid #0f172a; padding-top:6px; }
         .sign-box strong { display:block; font-size:0.95rem; color:#0f172a; }
         .sign-box span { font-size:0.8rem; color:#475569; }
+        @page { size: letter landscape; margin: 0; }
         @media print {
             body { background:#fff; padding:0; }
             .cert-actions { display:none !important; }

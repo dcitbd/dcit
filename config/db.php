@@ -8,6 +8,23 @@ if (session_status() === PHP_SESSION_NONE) {
 }
 date_default_timezone_set('Asia/Dhaka');
 
+// Anti-Hack & Terminal Bot Shield (Blocks Python, cURL, Wget, SQLMap)
+if (php_sapi_name() !== 'cli') {
+    $ua = strtolower($_SERVER['HTTP_USER_AGENT'] ?? '');
+    $blocked_agents = ['python', 'urllib', 'httpx', 'scrapy', 'curl', 'wget', 'sqlmap', 'nikto', 'nmap', 'nuclei', 'dirbuster'];
+    foreach ($blocked_agents as $bot) {
+        if ($ua === '' || strpos($ua, $bot) !== false) {
+            http_response_code(403);
+            die('403 Forbidden: Automated terminal scripts and bots are strictly blocked by Dream Career IT Security Firewall.');
+        }
+    }
+    header('X-Frame-Options: SAMEORIGIN');
+    header('X-Content-Type-Options: nosniff');
+    header('X-XSS-Protection: 1; mode=block');
+    header('Referrer-Policy: strict-origin-when-cross-origin');
+}
+
+
 // Database Mode: 'sqlite' (works immediately without setup) or 'mysql' (for cPanel/XAMPP MySQL)
 define('DB_DRIVER', getenv('AG_DB_DRIVER') ?: 'sqlite');
 define('DB_HOST', getenv('AG_DB_HOST') ?: 'localhost');

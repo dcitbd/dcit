@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="referrer" content="strict-origin-when-cross-origin">
-    <title>এডমিন প্যানেল | Dream Career IT</title>
+    <title>এডমিন কন্ট্রোল প্যানেল | Dream Career IT</title>
     <link rel="icon" type="image/x-icon" href="../favicon.ico">
     <link rel="shortcut icon" type="image/x-icon" href="../favicon.ico">
     <link rel="icon" type="image/png" sizes="64x64" href="../assets/img/favicon.png">
@@ -14,6 +14,18 @@
 </head>
 <body>
 <div id="adminAppRoot" style="display:flex; width:100%; min-height:100vh;"></div>
+
+<!-- Admin Quick View & Direct SMS Modal -->
+<div id="dcpQuickModal" class="dcp-modal-backdrop" onclick="if(event.target===this) closeAdminModal();">
+    <div class="dcp-modal-box">
+        <div class="dcp-modal-head">
+            <h3 id="dcpModalTitle" style="color:#151442;">কুইক ভিউ</h3>
+            <button onclick="closeAdminModal()" class="btn btn-danger btn-xs"><i class="fa fa-times"></i> বন্ধ করুন</button>
+        </div>
+        <div class="dcp-modal-body" id="dcpModalBody"></div>
+    </div>
+</div>
+
 <script src="../assets/js/dcit-store.js"></script>
 <script src="../assets/js/dcit-admin-spa.js"></script>
 </body>

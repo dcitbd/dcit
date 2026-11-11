@@ -19,8 +19,23 @@ $flash = get_flash();
     <title><?= h($page_title ?? setting('site_name', 'Dream Career IT')) ?> | <?= h(setting('site_subtitle')) ?></title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="assets/css/style.css">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Dream Career IT (ড্রিম ক্যারিয়ার আইটি)">
+    <meta property="og:title" content="Dream Career IT | ড্রিম ক্যারিয়ার আইটি — কুমিল্লা">
+    <meta property="og:description" content="Microsoft Office, Advance Office, Graphic Design, Web Design, Spoken English ও IELTS প্রশিক্ষণ কেন্দ্র। ফোনঃ 01771770044।">
+    <meta property="og:image" content="assets/img/logo.jpg">
 </head>
 <body>
+<div id="dcitPreloader">
+    <div class="loader-ring-wrap">
+        <div class="loader-ring"></div>
+        <div class="loader-ring-inner"></div>
+        <img src="assets/img/logo.jpg" alt="Dream Career IT" class="loader-logo">
+    </div>
+    <div class="loader-title">DREAM CAREER IT</div>
+    <div class="loader-sub">ড্রিম ক্যারিয়ার আইটি • লোড হচ্ছে...</div>
+    <div class="loader-bar"><div class="loader-bar-fill"></div></div>
+</div>
 <!-- Top Contact & Social Bar -->
 <div class="topbar">
     <div class="container topbar-inner">
