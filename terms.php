@@ -48,7 +48,7 @@ if ($hasHeader) {
     }
 
     .terms-wrapper {
-        font-family: 'Hind Siliguri', 'Inter', sans-serif;
+        font-family: 'SolaimanLipi', 'Hind Siliguri', 'Inter', sans-serif;
         background-color: #f8fafc;
         color: var(--dcit-text);
         line-height: 1.75;

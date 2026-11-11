@@ -1,4 +1,20 @@
 /* ==========================================================================
+   SOLAIMANLIPI BANGLA FONT CONFIGURATION (ALL BENGALI TEXT)
+   ========================================================================== */
+@import url('https://fonts.maateen.me/solaiman-lipi/font.css');
+
+@font-face {
+    font-family: 'SolaimanLipi';
+    src: local('SolaimanLipi'),
+         local('SolaimanLipi Normal'),
+         url('https://cdn.jsdelivr.net/gh/atikul-islam-sajib/SolaimanLipi-Web-Font@master/SolaimanLipi.woff') format('woff'),
+         url('https://fonts.maateen.me/solaiman-lipi/font.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+/* ==========================================================================
    DREAM CAREER IT - Educational Portal & Security Protected Stylesheet (v3.0)
    ========================================================================== */
 :root {
@@ -1615,3 +1631,78 @@ a {
 :is(.about-wrapper, .legitimacy-wrapper, .objectives-wrapper, .terms-wrapper) .table { width: 100%; border-collapse: collapse; }
 :is(.about-wrapper, .legitimacy-wrapper, .objectives-wrapper, .terms-wrapper) .table th,
 :is(.about-wrapper, .legitimacy-wrapper, .objectives-wrapper, .terms-wrapper) .table td { padding: 12px 14px; border-bottom: 1px solid #e2e8f0; text-align: left; }
+
+
+/* ==========================================================================
+   SOLAIMANLIPI FONT ENFORCEMENT & CARD LAYOUT STABILITY (/ponytail-audit)
+   ========================================================================== */
+body, h1, h2, h3, h4, h5, h6, p, a, span:not(.fa):not([class*="fa-"]), li, td, th, label, button, input, select, textarea,
+.about-wrapper, .legitimacy-wrapper, .objectives-wrapper, .terms-wrapper {
+    font-family: 'SolaimanLipi', 'Hind Siliguri', 'Segoe UI', system-ui, sans-serif !important;
+}
+
+/* Preserve Font Awesome 4 & 6 Icons */
+.fa, .fas, .far, .fab, .fa-solid, .fa-regular, .fa-brands, i[class*="fa-"] {
+    font-family: FontAwesome, "Font Awesome 6 Free", "Font Awesome 6 Brands" !important;
+}
+
+/* Prevent Grid & Card Horizontal/Vertical Breaking on All Screen Sizes */
+.grid-3 {
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr));
+}
+.grid-2 {
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 340px), 1fr));
+}
+.grid-4 {
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 240px), 1fr));
+}
+
+.card {
+    min-width: 0;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    height: 100%;
+}
+
+.card-body {
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.card-body > p,
+.card-excerpt-clamp {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    word-break: break-word;
+    line-height: 1.65;
+    margin-bottom: 16px;
+}
+
+.card-title-clamp {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: 1.45;
+    min-height: 2.85em;
+}
+
+.card-footer {
+    margin-top: auto;
+    padding-top: 12px;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.card-body > .btn {
+    margin-top: auto;
+    justify-content: center;
+}

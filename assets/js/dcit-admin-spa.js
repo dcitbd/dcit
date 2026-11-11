@@ -2161,7 +2161,7 @@ function renderTabNotices(el, db) {
                                 <td><strong>${esc(n.title)}</strong></td>
                                 <td><span class="badge badge-info">${esc(n.category || 'ভর্তি বিজ্ঞপ্তি')}</span></td>
                                 <td>${esc(n.publish_date)}</td>
-                                <td><div style="max-width:340px; max-height:48px; overflow:hidden; font-size:12px;">${n.details || ''}</div></td>
+                                <td><div style="max-width:340px; font-size:12px; color:#475569;">${esc(String(n.details || '').replace(/<[^>]*>/g, ' ').slice(0, 95))}...</div></td>
                                 <td>
                                     <button onclick="quickViewNotice(${realIdx})" class="btn btn-outline btn-xs"><i class="fa fa-eye"></i></button>
                                     <button onclick="openNoticeRichModal(${realIdx})" class="btn btn-primary btn-xs"><i class="fa fa-edit"></i></button>

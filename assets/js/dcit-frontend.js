@@ -11,6 +11,59 @@ function esc(s) {
     return String(s ?? '').replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
 }
 
+function stripHtmlExcerpt(htmlStr, maxLen = 115) {
+    const plain = String(htmlStr ?? '').replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim();
+    return plain.length > maxLen ? plain.slice(0, maxLen) + '...' : plain;
+}
+
+function renderNoticeCardHTML(n) {
+    const seen = DCITStore.isSeen('notice', n.id);
+    const cleanText = stripHtmlExcerpt(n.details, 115);
+    return `
+    <div class="card" onclick="openNoticePopup(${Number(n.id)})" style="cursor:pointer;">
+        <div class="card-body">
+            <div style="display:flex; justify-content:space-between; align-items:center; gap:8px; flex-wrap:wrap; margin-bottom:10px;">
+                <span class="badge badge-warning"><i class="fa fa-bell"></i> ${esc(n.category || 'নোটিশ')}</span>
+                <span class="seen-tag ${seen?'seen':'unseen'}" data-notice-seen="${Number(n.id)}">${seen?'✓ দেখা হয়েছে (Seen)':'● নতুন (Unseen)'}</span>
+            </div>
+            <small style="color:#64748b; font-weight:700; margin-bottom:6px; display:block;"><i class="fa fa-calendar"></i> ${esc(n.publish_date)}</small>
+            <h3 class="card-title-clamp" style="font-size:1.15rem; margin-bottom:8px;">${esc(n.title)}</h3>
+            <p class="card-excerpt-clamp" style="color:#475569; font-size:0.93rem;">${esc(cleanText)}</p>
+            <div class="card-footer" style="border-top:1px dashed #e2e8f0;">
+                <span style="font-size:0.82rem; font-weight:700; color:#0f766e;"><i class="fa fa-hand-pointer-o"></i> কার্ডে ক্লিক করে বিস্তারিত পড়ুন</span>
+                <button type="button" onclick="event.stopPropagation(); openNoticePopup(${Number(n.id)});" class="btn btn-primary btn-sm"><i class="fa fa-eye"></i> বিস্তারিত</button>
+            </div>
+        </div>
+    </div>`;
+}
+
+function openSuccessStoryPopup(idOrIdx) {
+    const db = DCITStore.getDB();
+    const stories = db.success_stories || [];
+    const st = stories.find(x => Number(x.id) === Number(idOrIdx)) || stories[Number(idOrIdx)] || stories[0];
+    if (!st) return;
+    openDcitPopup(`🌟 সফল শিক্ষার্থীর গল্প — ${esc(st.student_name)}`, `
+        <div>
+            <div class="qv-hero-banner">
+                <img src="${esc(st.photo || 'assets/img/logo.jpg')}" alt="${esc(st.student_name)}">
+                <div>
+                    <span class="badge badge-warning"><i class="fa fa-star"></i> সাকসেস স্টোরি</span>
+                    <h2 style="margin:6px 0; color:#fff;">${esc(st.student_name)}</h2>
+                    <p style="color:#5eead4; font-weight:700;">${esc(st.designation)}</p>
+                </div>
+            </div>
+            <div class="qv-info-grid">
+                <div class="qv-info-card"><small>কোর্সের নাম</small><strong>${esc(st.course_name)}</strong></div>
+                <div class="qv-info-card"><small>ব্যাচ তথ্য</small><strong>${esc(st.batch_info)}</strong></div>
+            </div>
+            <div style="padding:20px; background:#f8fafc; border-radius:12px; border-left:4px solid #0f766e; line-height:1.85; font-size:1rem; font-style:italic; color:#1e293b;">
+                "${st.story}"
+            </div>
+        </div>
+    `);
+}
+
+
 // Awesome Notification Toast
 function showAwesomeToast(type, title, msg) {
     const old = document.querySelector('.awesome-toast');
@@ -431,14 +484,17 @@ function renderHome(main) {
                 <p>"যাঁরা Dream Career IT থেকে প্রশিক্ষণ নিয়ে আজ দেশ-বিদেশে ও ফ্রিল্যান্সিংয়ে সফল"</p>
             </div>
             <div class="grid-3">
-                ${stories.map(st => `
-                <div class="card">
+                ${stories.map((st, idx) => `
+                <div class="card" onclick="openSuccessStoryPopup(${Number(st.id || idx)})" style="cursor:pointer;">
                     <div class="card-body" style="text-align:center;">
                         <img src="${esc(st.photo || 'assets/img/logo.jpg')}" alt="${esc(st.student_name)}" class="anim-float" style="width:96px; height:96px; border-radius:50%; object-fit:cover; margin:0 auto 14px; border:3px solid #0f766e;">
                         <h3>${esc(st.student_name)}</h3>
                         <div class="title-bn">${esc(st.designation)}</div>
                         <span class="badge badge-info" style="align-self:center; margin-bottom:12px;">${esc(st.course_name)} (${esc(st.batch_info)})</span>
-                        <div style="font-style:italic; color:#475569;">${st.story}</div>
+                        <p class="card-excerpt-clamp" style="font-style:italic; color:#475569;">"${esc(stripHtmlExcerpt(st.story, 110))}"</p>
+                        <div class="card-footer" style="border-top:1px dashed #e2e8f0; justify-content:center;">
+                            <button type="button" onclick="event.stopPropagation(); openSuccessStoryPopup(${Number(st.id || idx)});" class="btn btn-outline btn-sm" style="color:#151442; border-color:#cbd5e1; width:100%; justify-content:center;"><i class="fa fa-eye"></i> বিস্তারিত পড়ুন</button>
+                        </div>
                     </div>
                 </div>`).join('')}
             </div>
@@ -454,22 +510,7 @@ function renderHome(main) {
                 <p>ভর্তি, রেজিস্ট্রেশন, পরীক্ষা ও ক্লাস সংক্রান্ত সর্বশেষ আপডেট</p>
             </div>
             <div class="grid-3">
-                ${notices.map(n => {
-                    const seen = DCITStore.isSeen('notice', n.id);
-                    return `
-                    <div class="card">
-                        <div class="card-body">
-                            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
-                                <span class="badge badge-warning"><i class="fa fa-bell"></i> ${esc(n.category)}</span>
-                                <span class="seen-tag ${seen?'seen':'unseen'}">${seen?'✓ দেখা হয়েছে (Seen)':'● নতুন (Unseen)'}</span>
-                            </div>
-                            <small style="color:#64748b; font-weight:700; margin-bottom:6px; display:block;"><i class="fa fa-calendar"></i> ${esc(n.publish_date)}</small>
-                            <h3 style="font-size:1.15rem; margin-bottom:10px;">${esc(n.title)}</h3>
-                            <div style="color:#475569; font-size:0.92rem; margin-bottom:16px; flex:1;">${n.details}</div>
-                            <button onclick="openNoticePopup(${Number(n.id)})" class="btn btn-primary btn-sm"><i class="fa fa-eye"></i> কুইক ভিউ পপআপ</button>
-                        </div>
-                    </div>`;
-                }).join('')}
+                ${notices.map(n => renderNoticeCardHTML(n)).join('')}
             </div>
             <div style="text-align:center; margin-top:28px;">
                 <button onclick="navigateView('notices')" class="btn btn-accent"><i class="fa fa-list"></i> সকল নোটিশ ও ফিল্টার দেখুন</button>
@@ -1406,23 +1447,15 @@ function renderNotices(main, params = {}) {
             <button onclick="navigateView('notices',{cat:document.getElementById('noticeCatSelect').value, q:document.getElementById('noticeSearchQ').value})" class="btn btn-primary"><i class="fa fa-search"></i> সার্চ</button>
         </div>
 
-        <div class="grid-3">
-            ${paged.sliced.map(n => {
-                const seen = DCITStore.isSeen('notice', n.id);
-                return `
-                <div class="card">
-                    <div class="card-body">
-                        <div style="display:flex; justify-content:space-between; margin-bottom:8px;">
-                            <span class="badge badge-warning">${esc(n.category)}</span>
-                            <span class="seen-tag ${seen?'seen':'unseen'}">${seen?'✓ Seen':'● Unseen'}</span>
-                        </div>
-                        <small style="color:#64748b; font-weight:700; margin-bottom:6px; display:block;"><i class="fa fa-calendar"></i> ${esc(n.publish_date)}</small>
-                        <h3>${esc(n.title)}</h3>
-                        <div style="margin:10px 0 16px; color:#475569; font-size:0.93rem; flex:1;">${n.details}</div>
-                        <button onclick="openNoticePopup(${Number(n.id)})" class="btn btn-primary btn-sm"><i class="fa fa-eye"></i> কুইক ভিউ পপআপ</button>
-                    </div>
-                </div>`;
-            }).join('')}
+        <div class="view-toolbar">
+            <div><strong><i class="fa fa-bullhorn" style="color:#0f766e;"></i> মোট নোটিশঃ ${list.length} টি</strong> (যেকোনো নোটিশ কার্ডে ক্লিক করলে বিস্তারিত দেখা যাবে)</div>
+            <div class="view-toggle-btns">
+                <button class="view-btn active" onclick="toggleViewMode('allNoticesGrid','card',this)"><i class="fa fa-th-large"></i> কার্ড ভিউ</button>
+                <button class="view-btn" onclick="toggleViewMode('allNoticesGrid','list',this)"><i class="fa fa-list"></i> লিস্ট ভিউ</button>
+            </div>
+        </div>
+        <div class="grid-3" id="allNoticesGrid">
+            ${paged.sliced.map(n => renderNoticeCardHTML(n)).join('')}
         </div>
         ${paged.barHTML}
     </div></section>`;
@@ -1433,6 +1466,7 @@ function openNoticePopup(id) {
     const n = (db.notices || []).find(x => Number(x.id) === Number(id)) || db.notices[0];
     if (!n) return;
     DCITStore.markSeen('notice', n.id);
+    document.querySelectorAll(`[data-notice-seen="${Number(n.id)}"]`).forEach(el => { el.className = 'seen-tag seen'; el.textContent = '✓ দেখা হয়েছে (Seen)'; });
     openDcitPopup(`📢 অফিসিয়াল নোটিশ — ${esc(n.title)}`, `
         <div>
             <div class="qv-hero-banner" style="padding:18px 22px;">
@@ -1494,7 +1528,7 @@ function renderAbout(main) {
     }
 
     .about-wrapper {
-        font-family: 'Hind Siliguri', 'Inter', sans-serif;
+        font-family: 'SolaimanLipi', 'Hind Siliguri', 'Inter', sans-serif;
         background-color: #f8fafc;
         color: var(--dcit-text);
         line-height: 1.78;
@@ -2290,7 +2324,7 @@ function renderMission(main) {
     }
 
     .objectives-wrapper {
-        font-family: 'Hind Siliguri', 'Inter', sans-serif;
+        font-family: 'SolaimanLipi', 'Hind Siliguri', 'Inter', sans-serif;
         background-color: #f8fafc;
         color: var(--dcit-text);
         line-height: 1.75;
@@ -2982,7 +3016,7 @@ function renderTerms(main) {
     }
 
     .terms-wrapper {
-        font-family: 'Hind Siliguri', 'Inter', sans-serif;
+        font-family: 'SolaimanLipi', 'Hind Siliguri', 'Inter', sans-serif;
         background-color: #f8fafc;
         color: var(--dcit-text);
         line-height: 1.75;
@@ -3877,7 +3911,7 @@ function renderLicense(main) {
     }
 
     .legitimacy-wrapper {
-        font-family: 'Hind Siliguri', 'Inter', sans-serif;
+        font-family: 'SolaimanLipi', 'Hind Siliguri', 'Inter', sans-serif;
         background-color: #f8fafc;
         color: var(--dcit-text);
         line-height: 1.75;

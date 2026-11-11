@@ -10,6 +10,8 @@ $flash       = get_flash();
 <!DOCTYPE html>
 <html lang="bn">
 <head>
+    <link rel="stylesheet" href="https://fonts.maateen.me/solaiman-lipi/font.css">
+    
     <meta name="referrer" content="strict-origin-when-cross-origin">
     <link rel="icon" type="image/x-icon" href="../favicon.ico">
     <link rel="shortcut icon" type="image/x-icon" href="../favicon.ico">
