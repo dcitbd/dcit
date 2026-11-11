@@ -159,8 +159,8 @@ img {
 
 .notice-marquee span {
     display: inline-block;
-    padding-left: 100%;
-    animation: marquee 28s linear infinite;
+    padding-left: 0;
+    /* clean static notice bar */
     font-weight: 600;
 }
 
@@ -177,9 +177,8 @@ img {
 .site-header {
     background: #ffffff;
     box-shadow: 0 2px 15px rgba(0,0,0,0.06);
-    position: sticky;
-    top: 0;
-    z-index: 999;
+    position: relative;
+    z-index: 10;
 }
 
 .nav-wrapper {

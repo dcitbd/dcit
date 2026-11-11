@@ -560,49 +560,51 @@ function openCertificateModal(certNo) {
     const db = DCITStore.getDB();
     const cert = (db.certificates || []).find(c => c.cert_no === certNo || c.reg_no === certNo);
     if (!cert) return;
-    const modal = document.getElementById('certPrintModal');
-    const box = document.getElementById('certPrintContent');
-    box.innerHTML = `
-        <div style="display:flex; justify-content:space-between; margin-bottom:14px;">
-            <button onclick="document.getElementById('certPrintModal').style.display='none'" class="btn btn-outline btn-sm">&larr; বন্ধ করুন</button>
-            <button onclick="window.print()" class="btn btn-accent btn-sm"><i class="fa fa-print"></i> প্রিন্ট / PDF সেভ করুন</button>
-        </div>
-        <div style="border:8px solid #151442; padding:14px; background:#fff;">
-            <div style="border:3px double #f59e0b; padding:32px; font-family:Georgia, serif;">
-                <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:2px solid #151442; padding-bottom:14px; margin-bottom:20px;">
-                    <img src="assets/img/logo.jpg" style="width:80px; height:80px; border-radius:50%; border:2px solid #151442;">
-                    <div style="text-align:center; flex:1;">
-                        <h1 style="margin:0; color:#151442; font-size:2rem; text-transform:uppercase;">DREAM CAREER IT</h1>
-                        <p style="margin:4px 0 0; font-family:sans-serif; font-size:0.88rem;">Near New Poduar Bazar Mosque, Vai Vai Super Market, Poduar Bazar, Cumilla | Phone: 01771770044</p>
+    const main = document.getElementById('appMainContainer');
+    main.innerHTML = `
+    <section class="section">
+        <div class="container" style="max-width:940px;">
+            <div style="display:flex; justify-content:space-between; margin-bottom:16px;">
+                <button onclick="navigateView('certificates')" class="btn btn-outline btn-sm" style="color:#151442; border-color:#cbd5e1;">&larr; সার্টিফিকেট তালিকায় ফিরে যান</button>
+                <button onclick="window.print()" class="btn btn-accent btn-sm"><i class="fa fa-print"></i> সার্টিফিকেট প্রিন্ট / PDF সেভ করুন</button>
+            </div>
+            <div style="border:8px solid #151442; padding:14px; background:#fff; border-radius:8px; box-shadow:var(--shadow-lg);">
+                <div style="border:3px double #f59e0b; padding:32px; font-family:Georgia, serif;">
+                    <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:2px solid #151442; padding-bottom:14px; margin-bottom:20px;">
+                        <img src="assets/img/logo.jpg" style="width:80px; height:80px; border-radius:50%; border:2px solid #151442;">
+                        <div style="text-align:center; flex:1;">
+                            <h1 style="margin:0; color:#151442; font-size:2rem; text-transform:uppercase;">DREAM CAREER IT</h1>
+                            <p style="margin:4px 0 0; font-family:sans-serif; font-size:0.88rem;">Near New Poduar Bazar Mosque, Vai Vai Super Market, Poduar Bazar, Cumilla | Phone: 01771770044</p>
+                        </div>
+                        <div style="font-family:sans-serif; font-size:0.82rem; text-align:right;">
+                            <strong>Cert No:</strong> ${esc(cert.cert_no)}<br>
+                            <strong>Reg No:</strong> ${esc(cert.reg_no)}<br>
+                            <strong>Date:</strong> ${esc(cert.issue_date)}
+                        </div>
                     </div>
-                    <div style="font-family:sans-serif; font-size:0.82rem; text-align:right;">
-                        <strong>Cert No:</strong> ${esc(cert.cert_no)}<br>
-                        <strong>Reg No:</strong> ${esc(cert.reg_no)}<br>
-                        <strong>Date:</strong> ${esc(cert.issue_date)}
+                    <div style="text-align:center; margin:16px 0 22px;">
+                        <span style="background:#151442; color:#fde68a; padding:7px 26px; border-radius:30px; font-size:1.2rem; font-weight:bold; text-transform:uppercase;">Certificate of Completion</span>
                     </div>
-                </div>
-                <div style="text-align:center; margin:16px 0 22px;">
-                    <span style="background:#151442; color:#fde68a; padding:7px 26px; border-radius:30px; font-size:1.2rem; font-weight:bold; text-transform:uppercase;">Certificate of Completion</span>
-                </div>
-                <p style="font-size:1.12rem; line-height:1.95; text-align:justify;">
-                    This is to certify that <strong style="color:#0f766e; font-size:1.25rem; border-bottom:1px dashed #0f766e;">${esc(cert.student_name)}</strong>,
-                    son/daughter of <strong>${esc(cert.father_name || 'N/A')}</strong> and <strong>${esc(cert.mother_name || 'N/A')}</strong>,
-                    bearing Registration No. <strong>${esc(cert.reg_no)}</strong>, has successfully completed the
-                    <strong>${esc(cert.duration)}</strong> course on <strong style="color:#0f766e;">${esc(cert.course_name)}</strong>
-                    held during <strong>${esc(cert.session_quarter)}, ${esc(cert.batch_year)}</strong> at <strong>Dream Career IT</strong> and secured Grade <strong>${esc(cert.grade)}</strong>.
-                </p>
-                <div style="display:flex; justify-content:space-between; align-items:flex-end; margin-top:42px; font-family:sans-serif; font-size:0.85rem;">
-                    <div style="border-top:2px solid #151442; width:200px; text-align:center; padding-top:6px;"><strong>Jainal Abedin (Sagor)</strong><br>Course Instructor</div>
-                    <div style="border:1px solid #cbd5e1; padding:6px 12px; border-radius:6px; text-align:center;">
-                        <div style="background:repeating-linear-gradient(90deg,#000,#000 2px,#fff 2px,#fff 5px); height:26px; width:140px; margin:0 auto 4px;"></div>
-                        <strong>VERIFIED: ${esc(cert.verification_code)}</strong>
+                    <p style="font-size:1.12rem; line-height:1.95; text-align:justify;">
+                        This is to certify that <strong style="color:#0f766e; font-size:1.25rem; border-bottom:1px dashed #0f766e;">${esc(cert.student_name)}</strong>,
+                        son/daughter of <strong>${esc(cert.father_name || 'N/A')}</strong> and <strong>${esc(cert.mother_name || 'N/A')}</strong>,
+                        bearing Registration No. <strong>${esc(cert.reg_no)}</strong>, has successfully completed the
+                        <strong>${esc(cert.duration)}</strong> course on <strong style="color:#0f766e;">${esc(cert.course_name)}</strong>
+                        held during <strong>${esc(cert.session_quarter)}, ${esc(cert.batch_year)}</strong> at <strong>Dream Career IT</strong> and secured Grade <strong>${esc(cert.grade)}</strong>.
+                    </p>
+                    <div style="display:flex; justify-content:space-between; align-items:flex-end; margin-top:42px; font-family:sans-serif; font-size:0.85rem;">
+                        <div style="border-top:2px solid #151442; width:200px; text-align:center; padding-top:6px;"><strong>Jainal Abedin (Sagor)</strong><br>Course Instructor</div>
+                        <div style="border:1px solid #cbd5e1; padding:6px 12px; border-radius:6px; text-align:center;">
+                            <div style="background:repeating-linear-gradient(90deg,#000,#000 2px,#fff 2px,#fff 5px); height:26px; width:140px; margin:0 auto 4px;"></div>
+                            <strong>VERIFIED: ${esc(cert.verification_code)}</strong>
+                        </div>
+                        <div style="border-top:2px solid #151442; width:200px; text-align:center; padding-top:6px;"><strong>DR. A.K.M Lokman</strong><br>Chief Administrator</div>
                     </div>
-                    <div style="border-top:2px solid #151442; width:200px; text-align:center; padding-top:6px;"><strong>DR. A.K.M Lokman</strong><br>Chief Administrator</div>
                 </div>
             </div>
         </div>
-    `;
-    modal.style.display = 'block';
+    </section>`;
+    window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
 function renderTeachers(main) {

@@ -10,17 +10,11 @@ let currentTab = 'dashboard';
 let flashMsg = '';
 
 function isLogged() {
-    return sessionStorage.getItem(DCITStore.AUTH_KEY) === '1' || localStorage.getItem(DCITStore.AUTH_KEY) === '1';
+    return DCITStore.isLogged();
 }
 
 function setLogged(val) {
-    if (val) {
-        sessionStorage.setItem(DCITStore.AUTH_KEY, '1');
-        localStorage.setItem(DCITStore.AUTH_KEY, '1');
-    } else {
-        sessionStorage.removeItem(DCITStore.AUTH_KEY);
-        localStorage.removeItem(DCITStore.AUTH_KEY);
-    }
+    DCITStore.setLogged(val);
 }
 
 function switchTab(tab, msg = '') {
@@ -314,7 +308,10 @@ function renderTabPayments(body, db) {
                     <td>৳${Number(p.total_fee)}</td>
                     <td style="color:#15803d; font-weight:700;">৳${Number(p.paid_amount)}</td>
                     <td style="color:#dc2626; font-weight:700;">৳${Number(p.due_amount)}</td>
-                    <td><button onclick="deleteRecord('payments', ${idx})" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i></button></td>
+                    <td>
+                        <button onclick="printCashMemo(${idx})" class="btn btn-primary btn-xs"><i class="fa fa-print"></i> মেমো</button>
+                        <button onclick="deleteRecord('payments', ${idx})" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i></button>
+                    </td>
                 </tr>`).join('')}
             </tbody>
         </table></div>
@@ -624,3 +621,51 @@ function deleteRecord(table, idx) {
 document.addEventListener('DOMContentLoaded', function() {
     renderAdminApp();
 });
+
+
+function printCashMemo(idx) {
+    const db = DCITStore.getDB();
+    const inv = (db.payments || [])[idx];
+    if (!inv) return;
+    const body = document.getElementById('dcpTabBody');
+    body.innerHTML = `
+    <div style="max-width:750px; margin:0 auto;">
+        <div style="display:flex; justify-content:space-between; margin-bottom:15px;">
+            <button onclick="switchTab('payments')" class="btn btn-outline btn-xs">&larr; পেমেন্ট তালিকায় ফিরে যান</button>
+            <button onclick="window.print()" class="btn btn-primary btn-xs"><i class="fa fa-print"></i> মানি রিসিপ্ট প্রিন্ট করুন</button>
+        </div>
+        <div style="background:#fff; border:2px solid #0f766e; border-radius:12px; padding:28px;">
+            <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:2px dashed #0f766e; padding-bottom:16px; margin-bottom:18px;">
+                <img src="../assets/img/logo.jpg" style="width:68px; height:68px; border-radius:50%; border:2px solid #0f766e;">
+                <div style="text-align:center; flex:1;">
+                    <h2 style="margin:0; color:#151442;">Dream Career IT</h2>
+                    <p style="font-size:0.86rem; color:#475569;">ভাই ভাই সুপার মার্কেট, পদুয়ার বাজার, বিশ্বরোড, কুমিল্লা | ফোনঃ 01771770044</p>
+                </div>
+                <span class="badge badge-info" style="font-size:0.9rem; padding:6px 12px;">CASH MEMO</span>
+            </div>
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:18px; font-size:0.92rem;">
+                <div><strong>রিসিপ্ট নং:</strong> ${esc(inv.receipt_no)}</div>
+                <div style="text-align:right;"><strong>তারিখ:</strong> ${esc(inv.payment_date)}</div>
+                <div><strong>শিক্ষার্থীর নাম:</strong> ${esc(inv.student_name)}</div>
+                <div style="text-align:right;"><strong>রেজিঃ নং:</strong> ${esc(inv.reg_no)}</div>
+                <div><strong>মাধ্যম:</strong> ${esc(inv.payment_method)}</div>
+                <div style="text-align:right;"><strong>স্ট্যাটাস:</strong> ${esc(inv.status)}</div>
+            </div>
+            <table class="dcp-table" style="min-width:100%; border:1px solid #cbd5e1; margin-bottom:36px;">
+                <thead><tr><th>কোর্স / বিবরণ</th><th>মোট কোর্স ফি</th><th>জমা (Paid)</th><th>বকেয়া (Due)</th></tr></thead>
+                <tbody>
+                    <tr>
+                        <td><strong>${esc(inv.course_name)}</strong></td>
+                        <td>৳ ${Number(inv.total_fee).toFixed(2)}</td>
+                        <td style="color:#15803d; font-weight:700;">৳ ${Number(inv.paid_amount).toFixed(2)}</td>
+                        <td style="color:#dc2626; font-weight:700;">৳ ${Number(inv.due_amount).toFixed(2)}</td>
+                    </tr>
+                </tbody>
+            </table>
+            <div style="display:flex; justify-content:space-between; margin-top:40px; font-size:0.85rem;">
+                <div style="border-top:1px solid #334155; width:180px; text-align:center; padding-top:6px;">শিক্ষার্থীর স্বাক্ষর</div>
+                <div style="border-top:1px solid #334155; width:180px; text-align:center; padding-top:6px;">কর্তৃপক্ষের স্বাক্ষর</div>
+            </div>
+        </div>
+    </div>`;
+}
