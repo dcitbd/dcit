@@ -98,6 +98,17 @@ const DCITStore = {
         return this.init();
     },
 
+    updateDB(mutatorFn) {
+        const db = this.getDB();
+        if (typeof mutatorFn === 'function') mutatorFn(db);
+        this.saveDB(db);
+        return db;
+    },
+
+    generateSecretCode10(batchYear = '2026', name = 'STD', rollOrReg = '001') {
+        return this.generateSecretCode(name, 'CRS', batchYear, rollOrReg);
+    },
+
     saveDB(db) {
         this._memDB = db;
         this._saveToIndexedDB(db);

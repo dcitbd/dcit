@@ -1491,3 +1491,127 @@ a {
     .mobile-app-bottom-nav { display: flex; }
     body { padding-bottom: 65px; }
 }
+
+
+/* ==========================================================================
+   SCOPED BOOTSTRAP 5 UTILITIES FOR ABOUT, MISSION, TERMS & LICENSE PAGES
+   (Strictly scoped so zero existing styles are affected)
+   ========================================================================== */
+:is(.about-wrapper, .legitimacy-wrapper, .objectives-wrapper, .terms-wrapper) .row {
+    display: flex; flex-wrap: wrap; margin-left: -12px; margin-right: -12px;
+}
+:is(.about-wrapper, .legitimacy-wrapper, .objectives-wrapper, .terms-wrapper) .row > * {
+    padding-left: 12px; padding-right: 12px; width: 100%; max-width: 100%; box-sizing: border-box;
+}
+:is(.about-wrapper, .legitimacy-wrapper, .objectives-wrapper, .terms-wrapper) .g-2 { row-gap: 0.5rem; }
+:is(.about-wrapper, .legitimacy-wrapper, .objectives-wrapper, .terms-wrapper) .g-3 { row-gap: 1rem; }
+:is(.about-wrapper, .legitimacy-wrapper, .objectives-wrapper, .terms-wrapper) .g-4 { row-gap: 1.5rem; }
+@media (min-width: 576px) {
+    :is(.about-wrapper, .legitimacy-wrapper, .objectives-wrapper, .terms-wrapper) .col-sm-6 { width: 50%; flex: 0 0 auto; }
+}
+@media (min-width: 768px) {
+    :is(.about-wrapper, .legitimacy-wrapper, .objectives-wrapper, .terms-wrapper) .col-md-3 { width: 25%; flex: 0 0 auto; }
+    :is(.about-wrapper, .legitimacy-wrapper, .objectives-wrapper, .terms-wrapper) .col-md-4 { width: 33.333333%; flex: 0 0 auto; }
+    :is(.about-wrapper, .legitimacy-wrapper, .objectives-wrapper, .terms-wrapper) .col-md-6 { width: 50%; flex: 0 0 auto; }
+    :is(.about-wrapper, .legitimacy-wrapper, .objectives-wrapper, .terms-wrapper) .col-md-9 { width: 75%; flex: 0 0 auto; }
+    :is(.about-wrapper, .legitimacy-wrapper, .objectives-wrapper, .terms-wrapper) .text-md-end { text-align: right !important; }
+}
+@media (min-width: 992px) {
+    :is(.about-wrapper, .legitimacy-wrapper, .objectives-wrapper, .terms-wrapper) .col-lg-1 { width: 8.333333%; flex: 0 0 auto; }
+    :is(.about-wrapper, .legitimacy-wrapper, .objectives-wrapper, .terms-wrapper) .col-lg-3 { width: 25%; flex: 0 0 auto; }
+    :is(.about-wrapper, .legitimacy-wrapper, .objectives-wrapper, .terms-wrapper) .col-lg-4 { width: 33.333333%; flex: 0 0 auto; }
+    :is(.about-wrapper, .legitimacy-wrapper, .objectives-wrapper, .terms-wrapper) .col-lg-5 { width: 41.666667%; flex: 0 0 auto; }
+    :is(.about-wrapper, .legitimacy-wrapper, .objectives-wrapper, .terms-wrapper) .col-lg-6 { width: 50%; flex: 0 0 auto; }
+    :is(.about-wrapper, .legitimacy-wrapper, .objectives-wrapper, .terms-wrapper) .col-lg-7 { width: 58.333333%; flex: 0 0 auto; }
+    :is(.about-wrapper, .legitimacy-wrapper, .objectives-wrapper, .terms-wrapper) .col-lg-8 { width: 66.666667%; flex: 0 0 auto; }
+    :is(.about-wrapper, .legitimacy-wrapper, .objectives-wrapper, .terms-wrapper) .col-lg-11 { width: 91.666667%; flex: 0 0 auto; }
+    :is(.about-wrapper, .legitimacy-wrapper, .objectives-wrapper, .terms-wrapper) .col-lg-12 { width: 100%; flex: 0 0 auto; }
+    :is(.about-wrapper, .legitimacy-wrapper, .objectives-wrapper, .terms-wrapper) .text-lg-end { text-align: right !important; }
+    :is(.about-wrapper, .legitimacy-wrapper, .objectives-wrapper, .terms-wrapper) .text-lg-start { text-align: left !important; }
+    :is(.about-wrapper, .legitimacy-wrapper, .objectives-wrapper, .terms-wrapper) .mt-lg-0 { margin-top: 0 !important; }
+    :is(.about-wrapper, .legitimacy-wrapper, .objectives-wrapper, .terms-wrapper) .mx-lg-0 { margin-left: 0 !important; margin-right: 0 !important; }
+}
+@media (min-width: 1200px) {
+    :is(.about-wrapper, .legitimacy-wrapper, .objectives-wrapper, .terms-wrapper) .col-xl-3 { width: 25%; flex: 0 0 auto; }
+    :is(.about-wrapper, .legitimacy-wrapper, .objectives-wrapper, .terms-wrapper) .col-xl-9 { width: 75%; flex: 0 0 auto; }
+}
+:is(.about-wrapper, .legitimacy-wrapper, .objectives-wrapper, .terms-wrapper) .d-flex { display: flex !important; }
+:is(.about-wrapper, .legitimacy-wrapper, .objectives-wrapper, .terms-wrapper) .d-inline-flex { display: inline-flex !important; }
+:is(.about-wrapper, .legitimacy-wrapper, .objectives-wrapper, .terms-wrapper) .d-inline-block { display: inline-block !important; }
+:is(.about-wrapper, .legitimacy-wrapper, .objectives-wrapper, .terms-wrapper) .d-grid { display: grid !important; }
+:is(.about-wrapper, .legitimacy-wrapper, .objectives-wrapper, .terms-wrapper) .flex-wrap { flex-wrap: wrap !important; }
+:is(.about-wrapper, .legitimacy-wrapper, .objectives-wrapper, .terms-wrapper) .flex-column { flex-direction: column !important; }
+:is(.about-wrapper, .legitimacy-wrapper, .objectives-wrapper, .terms-wrapper) .flex-grow-1 { flex-grow: 1 !important; }
+:is(.about-wrapper, .legitimacy-wrapper, .objectives-wrapper, .terms-wrapper) .flex-shrink-0 { flex-shrink: 0 !important; }
+:is(.about-wrapper, .legitimacy-wrapper, .objectives-wrapper, .terms-wrapper) .align-items-center { align-items: center !important; }
+:is(.about-wrapper, .legitimacy-wrapper, .objectives-wrapper, .terms-wrapper) .align-items-start { align-items: flex-start !important; }
+:is(.about-wrapper, .legitimacy-wrapper, .objectives-wrapper, .terms-wrapper) .justify-content-center { justify-content: center !important; }
+:is(.about-wrapper, .legitimacy-wrapper, .objectives-wrapper, .terms-wrapper) .justify-content-between { justify-content: space-between !important; }
+:is(.about-wrapper, .legitimacy-wrapper, .objectives-wrapper, .terms-wrapper) .gap-2 { gap: 0.5rem !important; }
+:is(.about-wrapper, .legitimacy-wrapper, .objectives-wrapper, .terms-wrapper) .gap-3 { gap: 1rem !important; }
+:is(.about-wrapper, .legitimacy-wrapper, .objectives-wrapper, .terms-wrapper) .w-100 { width: 100% !important; }
+:is(.about-wrapper, .legitimacy-wrapper, .objectives-wrapper, .terms-wrapper) .h-100 { height: 100% !important; }
+:is(.about-wrapper, .legitimacy-wrapper, .objectives-wrapper, .terms-wrapper) .text-center { text-align: center !important; }
+:is(.about-wrapper, .legitimacy-wrapper, .objectives-wrapper, .terms-wrapper) .text-end { text-align: right !important; }
+:is(.about-wrapper, .legitimacy-wrapper, .objectives-wrapper, .terms-wrapper) .text-white { color: #ffffff !important; }
+:is(.about-wrapper, .legitimacy-wrapper, .objectives-wrapper, .terms-wrapper) .text-light { color: #f8fafc !important; }
+:is(.about-wrapper, .legitimacy-wrapper, .objectives-wrapper, .terms-wrapper) .text-dark { color: #0f172a !important; }
+:is(.about-wrapper, .legitimacy-wrapper, .objectives-wrapper, .terms-wrapper) .text-muted { color: #64748b !important; }
+:is(.about-wrapper, .legitimacy-wrapper, .objectives-wrapper, .terms-wrapper) .text-primary { color: #2563eb !important; }
+:is(.about-wrapper, .legitimacy-wrapper, .objectives-wrapper, .terms-wrapper) .text-success { color: #059669 !important; }
+:is(.about-wrapper, .legitimacy-wrapper, .objectives-wrapper, .terms-wrapper) .text-warning { color: #d97706 !important; }
+:is(.about-wrapper, .legitimacy-wrapper, .objectives-wrapper, .terms-wrapper) .text-danger { color: #dc2626 !important; }
+:is(.about-wrapper, .legitimacy-wrapper, .objectives-wrapper, .terms-wrapper) .text-info { color: #0ea5e9 !important; }
+:is(.about-wrapper, .legitimacy-wrapper, .objectives-wrapper, .terms-wrapper) .bg-light { background-color: #f8fafc !important; }
+:is(.about-wrapper, .legitimacy-wrapper, .objectives-wrapper, .terms-wrapper) .bg-dark { background-color: #0f172a !important; }
+:is(.about-wrapper, .legitimacy-wrapper, .objectives-wrapper, .terms-wrapper) .bg-primary { background-color: #2563eb !important; }
+:is(.about-wrapper, .legitimacy-wrapper, .objectives-wrapper, .terms-wrapper) .bg-primary-subtle { background-color: #dbeafe !important; }
+:is(.about-wrapper, .legitimacy-wrapper, .objectives-wrapper, .terms-wrapper) .bg-success-subtle { background-color: #d1fae5 !important; }
+:is(.about-wrapper, .legitimacy-wrapper, .objectives-wrapper, .terms-wrapper) .fw-bold { font-weight: 700 !important; }
+:is(.about-wrapper, .legitimacy-wrapper, .objectives-wrapper, .terms-wrapper) .fw-semibold { font-weight: 600 !important; }
+:is(.about-wrapper, .legitimacy-wrapper, .objectives-wrapper, .terms-wrapper) .fw-medium { font-weight: 500 !important; }
+:is(.about-wrapper, .legitimacy-wrapper, .objectives-wrapper, .terms-wrapper) .fst-italic { font-style: italic !important; }
+:is(.about-wrapper, .legitimacy-wrapper, .objectives-wrapper, .terms-wrapper) .small { font-size: 0.875rem !important; }
+:is(.about-wrapper, .legitimacy-wrapper, .objectives-wrapper, .terms-wrapper) .fs-1 { font-size: 2.25rem !important; }
+:is(.about-wrapper, .legitimacy-wrapper, .objectives-wrapper, .terms-wrapper) .fs-3 { font-size: 1.5rem !important; }
+:is(.about-wrapper, .legitimacy-wrapper, .objectives-wrapper, .terms-wrapper) .fs-4 { font-size: 1.25rem !important; }
+:is(.about-wrapper, .legitimacy-wrapper, .objectives-wrapper, .terms-wrapper) .fs-5 { font-size: 1.1rem !important; }
+:is(.about-wrapper, .legitimacy-wrapper, .objectives-wrapper, .terms-wrapper) .fs-6 { font-size: 0.95rem !important; }
+:is(.about-wrapper, .legitimacy-wrapper, .objectives-wrapper, .terms-wrapper) .mb-0 { margin-bottom: 0 !important; }
+:is(.about-wrapper, .legitimacy-wrapper, .objectives-wrapper, .terms-wrapper) .mb-1 { margin-bottom: 0.25rem !important; }
+:is(.about-wrapper, .legitimacy-wrapper, .objectives-wrapper, .terms-wrapper) .mb-2 { margin-bottom: 0.5rem !important; }
+:is(.about-wrapper, .legitimacy-wrapper, .objectives-wrapper, .terms-wrapper) .mb-3 { margin-bottom: 1rem !important; }
+:is(.about-wrapper, .legitimacy-wrapper, .objectives-wrapper, .terms-wrapper) .mb-4 { margin-bottom: 1.5rem !important; }
+:is(.about-wrapper, .legitimacy-wrapper, .objectives-wrapper, .terms-wrapper) .mb-5 { margin-bottom: 2.5rem !important; }
+:is(.about-wrapper, .legitimacy-wrapper, .objectives-wrapper, .terms-wrapper) .mt-1 { margin-top: 0.25rem !important; }
+:is(.about-wrapper, .legitimacy-wrapper, .objectives-wrapper, .terms-wrapper) .mt-3 { margin-top: 1rem !important; }
+:is(.about-wrapper, .legitimacy-wrapper, .objectives-wrapper, .terms-wrapper) .mt-4 { margin-top: 1.5rem !important; }
+:is(.about-wrapper, .legitimacy-wrapper, .objectives-wrapper, .terms-wrapper) .me-1 { margin-right: 0.25rem !important; }
+:is(.about-wrapper, .legitimacy-wrapper, .objectives-wrapper, .terms-wrapper) .me-2 { margin-right: 0.5rem !important; }
+:is(.about-wrapper, .legitimacy-wrapper, .objectives-wrapper, .terms-wrapper) .ms-1 { margin-left: 0.25rem !important; }
+:is(.about-wrapper, .legitimacy-wrapper, .objectives-wrapper, .terms-wrapper) .ms-auto { margin-left: auto !important; }
+:is(.about-wrapper, .legitimacy-wrapper, .objectives-wrapper, .terms-wrapper) .mx-auto { margin-left: auto !important; margin-right: auto !important; }
+:is(.about-wrapper, .legitimacy-wrapper, .objectives-wrapper, .terms-wrapper) .p-3 { padding: 1rem !important; }
+:is(.about-wrapper, .legitimacy-wrapper, .objectives-wrapper, .terms-wrapper) .p-4 { padding: 1.5rem !important; }
+:is(.about-wrapper, .legitimacy-wrapper, .objectives-wrapper, .terms-wrapper) .px-3 { padding-left: 1rem !important; padding-right: 1rem !important; }
+:is(.about-wrapper, .legitimacy-wrapper, .objectives-wrapper, .terms-wrapper) .px-4 { padding-left: 1.5rem !important; padding-right: 1.5rem !important; }
+:is(.about-wrapper, .legitimacy-wrapper, .objectives-wrapper, .terms-wrapper) .py-1 { padding-top: 0.25rem !important; padding-bottom: 0.25rem !important; }
+:is(.about-wrapper, .legitimacy-wrapper, .objectives-wrapper, .terms-wrapper) .py-2 { padding-top: 0.5rem !important; padding-bottom: 0.5rem !important; }
+:is(.about-wrapper, .legitimacy-wrapper, .objectives-wrapper, .terms-wrapper) .py-3 { padding-top: 1rem !important; padding-bottom: 1rem !important; }
+:is(.about-wrapper, .legitimacy-wrapper, .objectives-wrapper, .terms-wrapper) .py-4 { padding-top: 1.5rem !important; padding-bottom: 1.5rem !important; }
+:is(.about-wrapper, .legitimacy-wrapper, .objectives-wrapper, .terms-wrapper) .pt-3 { padding-top: 1rem !important; }
+:is(.about-wrapper, .legitimacy-wrapper, .objectives-wrapper, .terms-wrapper) .pb-2 { padding-bottom: 0.5rem !important; }
+:is(.about-wrapper, .legitimacy-wrapper, .objectives-wrapper, .terms-wrapper) .pb-3 { padding-bottom: 1rem !important; }
+:is(.about-wrapper, .legitimacy-wrapper, .objectives-wrapper, .terms-wrapper) .ps-3 { padding-left: 1rem !important; }
+:is(.about-wrapper, .legitimacy-wrapper, .objectives-wrapper, .terms-wrapper) .pe-3 { padding-right: 1rem !important; }
+:is(.about-wrapper, .legitimacy-wrapper, .objectives-wrapper, .terms-wrapper) .rounded-3 { border-radius: 0.5rem !important; }
+:is(.about-wrapper, .legitimacy-wrapper, .objectives-wrapper, .terms-wrapper) .rounded-4 { border-radius: 1rem !important; }
+:is(.about-wrapper, .legitimacy-wrapper, .objectives-wrapper, .terms-wrapper) .rounded-pill { border-radius: 50rem !important; }
+:is(.about-wrapper, .legitimacy-wrapper, .objectives-wrapper, .terms-wrapper) .border { border: 1px solid #e2e8f0 !important; }
+:is(.about-wrapper, .legitimacy-wrapper, .objectives-wrapper, .terms-wrapper) .border-top { border-top: 1px solid #e2e8f0 !important; }
+:is(.about-wrapper, .legitimacy-wrapper, .objectives-wrapper, .terms-wrapper) .border-bottom { border-bottom: 1px solid #e2e8f0 !important; }
+:is(.about-wrapper, .legitimacy-wrapper, .objectives-wrapper, .terms-wrapper) .shadow-sm { box-shadow: 0 2px 8px rgba(15, 23, 42, 0.06) !important; }
+:is(.about-wrapper, .legitimacy-wrapper, .objectives-wrapper, .terms-wrapper) .text-decoration-none { text-decoration: none !important; }
+:is(.about-wrapper, .legitimacy-wrapper, .objectives-wrapper, .terms-wrapper) .table { width: 100%; border-collapse: collapse; }
+:is(.about-wrapper, .legitimacy-wrapper, .objectives-wrapper, .terms-wrapper) .table th,
+:is(.about-wrapper, .legitimacy-wrapper, .objectives-wrapper, .terms-wrapper) .table td { padding: 12px 14px; border-bottom: 1px solid #e2e8f0; text-align: left; }
