@@ -17,7 +17,7 @@ $certs = $stmt->fetchAll();
 $page_title = 'সার্টিফিকেট ভেরিফিকেশন ও তালিকা (Certificates)';
 require_once __DIR__ . '/includes/header.php';
 ?>
-<div class="page-banner">
+<div class="page-hero-strip">
     <div class="container">
         <h1>All Student Certificates & Online Verification</h1>
         <p>রেজিস্ট্রেশন নম্বর, সার্টিফিকেট নম্বর অথবা নাম দিয়ে অনলাইনে সার্টিফিকেট যাচাই ও প্রিন্ট করুন</p>
@@ -29,7 +29,7 @@ require_once __DIR__ . '/includes/header.php';
         <form method="get" action="certificates.php" class="filter-bar">
             <div class="form-group" style="flex:1;">
                 <label><i class="fa fa-certificate"></i> রেজিস্ট্রেশন নং / সার্টিফিকেট নং / ভেরিফিকেশন কোড দিয়ে খুঁজুন</label>
-                <input type="text" name="q" id="tableFilterInput" class="form-control" value="<?= h($q) ?>" placeholder="যেমন: 000001 অথবা AGITC-2020-000001">
+                <input type="text" name="q" id="tableFilterInput" class="form-control" value="<?= h($q) ?>" placeholder="যেমন: 000001 অথবা DCIT-2020-000001">
             </div>
             <button type="submit" class="btn btn-primary"><i class="fa fa-search"></i> যাচাই করুন (Verify)</button>
             <?php if ($q !== ''): ?>
@@ -60,7 +60,7 @@ require_once __DIR__ . '/includes/header.php';
                         <tr>
                             <td><?= str_pad((string)($i + 1), 2, '0', STR_PAD_LEFT) ?></td>
                             <td>
-                                <a href="certificate-view.php?cert_no=<?= urlencode($c['cert_no']) ?>" target="_blank" style="font-weight:700; color:#0f766e;">
+                                <a href="certificate-view.php?cert_no=<?= urlencode($c['cert_no']) ?>" target="_blank" rel="noopener noreferrer" style="font-weight:700; color:#0f766e;">
                                     <?= h($c['student_name']) ?>
                                 </a>
                             </td>
@@ -71,7 +71,7 @@ require_once __DIR__ . '/includes/header.php';
                             <td><span class="badge badge-success"><?= h($c['grade']) ?></span></td>
                             <td><span class="badge badge-info"><i class="fa fa-check-circle"></i> Verified</span></td>
                             <td>
-                                <a href="certificate-view.php?cert_no=<?= urlencode($c['cert_no']) ?>" target="_blank" class="btn btn-accent btn-sm">
+                                <a href="certificate-view.php?cert_no=<?= urlencode($c['cert_no']) ?>" target="_blank" rel="noopener noreferrer" class="btn btn-accent btn-sm">
                                     <i class="fa fa-print"></i> সার্টিফিকেট দেখুন / প্রিন্ট
                                 </a>
                             </td>

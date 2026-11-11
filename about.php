@@ -3,9 +3,9 @@ require_once __DIR__ . '/config/db.php';
 $page_title = 'আমাদের সম্পর্কে (About Us)';
 require_once __DIR__ . '/includes/header.php';
 ?>
-<div class="page-banner">
+<div class="page-hero-strip">
     <div class="container">
-        <h1>ABOUT US (আমাদের গ্রাম আইটি সেন্টার)</h1>
+        <h1>ABOUT US (ড্রিম ক্যারিয়ার আইটি (Dream Career IT))</h1>
         <p>প্রযুক্তি ও কারিগরি শিক্ষায় দক্ষ মানবসম্পদ গড়ার বিশ্বস্ত প্রতিষ্ঠান</p>
     </div>
 </div>
@@ -15,12 +15,12 @@ require_once __DIR__ . '/includes/header.php';
         <div class="grid-2" style="align-items:center; margin-bottom:48px;">
             <div>
                 <span class="badge badge-info" style="margin-bottom:8px;"><i class="fa fa-university"></i> Who We Are</span>
-                <h2 style="font-size:2rem; color:#0f172a; margin-bottom:14px;"><?= h(setting('site_name', 'AMADER GRAM')) ?> IT CENTER</h2>
+                <h2 style="font-size:2rem; color:#0f172a; margin-bottom:14px;"><?= h(setting('site_name', 'Dream Career IT')) ?> IT CENTER</h2>
                 <p style="font-size:1.02rem; color:#334155; margin-bottom:16px;"><?= nl2br(h(setting('about_intro'))) ?></p>
                 <p style="font-weight:600; color:#0f766e;"><i class="fa fa-map-marker"></i> <?= h(setting('address_bn')) ?></p>
             </div>
             <div style="text-align:center;">
-                <img src="assets/img/logo.png" alt="Amader Gram" style="width:240px; height:240px; margin:0 auto; border-radius:50%; border:6px solid #0f766e; box-shadow:var(--shadow-lg);">
+                <img src="assets/img/logo.jpg" alt="Dream Career IT" style="width:240px; height:240px; margin:0 auto; border-radius:50%; border:6px solid #0f766e; box-shadow:var(--shadow-lg);">
             </div>
         </div>
 

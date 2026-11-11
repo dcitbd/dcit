@@ -61,10 +61,10 @@ require_once __DIR__ . '/header.php';
 <div class="panel-card">
     <div class="panel-header">
         <h3><i class="fa fa-user-plus"></i> অনলাইন ভর্তি আবেদন তালিকা (<?= count($admissions) ?> টি)</h3>
-        <a href="../admission.php" target="_blank" class="btn btn-outline btn-xs"><i class="fa fa-external-link"></i> ভর্তি ফর্ম পেজ দেখুন</a>
+        <a href="../admission.php" target="_blank" rel="noopener noreferrer" class="btn btn-outline btn-xs"><i class="fa fa-external-link"></i> ভর্তি ফর্ম পেজ দেখুন</a>
     </div>
-    <div class="adm-table-wrap">
-        <table class="adm-table">
+    <div class="dcp-table-wrap">
+        <table class="dcp-table">
             <thead>
                 <tr>
                     <th>আবেদন নং ও তারিখ</th>

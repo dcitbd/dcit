@@ -5,10 +5,10 @@ $teachers = $pdo->query("SELECT * FROM teachers WHERE status='Active' ORDER BY s
 $page_title = 'শিক্ষক ও প্রশাসন (Teachers & Administration)';
 require_once __DIR__ . '/includes/header.php';
 ?>
-<div class="page-banner">
+<div class="page-hero-strip">
     <div class="container">
         <h1>আমাদের শিক্ষক ও প্রশাসন (Teachers & Administration)</h1>
-        <p>আমাদের গ্রাম আইটি সেন্টারের দক্ষ ও অভিজ্ঞ প্রশিক্ষক এবং পরিচালনা পর্ষদ</p>
+        <p>ড্রিম ক্যারিয়ার আইটি (Dream Career IT)ের দক্ষ ও অভিজ্ঞ প্রশিক্ষক এবং পরিচালনা পর্ষদ</p>
     </div>
 </div>
 
@@ -31,13 +31,13 @@ require_once __DIR__ . '/includes/header.php';
 
                     <div style="display:flex; gap:8px; flex-wrap:wrap;">
                         <?php if (!empty($t['facebook'])): ?>
-                            <a href="<?= h($t['facebook']) ?>" target="_blank" class="btn btn-primary btn-sm"><i class="fa fa-facebook"></i> Facebook</a>
+                            <a href="<?= h($t['facebook']) ?>" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-sm"><i class="fa fa-facebook"></i> Facebook</a>
                         <?php endif; ?>
                         <?php if (!empty($t['youtube'])): ?>
-                            <a href="<?= h($t['youtube']) ?>" target="_blank" class="btn btn-accent btn-sm"><i class="fa fa-youtube"></i> YouTube</a>
+                            <a href="<?= h($t['youtube']) ?>" target="_blank" rel="noopener noreferrer" class="btn btn-accent btn-sm"><i class="fa fa-youtube"></i> YouTube</a>
                         <?php endif; ?>
                         <?php if (!empty($t['github'])): ?>
-                            <a href="<?= h($t['github']) ?>" target="_blank" class="btn btn-outline btn-sm" style="color:#0f172a; border-color:#cbd5e1;"><i class="fa fa-github"></i> GitHub</a>
+                            <a href="<?= h($t['github']) ?>" target="_blank" rel="noopener noreferrer" class="btn btn-outline btn-sm" style="color:#0f172a; border-color:#cbd5e1;"><i class="fa fa-github"></i> GitHub</a>
                         <?php endif; ?>
                     </div>
                 </div>

@@ -16,7 +16,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 $page_title = 'ওয়েব ডিজাইনার ও ডেভেলপার (Designer Profile)';
 require_once __DIR__ . '/includes/header.php';
 ?>
-<div class="page-banner">
+<div class="page-hero-strip">
     <div class="container">
         <h1>Web Designer & Developer Profile</h1>
         <p>Jainal Abedin (Sagor) — Professional Web Designer & Developer</p>

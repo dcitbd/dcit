@@ -133,8 +133,8 @@ require_once __DIR__ . '/header.php';
     <div class="panel-header">
         <h3><i class="fa fa-calendar"></i> সকল ক্লাস টাইম স্লট ও রুটিন তালিকা</h3>
     </div>
-    <div class="adm-table-wrap">
-        <table class="adm-table">
+    <div class="dcp-table-wrap">
+        <table class="dcp-table">
             <thead>
                 <tr>
                     <th>সময় (Time Slot)</th>
@@ -160,7 +160,7 @@ require_once __DIR__ . '/header.php';
                     <td><span class="badge badge-info"><?= $enrolled_cnt ?> / <?= (int)$cl['max_seats'] ?> জন</span></td>
                     <td><small><?= h($cl['rules_text']) ?></small></td>
                     <td style="white-space:nowrap;">
-                        <a href="../batches.php?slot=<?= urlencode($cl['time_label']) ?>" target="_blank" class="btn btn-outline btn-xs"><i class="fa fa-eye"></i> ভিউ</a>
+                        <a href="../batches.php?slot=<?= urlencode($cl['time_label']) ?>" target="_blank" rel="noopener noreferrer" class="btn btn-outline btn-xs"><i class="fa fa-eye"></i> ভিউ</a>
                         <a href="classes.php?edit=<?= (int)$cl['id'] ?>" class="btn btn-primary btn-xs"><i class="fa fa-edit"></i></a>
                         <form method="post" style="display:inline;" onsubmit="return confirm('এই ক্লাস স্লট মুছে ফেলতে চান?');">
                             <input type="hidden" name="form_action" value="delete">

@@ -1,5 +1,5 @@
 </main>
 </div>
-<script src="../assets/js/admin.js"></script>
+<script src="../assets/js/panel.js"></script>
 </body>
 </html>

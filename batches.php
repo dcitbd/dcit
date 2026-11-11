@@ -35,7 +35,7 @@ $classes_list = $pdo->query("SELECT * FROM classes WHERE status='Active' ORDER B
 $page_title = 'ব্যাচ তালিকা ও ক্লাস রুটিন (Batches & Class Rules)';
 require_once __DIR__ . '/includes/header.php';
 ?>
-<div class="page-banner">
+<div class="page-hero-strip">
     <div class="container">
         <h1>সকল ব্যাচ (২০১০ - <?= date('Y') ?>) ও ক্লাস রুটিন</h1>
         <p>নতুন ব্যাচ, পুরাতন ব্যাচ এবং সকাল ৮টা থেকে রাত ৮:৩০ পর্যন্ত সকল ক্লাসের সময়সূচি ও শিক্ষার্থী তালিকা</p>

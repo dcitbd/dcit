@@ -9,9 +9,14 @@ $flash = get_flash();
 <!DOCTYPE html>
 <html lang="bn">
 <head>
+    <meta name="referrer" content="strict-origin-when-cross-origin">
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
+    <link rel="icon" type="image/png" sizes="64x64" href="assets/img/favicon.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="assets/img/apple-touch-icon.png">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?= h($page_title ?? setting('site_name', 'AMADER GRAM')) ?> | <?= h(setting('site_subtitle')) ?></title>
+    <title><?= h($page_title ?? setting('site_name', 'Dream Career IT')) ?> | <?= h(setting('site_subtitle')) ?></title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="assets/css/style.css">
 </head>
@@ -25,10 +30,10 @@ $flash = get_flash();
             <a href="mailto:<?= h(setting('email_1')) ?>"><i class="fa fa-envelope-o"></i> <?= h(setting('email_1')) ?></a>
         </div>
         <div class="topbar-social">
-            <a href="<?= h(setting('facebook_url')) ?>" target="_blank" title="Facebook"><i class="fa fa-facebook"></i></a>
-            <a href="<?= h(setting('designer_yt')) ?>" target="_blank" title="YouTube"><i class="fa fa-youtube"></i></a>
-            <a href="<?= h(setting('designer_gh')) ?>" target="_blank" title="GitHub"><i class="fa fa-github"></i></a>
-            <a href="<?= h(setting('designer_li')) ?>" target="_blank" title="LinkedIn"><i class="fa fa-linkedin"></i></a>
+            <a href="<?= h(setting('facebook_url')) ?>" target="_blank" rel="noopener noreferrer" title="Facebook"><i class="fa fa-facebook"></i></a>
+            <a href="<?= h(setting('designer_yt')) ?>" target="_blank" rel="noopener noreferrer" title="YouTube"><i class="fa fa-youtube"></i></a>
+            <a href="<?= h(setting('designer_gh')) ?>" target="_blank" rel="noopener noreferrer" title="GitHub"><i class="fa fa-github"></i></a>
+            <a href="<?= h(setting('designer_li')) ?>" target="_blank" rel="noopener noreferrer" title="LinkedIn"><i class="fa fa-linkedin"></i></a>
             <a href="auth.php" title="Student Sign In / Sign Up"><i class="fa fa-user"></i></a>
             <a href="admin/index.php" class="admin-btn" title="Admin Panel"><i class="fa fa-lock"></i> এডমিন প্যানেল</a>
         </div>
@@ -49,10 +54,10 @@ $flash = get_flash();
 <header class="site-header">
     <div class="container nav-wrapper">
         <a href="index.php" class="brand">
-            <img src="assets/img/logo.png" alt="Amader Gram Logo">
+            <img src="assets/img/logo.jpg" alt="Dream Career IT Logo">
             <div class="brand-text">
-                <h1><?= h(setting('site_name', 'AMADER GRAM')) ?></h1>
-                <p>আমাদের গ্রাম আইটি সেন্টার • কুমিল্লা</p>
+                <h1><?= h(setting('site_name', 'Dream Career IT')) ?></h1>
+                <p>ড্রিম ক্যারিয়ার আইটি (Dream Career IT) • কুমিল্লা</p>
             </div>
         </a>
 

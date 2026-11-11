@@ -176,8 +176,8 @@ require_once __DIR__ . '/header.php';
     <div class="panel-header">
         <h3><i class="fa fa-list-alt"></i> সকল পেমেন্ট ও মানি রিসিপ্ট তালিকা (<?= count($payments) ?> টি)</h3>
     </div>
-    <div class="adm-table-wrap">
-        <table class="adm-table">
+    <div class="dcp-table-wrap">
+        <table class="dcp-table">
             <thead>
                 <tr>
                     <th>রিসিপ্ট নং</th>
@@ -209,7 +209,7 @@ require_once __DIR__ . '/header.php';
                         </span>
                     </td>
                     <td style="white-space:nowrap;">
-                        <a href="invoice.php?id=<?= (int)$p['id'] ?>" target="_blank" class="btn btn-primary btn-xs"><i class="fa fa-print"></i> মেমো প্রিন্ট</a>
+                        <a href="invoice.php?id=<?= (int)$p['id'] ?>" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-xs"><i class="fa fa-print"></i> মেমো প্রিন্ট</a>
                         <a href="payments.php?edit=<?= (int)$p['id'] ?>" class="btn btn-outline btn-xs"><i class="fa fa-edit"></i></a>
                         <form method="post" style="display:inline;" onsubmit="return confirm('এই পেমেন্ট রেকর্ড মুছে ফেলতে চান?');">
                             <input type="hidden" name="form_action" value="delete">

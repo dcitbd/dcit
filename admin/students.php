@@ -228,8 +228,8 @@ require_once __DIR__ . '/header.php';
     <div class="panel-header">
         <h3><i class="fa fa-users"></i> সকল স্টুডেন্ট, বায়োডাটা ও রেজাল্ট তালিকা (<?= count($students) ?> জন)</h3>
     </div>
-    <div class="adm-table-wrap">
-        <table class="adm-table">
+    <div class="dcp-table-wrap">
+        <table class="dcp-table">
             <thead>
                 <tr>
                     <th>ছবি</th>
@@ -255,7 +255,7 @@ require_once __DIR__ . '/header.php';
                     <td><span class="badge badge-success"><?= h($s['result_grade']) ?> (<?= h($s['cgpa']) ?>)</span></td>
                     <td><span class="badge <?= $s['status'] === 'Active' ? 'badge-info' : 'badge-success' ?>"><?= h($s['status']) ?></span></td>
                     <td style="white-space:nowrap;">
-                        <a href="../biodata.php?reg_no=<?= urlencode($s['reg_no']) ?>" target="_blank" class="btn btn-outline btn-xs" title="বায়োডাটা দেখুন"><i class="fa fa-id-card-o"></i> বায়োডাটা</a>
+                        <a href="../biodata.php?reg_no=<?= urlencode($s['reg_no']) ?>" target="_blank" rel="noopener noreferrer" class="btn btn-outline btn-xs" title="বায়োডাটা দেখুন"><i class="fa fa-id-card-o"></i> বায়োডাটা</a>
                         <a href="students.php?edit=<?= (int)$s['id'] ?>" class="btn btn-primary btn-xs"><i class="fa fa-edit"></i></a>
                         <form method="post" style="display:inline;" onsubmit="return confirm('আপনি কি এই স্টুডেন্ট রেকর্ড মুছে ফেলতে চান?');">
                             <input type="hidden" name="form_action" value="delete">

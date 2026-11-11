@@ -15,7 +15,7 @@ if (!$course && count($all_courses) > 0 && $slug !== '') {
 $page_title = $course ? $course['title'] . ' - Course Details' : 'সকল কোর্স ও সিলেবাস';
 require_once __DIR__ . '/includes/header.php';
 ?>
-<div class="page-banner">
+<div class="page-hero-strip">
     <div class="container">
         <h1><?= h($course ? $course['title'] : 'আমাদের সকল কোর্স ও সিলেবাস') ?></h1>
         <p><?= h($course ? $course['title_bn'] : 'দক্ষ ট্রেইনারদের তত্ত্বাবধানে হাতে-কলমে কম্পিউটার ও কারিগরি প্রশিক্ষণ') ?></p>

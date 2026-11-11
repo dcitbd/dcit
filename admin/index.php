@@ -70,8 +70,8 @@ $recent_certs      = $pdo->query("SELECT * FROM certificates ORDER BY id DESC LI
         <h3><i class="fa fa-user-plus"></i> সাম্প্রতিক অনলাইন ভর্তি আবেদন (Recent Admissions)</h3>
         <a href="admissions.php" class="btn btn-primary btn-xs">সকল আবেদন দেখুন</a>
     </div>
-    <div class="adm-table-wrap">
-        <table class="adm-table">
+    <div class="dcp-table-wrap">
+        <table class="dcp-table">
             <thead>
                 <tr>
                     <th>আবেদন নং</th>
@@ -114,8 +114,8 @@ $recent_certs      = $pdo->query("SELECT * FROM certificates ORDER BY id DESC LI
             <h3><i class="fa fa-money"></i> সাম্প্রতিক পেমেন্ট ও ক্যাশ মেমো</h3>
             <a href="payments.php" class="btn btn-outline btn-xs">সকল পেমেন্ট</a>
         </div>
-        <div class="adm-table-wrap">
-            <table class="adm-table" style="min-width:100%;">
+        <div class="dcp-table-wrap">
+            <table class="dcp-table" style="min-width:100%;">
                 <thead>
                     <tr>
                         <th>রিসিপ্ট নং</th>
@@ -132,7 +132,7 @@ $recent_certs      = $pdo->query("SELECT * FROM certificates ORDER BY id DESC LI
                         <td><?= h($pm['student_name']) ?> <small>(<?= h($pm['reg_no']) ?>)</small></td>
                         <td style="color:#15803d; font-weight:700;">৳<?= number_format((float)$pm['paid_amount'], 0) ?></td>
                         <td style="color:<?= $pm['due_amount'] > 0 ? '#dc2626' : '#64748b' ?>;">৳<?= number_format((float)$pm['due_amount'], 0) ?></td>
-                        <td><a href="invoice.php?id=<?= (int)$pm['id'] ?>" target="_blank" class="btn btn-outline btn-xs"><i class="fa fa-print"></i> প্রিন্ট</a></td>
+                        <td><a href="invoice.php?id=<?= (int)$pm['id'] ?>" target="_blank" rel="noopener noreferrer" class="btn btn-outline btn-xs"><i class="fa fa-print"></i> প্রিন্ট</a></td>
                     </tr>
                     <?php endforeach; ?>
                 </tbody>
@@ -145,8 +145,8 @@ $recent_certs      = $pdo->query("SELECT * FROM certificates ORDER BY id DESC LI
             <h3><i class="fa fa-certificate"></i> সাম্প্রতিক ইস্যুকৃত সার্টিফিকেট</h3>
             <a href="certificates.php" class="btn btn-outline btn-xs">সকল সার্টিফিকেট</a>
         </div>
-        <div class="adm-table-wrap">
-            <table class="adm-table" style="min-width:100%;">
+        <div class="dcp-table-wrap">
+            <table class="dcp-table" style="min-width:100%;">
                 <thead>
                     <tr>
                         <th>সার্টিফিকেট নং</th>
@@ -163,7 +163,7 @@ $recent_certs      = $pdo->query("SELECT * FROM certificates ORDER BY id DESC LI
                         <td><?= h($ct['student_name']) ?> <small>(<?= h($ct['reg_no']) ?>)</small></td>
                         <td><?= h($ct['course_name']) ?></td>
                         <td><span class="badge badge-success"><?= h($ct['grade']) ?></span></td>
-                        <td><a href="../certificate-view.php?cert_no=<?= urlencode($ct['cert_no']) ?>" target="_blank" class="btn btn-primary btn-xs"><i class="fa fa-print"></i> ভিউ</a></td>
+                        <td><a href="../certificate-view.php?cert_no=<?= urlencode($ct['cert_no']) ?>" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-xs"><i class="fa fa-print"></i> ভিউ</a></td>
                     </tr>
                     <?php endforeach; ?>
                 </tbody>

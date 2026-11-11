@@ -22,7 +22,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 $page_title = 'স্টুডেন্ট সাইন ইন ও রেজিস্ট্রেশন (Sign In / Sign Up)';
 require_once __DIR__ . '/includes/header.php';
 ?>
-<div class="page-banner">
+<div class="page-hero-strip">
     <div class="container">
         <h1>Student Sign In & Portal</h1>
         <p>আপনার রেজিস্ট্রেশন নম্বর বা মোবাইল নম্বর দিয়ে প্রোফাইল ও ফলাফল দেখুন</p>

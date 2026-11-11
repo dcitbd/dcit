@@ -1,18 +1,18 @@
 /* ==========================================================================
-   AMADER GRAM IT CENTER - Ultra-Fast Responsive Stylesheet
+   Dream Career IT - Ultra-Fast Responsive Stylesheet
    Lightweight, Zero-Bloat, Mobile-First & Print-Ready
    ========================================================================== */
 :root {
     --primary: #0f766e;
     --primary-dark: #115e59;
     --primary-light: #ccfbf1;
-    --secondary: #1e293b;
+    --secondary: #151442;
     --accent: #ea580c;
     --accent-hover: #c2410c;
     --gold: #f59e0b;
     --bg-body: #f8fafc;
     --bg-card: #ffffff;
-    --text-main: #0f172a;
+    --text-main: #151442;
     --text-muted: #475569;
     --border: #e2e8f0;
     --success: #16a34a;
@@ -327,7 +327,7 @@ img {
 
 /* Hero Banner Slider */
 .hero-section {
-    background: linear-gradient(135deg, #0f172a 0%, #134e4a 100%);
+    background: linear-gradient(135deg, #151442 0%, #134e4a 100%);
     color: #fff;
     padding: 48px 0;
     position: relative;
@@ -425,7 +425,7 @@ img {
 
 .btn-outline:hover {
     background: #5eead4;
-    color: #0f172a;
+    color: #151442;
 }
 
 .btn-sm {
@@ -549,7 +549,7 @@ img {
     position: relative;
     height: 195px;
     overflow: hidden;
-    background: #0f172a;
+    background: #151442;
 }
 
 .course-thumb img {
@@ -668,7 +668,7 @@ img {
 }
 
 .why-choose-box {
-    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+    background: linear-gradient(135deg, #151442 0%, #1e293b 100%);
     color: #fff;
     border-radius: 16px;
     padding: 36px;
@@ -724,20 +724,20 @@ img {
 }
 
 /* Page Banner */
-.page-banner {
-    background: linear-gradient(135deg, #0f172a 0%, #0f766e 100%);
+.page-hero-strip {
+    background: linear-gradient(135deg, #151442 0%, #0f766e 100%);
     color: #fff;
     padding: 36px 0;
     text-align: center;
 }
 
-.page-banner h1 {
+.page-hero-strip h1 {
     font-size: 2rem;
     font-weight: 800;
     margin-bottom: 6px;
 }
 
-.page-banner p {
+.page-hero-strip p {
     color: #ccfbf1;
     font-size: 1rem;
 }
@@ -910,7 +910,7 @@ img {
 
 /* Footer */
 .site-footer {
-    background: #0f172a;
+    background: #151442;
     color: #cbd5e1;
     padding: 52px 0 0;
     margin-top: 50px;

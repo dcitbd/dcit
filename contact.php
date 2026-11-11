@@ -19,7 +19,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 $page_title = 'যোগাযোগ (Contact Us)';
 require_once __DIR__ . '/includes/header.php';
 ?>
-<div class="page-banner">
+<div class="page-hero-strip">
     <div class="container">
         <h1>যোগাযোগ করুন (Contact Us)</h1>
         <p><?= h(setting('address_bn')) ?></p>
@@ -84,7 +84,14 @@ require_once __DIR__ . '/includes/header.php';
                     <p><?= h(setting('email_1')) ?><br><?= h(setting('email_2')) ?></p>
                 </div>
 
-                <iframe src="https://www.google.com/maps/embed?pb=!1m16!1m12!1m3!1d98508.59426380768!2d91.16768542288791!3d23.42987405719204!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!2m1!1samader%20gram!5e0!3m2!1sen!2sbd!4v1592329322732!5m2!1sen!2sbd" width="100%" height="230" style="border:0; border-radius:10px;" allowfullscreen="" loading="lazy"></iframe>
+                <div style="background:linear-gradient(135deg,#151442,#0f766e); color:#fff; padding:24px; border-radius:12px; text-align:center;">
+                    <i class="fa fa-map-marker" style="font-size:2.2rem; color:#fbbf24; margin-bottom:8px;"></i>
+                    <h4 style="margin-bottom:6px; font-size:1.15rem;">Dream Career IT — Poduar Bazar, Cumilla</h4>
+                    <p style="font-size:0.9rem; color:#e2e8f0; margin-bottom:14px;">ভাই ভাই সুপার মার্কেট (নতুন পদুয়ার বাজার মসজিদের পাশে), পদুয়ার বাজার, বিশ্বরোড, কুমিল্লা - ৩৫০০।</p>
+                    <a href="https://www.google.com/maps/search/?api=1&query=Poduar+Bazar+Bishwo+Road+Cumilla" target="_blank" rel="noopener noreferrer" rel="noopener noreferrer" class="btn btn-accent btn-sm">
+                        <i class="fa fa-external-link"></i> Google Maps-এ লোকেশন দেখুন
+                    </a>
+                </div>
             </div>
         </div>
     </div>

@@ -11,6 +11,11 @@ if (!$inv) {
 <!DOCTYPE html>
 <html lang="bn">
 <head>
+    <meta name="referrer" content="strict-origin-when-cross-origin">
+    <link rel="icon" type="image/x-icon" href="../favicon.ico">
+    <link rel="shortcut icon" type="image/x-icon" href="../favicon.ico">
+    <link rel="icon" type="image/png" sizes="64x64" href="../assets/img/favicon.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="../assets/img/apple-touch-icon.png">
     <meta charset="UTF-8">
     <title>Money Receipt - <?= h($inv['receipt_no']) ?> | <?= h(setting('site_name')) ?></title>
     <style>
@@ -42,9 +47,9 @@ if (!$inv) {
 </div>
 <div class="memo-box">
     <div class="memo-header">
-        <img src="../assets/img/logo.png" alt="Logo">
+        <img src="../assets/img/logo.jpg" alt="Logo">
         <div class="memo-title">
-            <h1><?= h(setting('site_name', 'AMADER GRAM')) ?></h1>
+            <h1><?= h(setting('site_name', 'Dream Career IT')) ?></h1>
             <p><?= h(setting('address_bn')) ?></p>
             <p>মোবাইলঃ <?= h(setting('phone_1')) ?>, <?= h(setting('phone_2')) ?> | ইমেইলঃ <?= h(setting('email_1')) ?></p>
         </div>

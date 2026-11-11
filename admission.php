@@ -22,7 +22,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $doc_path = handle_image_upload('document_file', '');
 
     if ($full_name !== '' && $phone !== '') {
-        $app_no = 'ADM-' . date('Y') . '-' . mt_rand(1000, 9999);
+        $app_no = 'REG-' . date('Y') . '-' . mt_rand(1000, 9999);
         $stmt = $pdo->prepare("INSERT INTO admissions (application_no, full_name, father_name, email, phone, address, school_college, religion, education, course_name, preferred_slot, session_quarter, batch_year, dob, document_path, payment_method, trx_id, paid_amount, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'Pending')");
         $stmt->execute([$app_no, $full_name, $father_name, $email, $phone, $address, $school_college, $religion, $education, $course_name, $preferred_slot, $session_quarter, (int)date('Y'), $dob, $doc_path, $payment_method, $trx_id, $paid_amount]);
         $submitted_app_no = $app_no;
@@ -36,7 +36,7 @@ $slots_list   = $pdo->query("SELECT time_label, batch_name FROM classes WHERE st
 $page_title = 'অনলাইন ভর্তি ফর্ম (Online Admission)';
 require_once __DIR__ . '/includes/header.php';
 ?>
-<div class="page-banner">
+<div class="page-hero-strip">
     <div class="container">
         <h1>অনলাইন ভর্তি ফর্ম (Online Admission)</h1>
         <p>ঘরে বসেই আপনার পছন্দের কোর্সে ভর্তি আবেদন সম্পন্ন করুন</p>

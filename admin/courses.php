@@ -154,8 +154,8 @@ require_once __DIR__ . '/header.php';
     <div class="panel-header">
         <h3><i class="fa fa-th-list"></i> সকল কোর্স তালিকা (<?= count($courses) ?> টি)</h3>
     </div>
-    <div class="adm-table-wrap">
-        <table class="adm-table">
+    <div class="dcp-table-wrap">
+        <table class="dcp-table">
             <thead>
                 <tr>
                     <th>ছবি</th>
@@ -183,7 +183,7 @@ require_once __DIR__ . '/header.php';
                     </td>
                     <td><?= $t_count ?> টি টপিক</td>
                     <td style="white-space:nowrap;">
-                        <a href="../course.php?slug=<?= urlencode($c['slug']) ?>" target="_blank" class="btn btn-outline btn-xs"><i class="fa fa-eye"></i> পেজ ভিউ</a>
+                        <a href="../course.php?slug=<?= urlencode($c['slug']) ?>" target="_blank" rel="noopener noreferrer" class="btn btn-outline btn-xs"><i class="fa fa-eye"></i> পেজ ভিউ</a>
                         <a href="courses.php?edit=<?= (int)$c['id'] ?>" class="btn btn-primary btn-xs"><i class="fa fa-edit"></i></a>
                         <form method="post" style="display:inline;" onsubmit="return confirm('এই কোর্সটি মুছে ফেলতে চান?');">
                             <input type="hidden" name="form_action" value="delete">

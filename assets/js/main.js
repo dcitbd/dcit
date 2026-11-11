@@ -1,5 +1,5 @@
 /**
- * AMADER GRAM IT CENTER - Fast Interactive Frontend JS
+ * Dream Career IT - Fast Interactive Frontend JS
  */
 document.addEventListener('DOMContentLoaded', function () {
     // Mobile Menu Toggle

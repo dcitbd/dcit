@@ -11,7 +11,7 @@ $teachers = $pdo->query("SELECT * FROM teachers WHERE status='Active' ORDER BY s
     <div class="container hero-grid">
         <div class="hero-content">
             <span class="hero-badge"><i class="fa fa-star"></i> কুমিল্লার অন্যতম সেরা কারিগরি ও কম্পিউটার প্রশিক্ষণ কেন্দ্র</span>
-            <h2><?= h(setting('site_name', 'AMADER GRAM')) ?> <span>IT CENTER</span></h2>
+            <h2><?= h(setting('site_name', 'Dream Career IT')) ?> <span>IT CENTER</span></h2>
             <div class="hero-address">
                 <i class="fa fa-map-marker" style="color:#fde68a;"></i>
                 <?= h(setting('address_bn')) ?><br>
@@ -26,19 +26,19 @@ $teachers = $pdo->query("SELECT * FROM teachers WHERE status='Active' ORDER BY s
 
         <div class="hero-slider">
             <div class="hero-slide active">
-                <img src="assets/img/slide1.jpg" alt="Amader Gram Computer Lab">
+                <img src="assets/img/slide1.jpg" alt="Dream Career IT Computer Lab">
                 <div class="hero-slide-caption">আধুনিক মাল্টিমিডিয়া কম্পিউটার ল্যাব ও হাতে-কলমে প্রশিক্ষণ</div>
             </div>
             <div class="hero-slide">
-                <img src="assets/img/slide2.jpg" alt="Amader Gram Training">
+                <img src="assets/img/slide2.jpg" alt="Dream Career IT Training">
                 <div class="hero-slide-caption">দক্ষ ও অভিজ্ঞ প্রশিক্ষকের তত্ত্বাবধানে শতভাগ প্র্যাকটিক্যাল ক্লাস</div>
             </div>
             <div class="hero-slide">
-                <img src="assets/img/slide3.jpg" alt="Amader Gram Students">
+                <img src="assets/img/slide3.jpg" alt="Dream Career IT Students">
                 <div class="hero-slide-caption">কোর্স শেষে অনলাইন ভেরিফাইড সার্টিফিকেট ও ফ্রিল্যান্সিং গাইডলাইন</div>
             </div>
             <div class="hero-slide">
-                <img src="assets/img/slide4.jpg" alt="Amader Gram Success">
+                <img src="assets/img/slide4.jpg" alt="Dream Career IT Success">
                 <div class="hero-slide-caption">ডিজিটাল বাংলাদেশ গড়ার লক্ষ্যে দক্ষ জনশক্তি তৈরি</div>
             </div>
         </div>
@@ -137,7 +137,7 @@ $teachers = $pdo->query("SELECT * FROM teachers WHERE status='Active' ORDER BY s
 <section class="section">
     <div class="container">
         <div class="why-choose-box">
-            <h2 style="font-size:1.85rem; margin-bottom:8px; color:#5eead4;">Why did you choose us? (কেন আমাদের গ্রাম আইটি সেন্টার বেছে নিবেন?)</h2>
+            <h2 style="font-size:1.85rem; margin-bottom:8px; color:#5eead4;">Why did you choose us? (কেন ড্রিম ক্যারিয়ার আইটি (Dream Career IT) বেছে নিবেন?)</h2>
             <p style="color:#cbd5e1;">We are committed to serving our students to build their dreams. Taught in a very simple and practical way:</p>
             <ul class="why-list">
                 <li><i class="fa fa-check-circle"></i> Multimedia computer lab with separate computer/laptop for each student.</li>

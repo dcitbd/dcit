@@ -19,6 +19,11 @@ if (!$cert) {
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <meta name="referrer" content="strict-origin-when-cross-origin">
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
+    <link rel="icon" type="image/png" sizes="64x64" href="assets/img/favicon.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="assets/img/apple-touch-icon.png">
     <meta charset="UTF-8">
     <title>Certificate - <?= h($cert['student_name']) ?> (<?= h($cert['cert_no']) ?>)</title>
     <style>
@@ -72,9 +77,9 @@ if (!$cert) {
 <div class="cert-frame">
     <div class="cert-inner">
         <div class="cert-top">
-            <img src="assets/img/logo.png" alt="Logo">
+            <img src="assets/img/logo.jpg" alt="Logo">
             <div class="inst-title">
-                <h1><?= h(setting('site_name', 'AMADER GRAM')) ?> IT CENTER</h1>
+                <h1><?= h(setting('site_name', 'Dream Career IT')) ?> IT CENTER</h1>
                 <p><?= h(setting('address_en')) ?></p>
                 <p>Phone: <?= h(setting('phone_1')) ?> | Email: <?= h(setting('email_1')) ?></p>
             </div>
@@ -96,7 +101,7 @@ if (!$cert) {
             <strong><?= h($cert['duration']) ?></strong> professional training course on
             <b class="highlight"><?= h($cert['course_name']) ?></b> held during the session
             <strong><?= h($cert['session_quarter']) ?>, <?= (int)$cert['batch_year'] ?></strong>
-            at <strong><?= h(setting('site_name', 'AMADER GRAM')) ?> IT Center</strong> and secured Grade
+            at <strong><?= h(setting('site_name', 'Dream Career IT')) ?> IT Center</strong> and secured Grade
             <b class="highlight"><?= h($cert['grade']) ?></b>.
         </div>
 

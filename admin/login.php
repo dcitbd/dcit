@@ -25,11 +25,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <!DOCTYPE html>
 <html lang="bn">
 <head>
+    <meta name="referrer" content="strict-origin-when-cross-origin">
+    <link rel="icon" type="image/x-icon" href="../favicon.ico">
+    <link rel="shortcut icon" type="image/x-icon" href="../favicon.ico">
+    <link rel="icon" type="image/png" sizes="64x64" href="../assets/img/favicon.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="../assets/img/apple-touch-icon.png">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>এডমিন লগইন | <?= h(setting('site_name', 'AMADER GRAM')) ?></title>
+    <title>এডমিন লগইন | <?= h(setting('site_name', 'Dream Career IT')) ?></title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="../assets/css/admin.css">
+    <link rel="stylesheet" href="../assets/css/panel.css">
     <style>
         body { display:flex; align-items:center; justify-content:center; min-height:100vh; background:linear-gradient(135deg,#0f172a,#0f766e); padding:16px; }
         .login-box { background:#fff; width:100%; max-width:420px; border-radius:16px; padding:32px; box-shadow:0 20px 45px rgba(0,0,0,0.35); text-align:center; }
@@ -41,8 +46,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </head>
 <body>
 <div class="login-box">
-    <img src="../assets/img/logo.png" alt="Logo">
-    <h2><?= h(setting('site_name', 'AMADER GRAM')) ?></h2>
+    <img src="../assets/img/logo.jpg" alt="Logo">
+    <h2><?= h(setting('site_name', 'Dream Career IT')) ?></h2>
     <p class="sub">ডাইনামিক এডমিন প্যানেল লগইন</p>
     <?php if ($error): ?>
         <div class="alert alert-danger"><?= h($error) ?></div>

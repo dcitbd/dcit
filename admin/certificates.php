@@ -18,7 +18,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $duration = trim($_POST['duration'] ?? '3 Months');
         $grade = trim($_POST['grade'] ?? 'A+');
         $issue_date = trim($_POST['issue_date'] ?? date('Y-m-d'));
-        $verification_code = trim($_POST['verification_code'] ?? ('VER-AG-' . $reg_no));
+        $verification_code = trim($_POST['verification_code'] ?? ('VER-DCIT-' . $reg_no));
         $status = trim($_POST['status'] ?? 'Issued');
 
         if ($id > 0) {
@@ -52,8 +52,8 @@ $students_list = $pdo->query("SELECT * FROM students ORDER BY id DESC")->fetchAl
 $courses_list  = $pdo->query("SELECT title FROM courses ORDER BY sort_order ASC")->fetchAll();
 $certs         = $pdo->query("SELECT * FROM certificates ORDER BY id DESC")->fetchAll();
 $next_cert_id  = count($certs) + 1;
-$default_cert_no = 'AGITC-' . date('Y') . '-' . str_pad((string)$next_cert_id, 6, '0', STR_PAD_LEFT);
-$default_ver_code = 'VER-AG-' . str_pad((string)$next_cert_id, 6, '0', STR_PAD_LEFT);
+$default_cert_no = 'DCIT-' . date('Y') . '-' . str_pad((string)$next_cert_id, 6, '0', STR_PAD_LEFT);
+$default_ver_code = 'VER-DCIT-' . str_pad((string)$next_cert_id, 6, '0', STR_PAD_LEFT);
 
 $page_title = 'সার্টিফিকেট ম্যানেজমেন্ট (Certificates)';
 require_once __DIR__ . '/header.php';
@@ -168,8 +168,8 @@ require_once __DIR__ . '/header.php';
     <div class="panel-header">
         <h3><i class="fa fa-list"></i> সকল সার্টিফিকেট তালিকা (<?= count($certs) ?> টি)</h3>
     </div>
-    <div class="adm-table-wrap">
-        <table class="adm-table">
+    <div class="dcp-table-wrap">
+        <table class="dcp-table">
             <thead>
                 <tr>
                     <th>সার্টিফিকেট নং</th>
@@ -195,7 +195,7 @@ require_once __DIR__ . '/header.php';
                     <td><?= h($c['issue_date']) ?></td>
                     <td><span class="badge <?= $c['status'] === 'Issued' ? 'badge-success' : 'badge-warning' ?>"><?= h($c['status']) ?></span></td>
                     <td style="white-space:nowrap;">
-                        <a href="../certificate-view.php?cert_no=<?= urlencode($c['cert_no']) ?>" target="_blank" class="btn btn-primary btn-xs"><i class="fa fa-print"></i> প্রিন্ট/ভিউ</a>
+                        <a href="../certificate-view.php?cert_no=<?= urlencode($c['cert_no']) ?>" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-xs"><i class="fa fa-print"></i> প্রিন্ট/ভিউ</a>
                         <a href="certificates.php?edit=<?= (int)$c['id'] ?>" class="btn btn-outline btn-xs"><i class="fa fa-edit"></i></a>
                         <form method="post" style="display:inline;" onsubmit="return confirm('আপনি কি নিশ্চিতভাবে এই সার্টিফিকেট মুছে ফেলতে চান?');">
                             <input type="hidden" name="form_action" value="delete">

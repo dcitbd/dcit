@@ -3,14 +3,14 @@
     <div class="container">
         <div class="footer-grid">
             <div class="footer-col">
-                <h3><?= h(setting('site_name', 'AMADER GRAM')) ?></h3>
+                <h3><?= h(setting('site_name', 'Dream Career IT')) ?></h3>
                 <p style="margin-bottom:12px; font-size:0.92rem;">
                     <?= h(setting('address_bn')) ?><br>
                     <strong>ফোনঃ</strong> <?= h(setting('phone_1')) ?>, <?= h(setting('phone_2')) ?><br>
                     <strong>ইমেইলঃ</strong> <?= h(setting('email_1')) ?>
                 </p>
-                <a href="<?= h(setting('facebook_url')) ?>" target="_blank">
-                    <img src="assets/img/fb-page.jpg" alt="Facebook Page" style="border-radius:8px; max-width:220px; border:2px solid rgba(255,255,255,0.2);">
+                <a href="<?= h(setting('facebook_url')) ?>" target="_blank" rel="noopener noreferrer">
+                    <img src="assets/img/social-page.jpg" alt="Facebook Page" style="border-radius:8px; max-width:220px; border:2px solid rgba(255,255,255,0.2);">
                 </a>
             </div>
 
@@ -39,14 +39,14 @@
         </div>
 
         <div class="footer-bottom">
-            <p>© Copyright <?= date('Y') ?> <strong><?= h(setting('site_name')) ?></strong>, All Rights Reserved. | Powered by AMADER GRAM | Designed by <a href="designer.php" style="color:#5eead4; font-weight:700;"><?= h(setting('designer_name', 'Jainal Abedin (Sagor)')) ?></a>.</p>
+            <p>© Copyright <?= date('Y') ?> <strong><?= h(setting('site_name')) ?></strong>, All Rights Reserved. | Powered by Dream Career IT | Designed by <a href="designer.php" style="color:#5eead4; font-weight:700;"><?= h(setting('designer_name', 'Jainal Abedin (Sagor)')) ?></a>.</p>
             <div class="footer-socials">
-                <a href="<?= h(setting('designer_fb')) ?>" target="_blank" title="Facebook"><i class="fa fa-facebook"></i></a>
-                <a href="<?= h(setting('designer_yt')) ?>" target="_blank" title="YouTube"><i class="fa fa-youtube"></i></a>
-                <a href="<?= h(setting('designer_gh')) ?>" target="_blank" title="GitHub"><i class="fa fa-github"></i></a>
-                <a href="<?= h(setting('designer_tw')) ?>" target="_blank" title="Twitter"><i class="fa fa-twitter"></i></a>
-                <a href="<?= h(setting('designer_ig')) ?>" target="_blank" title="Instagram"><i class="fa fa-instagram"></i></a>
-                <a href="<?= h(setting('designer_li')) ?>" target="_blank" title="LinkedIn"><i class="fa fa-linkedin"></i></a>
+                <a href="<?= h(setting('designer_fb')) ?>" target="_blank" rel="noopener noreferrer" title="Facebook"><i class="fa fa-facebook"></i></a>
+                <a href="<?= h(setting('designer_yt')) ?>" target="_blank" rel="noopener noreferrer" title="YouTube"><i class="fa fa-youtube"></i></a>
+                <a href="<?= h(setting('designer_gh')) ?>" target="_blank" rel="noopener noreferrer" title="GitHub"><i class="fa fa-github"></i></a>
+                <a href="<?= h(setting('designer_tw')) ?>" target="_blank" rel="noopener noreferrer" title="Twitter"><i class="fa fa-twitter"></i></a>
+                <a href="<?= h(setting('designer_ig')) ?>" target="_blank" rel="noopener noreferrer" title="Instagram"><i class="fa fa-instagram"></i></a>
+                <a href="<?= h(setting('designer_li')) ?>" target="_blank" rel="noopener noreferrer" title="LinkedIn"><i class="fa fa-linkedin"></i></a>
             </div>
         </div>
     </div>

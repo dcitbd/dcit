@@ -48,7 +48,7 @@ $courses_list = $pdo->query("SELECT title FROM courses ORDER BY sort_order ASC")
 $page_title = 'অনলাইন রেজাল্ট (Student Result)';
 require_once __DIR__ . '/includes/header.php';
 ?>
-<div class="page-banner">
+<div class="page-hero-strip">
     <div class="container">
         <h1>অনলাইন রেজাল্ট ও মার্কশিট</h1>
         <p>রেজিস্ট্রেশন নম্বর (যেমন: 000001) অথবা নাম দিয়ে আপনার কোর্সের ফলাফল দেখুন</p>
@@ -128,7 +128,7 @@ require_once __DIR__ . '/includes/header.php';
                             <i class="fa fa-id-card-o"></i> সম্পূর্ণ বায়োডাটা দেখুন
                         </a>
                         <?php if ($found_cert): ?>
-                            <a href="certificate-view.php?cert_no=<?= urlencode($found_cert['cert_no']) ?>" target="_blank" class="btn btn-accent">
+                            <a href="certificate-view.php?cert_no=<?= urlencode($found_cert['cert_no']) ?>" target="_blank" rel="noopener noreferrer" class="btn btn-accent">
                                 <i class="fa fa-certificate"></i> অফিসিয়াল সার্টিফিকেট ভিউ ও প্রিন্ট করুন
                             </a>
                         <?php endif; ?>

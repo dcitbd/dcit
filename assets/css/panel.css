@@ -1,0 +1,315 @@
+/* ==========================================================================
+   Dream Career IT - Dynamic Admin Panel Stylesheet
+   ========================================================================== */
+:root {
+    --dcp-sidebar: #0f172a;
+    --dcp-sidebar-hover: #1e293b;
+    --dcp-primary: #0f766e;
+    --dcp-accent: #ea580c;
+    --dcp-bg: #f1f5f9;
+    --dcp-card: #ffffff;
+    --dcp-text: #0f172a;
+    --dcp-muted: #64748b;
+    --dcp-border: #e2e8f0;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+    font-family: 'Segoe UI', 'Hind Siliguri', system-ui, sans-serif;
+    background: var(--dcp-bg);
+    color: var(--dcp-text);
+    display: flex;
+    min-height: 100vh;
+}
+
+.dcp-sidebar {
+    width: 260px;
+    background: var(--dcp-sidebar);
+    color: #f8fafc;
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow-y: auto;
+}
+
+.dcp-brand {
+    padding: 20px 18px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+.dcp-brand img {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    border: 2px solid #5eead4;
+}
+
+.dcp-brand h2 {
+    font-size: 1.1rem;
+    font-weight: 800;
+    color: #fff;
+    line-height: 1.2;
+}
+
+.dcp-brand span {
+    font-size: 0.75rem;
+    color: #5eead4;
+    display: block;
+}
+
+.dcp-nav {
+    list-style: none;
+    padding: 14px 10px;
+    flex: 1;
+}
+
+.dcp-nav li {
+    margin-bottom: 4px;
+}
+
+.dcp-nav a {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 14px;
+    color: #cbd5e1;
+    text-decoration: none;
+    border-radius: 8px;
+    font-size: 0.92rem;
+    font-weight: 500;
+    transition: all 0.2s;
+}
+
+.dcp-nav a span {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.dcp-nav a:hover, .dcp-nav a.active {
+    background: var(--dcp-primary);
+    color: #fff;
+}
+
+.dcp-badge {
+    background: var(--dcp-accent);
+    color: #fff;
+    font-size: 0.72rem;
+    padding: 2px 7px;
+    border-radius: 12px;
+    font-weight: 700;
+}
+
+.dcp-main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+}
+
+.dcp-topbar {
+    background: #fff;
+    padding: 14px 24px;
+    border-bottom: 1px solid var(--dcp-border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.dcp-topbar h1 {
+    font-size: 1.3rem;
+    color: var(--dcp-text);
+}
+
+.dcp-user-bar {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.dcp-content {
+    padding: 24px;
+    flex: 1;
+}
+
+.kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 18px;
+    margin-bottom: 26px;
+}
+
+.kpi-card {
+    background: #fff;
+    padding: 20px;
+    border-radius: 12px;
+    border: 1px solid var(--dcp-border);
+    box-shadow: 0 2px 10px rgba(0,0,0,0.04);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.kpi-info h4 {
+    font-size: 0.85rem;
+    color: var(--dcp-muted);
+    margin-bottom: 4px;
+}
+
+.kpi-info h2 {
+    font-size: 1.65rem;
+    font-weight: 800;
+    color: var(--dcp-text);
+}
+
+.kpi-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.4rem;
+}
+
+.panel-card {
+    background: #fff;
+    border-radius: 12px;
+    border: 1px solid var(--dcp-border);
+    box-shadow: 0 2px 10px rgba(0,0,0,0.04);
+    margin-bottom: 24px;
+    overflow: hidden;
+}
+
+.panel-header {
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--dcp-border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    background: #f8fafc;
+}
+
+.panel-header h3 {
+    font-size: 1.08rem;
+    color: var(--dcp-text);
+}
+
+.panel-body {
+    padding: 20px;
+}
+
+.dcp-table-wrap {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.dcp-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 650px;
+}
+
+.dcp-table th, .dcp-table td {
+    padding: 11px 14px;
+    border-bottom: 1px solid var(--dcp-border);
+    text-align: left;
+    font-size: 0.88rem;
+}
+
+.dcp-table th {
+    background: #f1f5f9;
+    color: #334155;
+    font-weight: 700;
+}
+
+.dcp-table tr:hover td {
+    background: #f8fafc;
+}
+
+.btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 15px;
+    border-radius: 7px;
+    font-size: 0.86rem;
+    font-weight: 600;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    transition: all 0.15s;
+}
+
+.btn-primary { background: var(--dcp-primary); color: #fff; }
+.btn-primary:hover { background: #115e59; }
+.btn-accent { background: var(--dcp-accent); color: #fff; }
+.btn-danger { background: #dc2626; color: #fff; }
+.btn-success { background: #16a34a; color: #fff; }
+.btn-outline { background: #fff; border: 1px solid #cbd5e1; color: #334155; }
+.btn-xs { padding: 5px 10px; font-size: 0.78rem; }
+
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 14px;
+}
+
+.form-group {
+    margin-bottom: 14px;
+}
+
+.form-group label {
+    display: block;
+    font-size: 0.84rem;
+    font-weight: 600;
+    margin-bottom: 5px;
+    color: #334155;
+}
+
+.form-control {
+    width: 100%;
+    padding: 8px 11px;
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    font-family: inherit;
+}
+
+.badge {
+    display: inline-block;
+    padding: 3px 9px;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: 700;
+}
+.badge-success { background: #dcfce7; color: #166534; }
+.badge-warning { background: #fef3c7; color: #92400e; }
+.badge-danger  { background: #fee2e2; color: #991b1b; }
+.badge-info    { background: #e0f2fe; color: #075985; }
+
+.alert {
+    padding: 12px 16px;
+    border-radius: 8px;
+    margin-bottom: 18px;
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+.alert-success { background: #dcfce7; color: #166534; border: 1px solid #86efac; }
+.alert-danger  { background: #fee2e2; color: #991b1b; border: 1px solid #fca5a5; }
+
+@media (max-width: 860px) {
+    body { flex-direction: column; }
+    .dcp-sidebar { width: 100%; height: auto; position: static; }
+    .dcp-nav { display: flex; flex-wrap: wrap; gap: 6px; }
+}

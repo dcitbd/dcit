@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="referrer" content="strict-origin-when-cross-origin">
+    <meta name="description" content="Dream Career IT - কম্পিউটার, গ্রাফিক্স ডিজাইন, ওয়েব ডিজাইন ও আইটি প্রশিক্ষণ কেন্দ্র, পদুয়ার বাজার, বিশ্বরোড, কুমিল্লা। ফোনঃ 01771770044">
+    <title>Dream Career IT | ড্রিম ক্যারিয়ার আইটি - Poduar Bazar, Cumilla</title>
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
+    <link rel="icon" type="image/png" sizes="64x64" href="assets/img/favicon.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="assets/img/apple-touch-icon.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+<!-- Top Contact & Social Bar -->
+<div class="topbar">
+    <div class="container topbar-inner">
+        <div class="topbar-contact">
+            <span><i class="fa fa-map-marker"></i> পদুয়ার বাজার, বিশ্বরোড, কুমিল্লা</span>
+            <a href="tel:01771770044" id="topPhone"><i class="fa fa-phone"></i> 01771770044</a>
+            <a href="mailto:dc13edubd@gmail.com" id="topEmail"><i class="fa fa-envelope-o"></i> dc13edubd@gmail.com</a>
+        </div>
+        <div class="topbar-social">
+            <a href="https://www.facebook.com/amadergrampaduarbazar" target="_blank" rel="noopener noreferrer" title="Facebook"><i class="fa fa-facebook"></i></a>
+            <a href="https://www.youtube.com/channel/UCbYQ17l6_mf6ilwlJGvsFSg" target="_blank" rel="noopener noreferrer" title="YouTube"><i class="fa fa-youtube"></i></a>
+            <a href="https://github.com/jasagor2020" target="_blank" rel="noopener noreferrer" title="GitHub"><i class="fa fa-github"></i></a>
+            <a href="admin/index.html" class="dcp-btn" style="width:auto; border-radius:20px; padding:3px 12px; background:#ea580c; font-weight:600; font-size:0.8rem; gap:5px; color:#fff;"><i class="fa fa-lock"></i> এডমিন প্যানেল</a>
+        </div>
+    </div>
+</div>
+
+<!-- Dynamic Notice Marquee -->
+<div class="notice-bar">
+    <div class="container notice-inner">
+        <span class="notice-badge"><i class="fa fa-bullhorn"></i> নোটিশ</span>
+        <div class="notice-marquee">
+            <span id="noticeText">ভর্তি চলছে! Dream Career IT (ড্রিম ক্যারিয়ার আইটি)-তে Microsoft Office, Advance MS Office, Graphic Design, Web Design, Spoken English এবং IELTS কোর্সে নতুন ব্যাচে ভর্তি চলছে। হটলাইনঃ ০১৭৭১৭৭০০৪৪।</span>
+        </div>
+    </div>
+</div>
+
+<!-- Sticky Main Navigation -->
+<header class="site-header">
+    <div class="container nav-wrapper">
+        <a href="#home" onclick="navigateView('home')" class="brand">
+            <img src="assets/img/logo.jpg" alt="Dream Career IT Logo">
+            <div class="brand-text">
+                <h1 id="brandTitle">Dream Career IT</h1>
+                <p id="brandSub">ড্রিম ক্যারিয়ার আইটি • কুমিল্লা</p>
+            </div>
+        </a>
+
+        <button class="menu-toggle" id="menuToggle" aria-label="Menu"><i class="fa fa-bars"></i></button>
+
+        <nav class="main-nav" id="mainNav">
+            <ul>
+                <li><a href="#home" onclick="navigateView('home')" class="nav-link active" data-view="home"><i class="fa fa-home"></i> হোম</a></li>
+                <li>
+                    <a href="#courses" onclick="navigateView('courses')" class="nav-link" data-view="courses">
+                        <i class="fa fa-book"></i> কোর্সসমূহ <i class="fa fa-angle-down"></i>
+                    </a>
+                    <ul class="dropdown-menu" id="navCoursesDropdown"></ul>
+                </li>
+                <li><a href="#result" onclick="navigateView('result')" class="nav-link" data-view="result"><i class="fa fa-trophy"></i> রেজাল্ট</a></li>
+                <li>
+                    <a href="#admission" onclick="navigateView('admission')" class="nav-link" data-view="admission">
+                        <i class="fa fa-graduation-cap"></i> ভর্তি ও ব্যাচ <i class="fa fa-angle-down"></i>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#admission" onclick="navigateView('admission')"><span><i class="fa fa-pencil-square-o"></i> অনলাইন ভর্তি ফর্ম</span></a></li>
+                        <li><a href="#batches" onclick="navigateView('batches', {type:'New Batch'})"><span><i class="fa fa-users"></i> নতুন ব্যাচ (New Batch)</span></a></li>
+                        <li><a href="#batches" onclick="navigateView('batches', {type:'Old Batch'})"><span><i class="fa fa-history"></i> পুরাতন ব্যাচ (2010 - 2026)</span></a></li>
+                        <li><a href="#batches" onclick="navigateView('batches')"><span><i class="fa fa-clock-o"></i> ক্লাস রুটিন ও সময়সূচি</span></a></li>
+                        <li><a href="#biodata" onclick="navigateView('biodata')"><span><i class="fa fa-id-card-o"></i> স্টুডেন্ট বায়োডাটা</span></a></li>
+                        <li><a href="#certificates" onclick="navigateView('certificates')"><span><i class="fa fa-certificate"></i> সার্টিফিকেট ভেরিফিকেশন</span></a></li>
+                    </ul>
+                </li>
+                <li><a href="#certificates" onclick="navigateView('certificates')" class="nav-link" data-view="certificates"><i class="fa fa-certificate"></i> সার্টিফিকেট</a></li>
+                <li><a href="#teachers" onclick="navigateView('teachers')" class="nav-link" data-view="teachers"><i class="fa fa-user-md"></i> শিক্ষকবৃন্দ</a></li>
+                <li><a href="#about" onclick="navigateView('about')" class="nav-link" data-view="about"><i class="fa fa-info-circle"></i> আমাদের সম্পর্কে</a></li>
+                <li><a href="#contact" onclick="navigateView('contact')" class="nav-link" data-view="contact"><i class="fa fa-phone"></i> যোগাযোগ</a></li>
+            </ul>
+        </nav>
+
+        <form onsubmit="event.preventDefault(); navigateView('biodata', {q: document.getElementById('globalSearchInput').value});" class="header-search">
+            <input type="search" id="globalSearchInput" placeholder="স্টুডেন্ট / রেজিঃ নং...">
+            <button type="submit" title="Search"><i class="fa fa-search"></i></button>
+        </form>
+    </div>
+</header>
+
+<!-- Dynamic Main View Container -->
+<main id="appMainContainer"></main>
+
+<!-- Printable Certificate Modal -->
+<div id="certPrintModal" style="display:none; position:fixed; inset:0; background:rgba(15,23,42,0.82); z-index:9999; overflow-y:auto; padding:20px;">
+    <div id="certPrintContent" style="max-width:940px; margin:20px auto; background:#fff; padding:24px; border-radius:12px;"></div>
+</div>
+
+<!-- Main Site Footer -->
+<footer class="site-footer">
+    <div class="container">
+        <div class="footer-grid">
+            <div class="footer-col">
+                <div style="display:flex; align-items:center; gap:12px; margin-bottom:12px;">
+                    <img src="assets/img/logo.jpg" alt="Dream Career IT" style="width:54px; height:54px; border-radius:50%; border:2px solid #5eead4;">
+                    <h3 style="margin:0; padding:0;">Dream Career IT</h3>
+                </div>
+                <p style="margin-bottom:12px; font-size:0.92rem;" id="footerAddress">
+                    ভাই ভাই সুপার মার্কেট, (নতুন পদুয়ার বাজার মসজিদের পাশে), পদুয়ার বাজার, বিশ্বরোড, কুমিল্লা।<br>
+                    <strong>ফোনঃ</strong> 01771770044, 01879653143<br>
+                    <strong>ইমেইলঃ</strong> dc13edubd@gmail.com
+                </p>
+            </div>
+
+            <div class="footer-col">
+                <h3>আমাদের কোর্সসমূহ</h3>
+                <ul class="footer-links" id="footerCoursesList"></ul>
+            </div>
+
+            <div class="footer-col">
+                <h3>গুরুত্বপূর্ণ লিংক</h3>
+                <ul class="footer-links">
+                    <li><a href="#admission" onclick="navigateView('admission')"><i class="fa fa-angle-right"></i> অনলাইন ভর্তি ফর্ম</a></li>
+                    <li><a href="#result" onclick="navigateView('result')"><i class="fa fa-angle-right"></i> অনলাইন রেজাল্ট চেক</a></li>
+                    <li><a href="#certificates" onclick="navigateView('certificates')"><i class="fa fa-angle-right"></i> সার্টিফিকেট যাচাই ও প্রিন্ট</a></li>
+                    <li><a href="#biodata" onclick="navigateView('biodata')"><i class="fa fa-angle-right"></i> সকল স্টুডেন্ট বায়োডাটা</a></li>
+                    <li><a href="#batches" onclick="navigateView('batches')"><i class="fa fa-angle-right"></i> ক্লাস রুটিন ও ব্যাচ তালিকা</a></li>
+                    <li><a href="#teachers" onclick="navigateView('teachers')"><i class="fa fa-angle-right"></i> শিক্ষক ও প্রশাসন</a></li>
+                    <li><a href="#designer" onclick="navigateView('designer')"><i class="fa fa-angle-right"></i> ওয়েব ডিজাইনার প্রোফাইল</a></li>
+                    <li><a href="admin/index.html"><i class="fa fa-lock"></i> এডমিন কন্ট্রোল প্যানেল</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <p>© Copyright 2026 <strong>Dream Career IT</strong>, All Rights Reserved. | Phone: 01771770044 | Designed by <a href="#designer" onclick="navigateView('designer')" style="color:#5eead4; font-weight:700;">Jainal Abedin (Sagor)</a>.</p>
+            <div class="footer-socials">
+                <a href="https://www.facebook.com/jainalabedin.sagor.143" target="_blank" rel="noopener noreferrer"><i class="fa fa-facebook"></i></a>
+                <a href="https://www.youtube.com/channel/UCbYQ17l6_mf6ilwlJGvsFSg" target="_blank" rel="noopener noreferrer"><i class="fa fa-youtube"></i></a>
+                <a href="https://github.com/jasagor2020" target="_blank" rel="noopener noreferrer"><i class="fa fa-github"></i></a>
+                <a href="https://www.linkedin.com/in/jainal-abedin-sagor-448b121a9/" target="_blank" rel="noopener noreferrer"><i class="fa fa-linkedin"></i></a>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<script src="assets/js/dcit-store.js"></script>
+<script src="assets/js/dcit-frontend.js"></script>
+<script src="assets/js/main.js"></script>
+</body>
+</html>

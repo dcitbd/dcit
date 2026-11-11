@@ -26,7 +26,7 @@ $students = $stmt->fetchAll();
 $page_title = $profile ? $profile['name'] . ' - Student Bio-Data' : 'সকল স্টুডেন্ট বায়োডাটা (Students Bio-Data)';
 require_once __DIR__ . '/includes/header.php';
 ?>
-<div class="page-banner">
+<div class="page-hero-strip">
     <div class="container">
         <h1><?= h($profile ? 'শিক্ষার্থীর ব্যক্তিগত বায়োডাটা (Student Bio-Data)' : 'All Student Bio-Data Directory') ?></h1>
         <p>শিক্ষার্থীদের বিস্তারিত পরিচয় ও বায়োডাটা দেখতে নামের ওপর ক্লিক করুন</p>

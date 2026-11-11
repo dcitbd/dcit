@@ -137,8 +137,8 @@ require_once __DIR__ . '/header.php';
     <div class="panel-header">
         <h3><i class="fa fa-list"></i> শিক্ষক ও কর্মকর্তা তালিকা (<?= count($teachers) ?> জন)</h3>
     </div>
-    <div class="adm-table-wrap">
-        <table class="adm-table">
+    <div class="dcp-table-wrap">
+        <table class="dcp-table">
             <thead>
                 <tr>
                     <th>ছবি</th>

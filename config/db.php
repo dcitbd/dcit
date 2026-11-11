@@ -1,6 +1,6 @@
 <?php
 /**
- * AMADER GRAM IT CENTER - Database & Core Configuration
+ * Dream Career IT - Database & Core Configuration
  * Supports BOTH MySQL (XAMPP/cPanel) AND Zero-Config SQLite out of the box!
  */
 if (session_status() === PHP_SESSION_NONE) {
@@ -11,10 +11,10 @@ date_default_timezone_set('Asia/Dhaka');
 // Database Mode: 'sqlite' (works immediately without setup) or 'mysql' (for cPanel/XAMPP MySQL)
 define('DB_DRIVER', getenv('AG_DB_DRIVER') ?: 'sqlite');
 define('DB_HOST', getenv('AG_DB_HOST') ?: 'localhost');
-define('DB_NAME', getenv('AG_DB_NAME') ?: 'amader_gram_db');
+define('DB_NAME', getenv('AG_DB_NAME') ?: 'dream_career_it_db');
 define('DB_USER', getenv('AG_DB_USER') ?: 'root');
 define('DB_PASS', getenv('AG_DB_PASS') ?: '');
-define('SQLITE_PATH', __DIR__ . '/../data/amader_gram.sqlite');
+define('SQLITE_PATH', __DIR__ . '/../data/dream_career_it.sqlite');
 
 function get_db(): PDO {
     static $pdo = null;
