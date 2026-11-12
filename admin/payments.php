@@ -209,79 +209,30 @@ require_once __DIR__ . '/header.php';
                         </span>
                     </td>
                     <td style="white-space:nowrap;">
-                        <a href="invoice.php?id=<?= (int)$p['id'] ?>" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-xs"><i class="fa fa-print"></i> মেমো প্রিন্ট</a>
-                        <button type="button" class="btn btn-success btn-xs print-receipt-btn" 
-                                data-receipt="<?= h($p['receipt_no']) ?>"
+                        <!-- Print/View Invoice Link -->
+                        <a href="invoice.php?id=<?= (int)$p['id'] ?>" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-xs" title="মেমো প্রিন্ট"><i class="fa fa-print"></i></a>
+                        
+                        <!-- Send SMS Button -->
+                        <button type="button" class="btn btn-info btn-xs send-sms-btn" title="পেমেন্ট কনফার্মেশন এসএমএস পাঠান"
                                 data-student="<?= h($p['student_name']) ?>"
                                 data-reg="<?= h($p['reg_no']) ?>"
-                                data-course="<?= h($p['course_name']) ?>"
-                                data-total="<?= $p['total_fee'] ?>"
                                 data-paid="<?= $p['paid_amount'] ?>"
-                                data-due="<?= $p['due_amount'] ?>"
-                                data-date="<?= h($p['payment_date']) ?>"
-                                data-method="<?= h($p['payment_method']) ?>">
-                            <i class="fa fa-file-text-o"></i> ভাউচার
+                                data-due="<?= $p['due_amount'] ?>">
+                            <i class="fa fa-comment"></i>
                         </button>
-                        <a href="payments.php?edit=<?= (int)$p['id'] ?>" class="btn btn-outline btn-xs"><i class="fa fa-edit"></i></a>
+
+                        <a href="payments.php?edit=<?= (int)$p['id'] ?>" class="btn btn-outline btn-xs" title="এডিট"><i class="fa fa-edit"></i></a>
+                        
                         <form method="post" style="display:inline;" onsubmit="return confirm('এই পেমেন্ট রেকর্ড মুছে ফেলতে চান?');">
                             <input type="hidden" name="form_action" value="delete">
                             <input type="hidden" name="id" value="<?= (int)$p['id'] ?>">
-                            <button type="submit" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i></button>
+                            <button type="submit" class="btn btn-danger btn-xs" title="ডিলিট"><i class="fa fa-trash"></i></button>
                         </form>
                     </td>
                 </tr>
                 <?php endforeach; ?>
             </tbody>
         </table>
-    </div>
-</div>
-
-<!-- Hidden Printable Voucher Template -->
-<div id="printableVoucher" style="display: none;">
-    <div style="width: 100%; max-width: 750px; margin: 0 auto; padding: 30px; border: 2px solid #1e293b; font-family: 'Times New Roman', Times, serif; background: #fff; color: #000;">
-        <div style="text-align: center; border-bottom: 2px solid #1e293b; padding-bottom: 12px; margin-bottom: 20px;">
-            <h2 style="margin: 0; font-size: 26px; text-transform: uppercase; color: #0f172a;">Dream Career IT, Cumilla</h2>
-            <p style="margin: 5px 0 0; font-size: 14px; color: #334155;">Chaudhari Plaza, Paduar Bazar, Bishwo Road, Comilla</p>
-            <h4 style="margin: 10px 0 0; background: #0f172a; color: #fff; display: inline-block; padding: 4px 18px; font-size: 15px; border-radius: 4px;">মানি রিসিপ্ট / পেমেন্ট ভাউচার</h4>
-        </div>
-        <div style="display: flex; justify-content: space-between; margin-bottom: 15px; font-size: 15px;">
-            <div><strong>রিসিপ্ট নং:</strong> <span id="v_receipt"></span></div>
-            <div><strong>তারিখ:</strong> <span id="v_date"></span></div>
-        </div>
-        <div style="margin-bottom: 20px; font-size: 15px; line-height: 1.8; background: #f8fafc; padding: 15px; border-radius: 6px; border: 1px solid #e2e8f0;">
-            <div><strong>শিক্ষার্থীর নাম:</strong> <span id="v_student" style="font-weight: 700; color: #0f172a;"></span></div>
-            <div><strong>রেজিস্ট্রেশন নং:</strong> <span id="v_reg"></span></div>
-            <div><strong>কোর্সের নাম:</strong> <span id="v_course"></span></div>
-            <div><strong>পেমেন্ট মাধ্যম:</strong> <span id="v_method"></span></div>
-        </div>
-        <div style="margin-bottom: 30px;">
-            <table style="width: 100%; border-collapse: collapse; margin-top: 10px;">
-                <thead>
-                    <tr style="background: #0f172a; color: #fff;">
-                        <th style="border: 1px solid #333; padding: 10px; text-align: left;">বিবরণ (Description)</th>
-                        <th style="border: 1px solid #333; padding: 10px; text-align: right;">টাকা (Amount)</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td style="border: 1px solid #333; padding: 10px;">কোর্স ফি / অন্যান্য সার্ভিস ফি জমা</td>
-                        <td style="border: 1px solid #333; padding: 10px; text-align: right; font-weight: 700;">৳<span id="v_paid"></span></td>
-                    </tr>
-                    <tr>
-                        <td style="border: 1px solid #333; padding: 10px; text-align: right; font-weight: 700;">মোট নির্ধারিত ফি:</td>
-                        <td style="border: 1px solid #333; padding: 10px; text-align: right;">৳<span id="v_total"></span></td>
-                    </tr>
-                    <tr>
-                        <td style="border: 1px solid #333; padding: 10px; text-align: right; font-weight: 700; color: #dc2626;">বকেয়া পরিমাণ:</td>
-                        <td style="border: 1px solid #333; padding: 10px; text-align: right; color: #dc2626; font-weight: 700;">৳<span id="v_due"></span></td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-        <div style="display: flex; justify-content: space-between; margin-top: 60px; font-size: 14px;">
-            <div style="text-align: center; border-top: 1px solid #333; width: 220px; padding-top: 5px;">শিক্ষার্থীর স্বাক্ষর</div>
-            <div style="text-align: center; border-top: 1px solid #333; width: 220px; padding-top: 5px;">হিসাবরক্ষক / ক্যাশিয়ার</div>
-        </div>
     </div>
 </div>
 
@@ -322,27 +273,16 @@ document.addEventListener('DOMContentLoaded', function () {
         paidInput.addEventListener('input', calcDue);
     }
 
-    // Voucher Print Handler
-    const voucherBtns = document.querySelectorAll('.print-receipt-btn');
-    voucherBtns.forEach(btn => {
+    // Send SMS Action Trigger
+    const smsBtns = document.querySelectorAll('.send-sms-btn');
+    smsBtns.forEach(btn => {
         btn.addEventListener('click', function () {
-            document.getElementById('v_receipt').innerText = this.getAttribute('data-receipt');
-            document.getElementById('v_date').innerText = this.getAttribute('data-date');
-            document.getElementById('v_student').innerText = this.getAttribute('data-student');
-            document.getElementById('v_reg').innerText = this.getAttribute('data-reg');
-            document.getElementById('v_course').innerText = this.getAttribute('data-course');
-            document.getElementById('v_method').innerText = this.getAttribute('data-method');
-            document.getElementById('v_paid').innerText = parseFloat(this.getAttribute('data-paid')).toFixed(2);
-            document.getElementById('v_total').innerText = parseFloat(this.getAttribute('data-total')).toFixed(2);
-            document.getElementById('v_due').innerText = parseFloat(this.getAttribute('data-due')).toFixed(2);
-
-            let printHTML = document.getElementById('printableVoucher').innerHTML;
-            let originalHTML = document.body.innerHTML;
-
-            document.body.innerHTML = printHTML;
-            window.print();
-            document.body.innerHTML = originalHTML;
-            location.reload();
+            const student = this.getAttribute('data-student');
+            const reg = this.getAttribute('data-reg');
+            const paid = this.getAttribute('data-paid');
+            const due = this.getAttribute('data-due');
+            
+            alert(`প্রিয় ${student} (Reg: ${reg}), আপনার পেমেন্ট ৳${paid} সফলভাবে জমা হয়েছে। বকেয়া: ৳${due}। - Dream Career IT`);
         });
     });
 });
