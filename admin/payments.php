@@ -25,18 +25,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if ($id > 0) {
             $stmt = $pdo->prepare("UPDATE payments SET receipt_no=?, reg_no=?, student_name=?, course_name=?, total_fee=?, paid_amount=?, due_amount=?, payment_type=?, payment_method=?, trx_id=?, payment_date=?, remarks=?, status=? WHERE id=?");
             $stmt->execute([$receipt_no, $reg_no, $student_name, $course_name, $total_fee, $paid_amount, $due_amount, $payment_type, $payment_method, $trx_id, $payment_date, $remarks, $status, $id]);
-            set_flash('success', 'পেমেন্ট রেকর্ড সফলভাবে আপডেট করা হয়েছে!');
+            set_flash('success', 'পেমেন্ট রেকর্ড সফলভাবে আপডেট করা হয়েছে!');
         } else {
             $stmt = $pdo->prepare("INSERT INTO payments (receipt_no, reg_no, student_name, course_name, total_fee, paid_amount, due_amount, payment_type, payment_method, trx_id, payment_date, remarks, collected_by, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
             $stmt->execute([$receipt_no, $reg_no, $student_name, $course_name, $total_fee, $paid_amount, $due_amount, $payment_type, $payment_method, $trx_id, $payment_date, $remarks, $collected_by, $status]);
-            set_flash('success', 'নতুন পেমেন্ট ও মানি রিসিপ্ট সফলভাবে তৈরি হয়েছে!');
+            set_flash('success', 'নতুন পেমেন্ট ও মানি রিসিপ্ট সফলভাবে তৈরি হয়েছে!');
         }
         header("Location: payments.php");
         exit;
     } elseif ($act === 'delete') {
         $id = (int)($_POST['id'] ?? 0);
         $pdo->prepare("DELETE FROM payments WHERE id=?")->execute([$id]);
-        set_flash('success', 'পেমেন্ট রেকর্ড মুছে ফেলা হয়েছে।');
+        set_flash('success', 'পেমেন্ট রেকর্ড মুছে ফেলা হয়েছে।');
         header("Location: payments.php");
         exit;
     }
@@ -70,11 +70,11 @@ require_once __DIR__ . '/header.php';
         <div class="kpi-icon" style="background:#e0f2fe; color:#0369a1;"><i class="fa fa-calculator"></i></div>
     </div>
     <div class="kpi-card">
-        <div class="kpi-info"><h4>মোট আদায়কৃত পেমেন্ট (Collected)</h4><h2 style="color:#15803d;">৳ <?= number_format($sum_paid, 0) ?></h2></div>
+        <div class="kpi-info"><h4>মোট আদায়কৃত পেমেন্ট (Collected)</h4><h2 style="color:#15803d;">৳ <?= number_format($sum_paid, 0) ?></h2></div>
         <div class="kpi-icon" style="background:#dcfce7; color:#15803d;"><i class="fa fa-check-circle"></i></div>
     </div>
     <div class="kpi-card">
-        <div class="kpi-info"><h4>মোট বকেয়া ফি (Total Due)</h4><h2 style="color:#dc2626;">৳ <?= number_format($sum_due, 0) ?></h2></div>
+        <div class="kpi-info"><h4>মোট বকেয়া ফি (Total Due)</h4><h2 style="color:#dc2626;">৳ <?= number_format($sum_due, 0) ?></h2></div>
         <div class="kpi-icon" style="background:#fee2e2; color:#dc2626;"><i class="fa fa-clock-o"></i></div>
     </div>
 </div>
@@ -111,7 +111,7 @@ require_once __DIR__ . '/header.php';
 
             <div class="form-grid">
                 <div class="form-group">
-                    <label>রিসিপ্ট / ইনভয়েস নং *</label>
+                    <label>রিসিপ্ট / ইনভয়েস নং *</label>
                     <input type="text" name="receipt_no" class="form-control" required value="<?= h($edit_pay['receipt_no'] ?? $next_inv) ?>">
                 </div>
                 <div class="form-group">
@@ -135,7 +135,7 @@ require_once __DIR__ . '/header.php';
                     <input type="number" step="0.01" id="paid_amount" name="paid_amount" class="form-control" required value="<?= (float)($edit_pay['paid_amount'] ?? 1500) ?>">
                 </div>
                 <div class="form-group">
-                    <label>বকেয়া টাকা (Due ৳ - অটো হিসাব)</label>
+                    <label>বকেয়া টাকা (Due ৳ - অটো হিসাব)</label>
                     <input type="number" step="0.01" id="due_amount" name="due_amount" class="form-control" readonly value="<?= (float)($edit_pay['due_amount'] ?? 0) ?>" style="background:#f1f5f9; font-weight:700;">
                 </div>
                 <div class="form-group">
@@ -186,7 +186,7 @@ require_once __DIR__ . '/header.php';
                     <th>কোর্স</th>
                     <th>মোট ফি</th>
                     <th>পরিশোধিত</th>
-                    <th>বকেয়া</th>
+                    <th>বকেয়া</th>
                     <th>মাধ্যম (TrxID)</th>
                     <th>স্ট্যাটাস</th>
                     <th>অ্যাকশন</th>
@@ -210,6 +210,18 @@ require_once __DIR__ . '/header.php';
                     </td>
                     <td style="white-space:nowrap;">
                         <a href="invoice.php?id=<?= (int)$p['id'] ?>" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-xs"><i class="fa fa-print"></i> মেমো প্রিন্ট</a>
+                        <button type="button" class="btn btn-success btn-xs print-receipt-btn" 
+                                data-receipt="<?= h($p['receipt_no']) ?>"
+                                data-student="<?= h($p['student_name']) ?>"
+                                data-reg="<?= h($p['reg_no']) ?>"
+                                data-course="<?= h($p['course_name']) ?>"
+                                data-total="<?= $p['total_fee'] ?>"
+                                data-paid="<?= $p['paid_amount'] ?>"
+                                data-due="<?= $p['due_amount'] ?>"
+                                data-date="<?= h($p['payment_date']) ?>"
+                                data-method="<?= h($p['payment_method']) ?>">
+                            <i class="fa fa-file-text-o"></i> ভাউচার
+                        </button>
                         <a href="payments.php?edit=<?= (int)$p['id'] ?>" class="btn btn-outline btn-xs"><i class="fa fa-edit"></i></a>
                         <form method="post" style="display:inline;" onsubmit="return confirm('এই পেমেন্ট রেকর্ড মুছে ফেলতে চান?');">
                             <input type="hidden" name="form_action" value="delete">
@@ -223,4 +235,117 @@ require_once __DIR__ . '/header.php';
         </table>
     </div>
 </div>
+
+<!-- Hidden Printable Voucher Template -->
+<div id="printableVoucher" style="display: none;">
+    <div style="width: 100%; max-width: 750px; margin: 0 auto; padding: 30px; border: 2px solid #1e293b; font-family: 'Times New Roman', Times, serif; background: #fff; color: #000;">
+        <div style="text-align: center; border-bottom: 2px solid #1e293b; padding-bottom: 12px; margin-bottom: 20px;">
+            <h2 style="margin: 0; font-size: 26px; text-transform: uppercase; color: #0f172a;">Dream Career IT, Cumilla</h2>
+            <p style="margin: 5px 0 0; font-size: 14px; color: #334155;">Chaudhari Plaza, Paduar Bazar, Bishwo Road, Comilla</p>
+            <h4 style="margin: 10px 0 0; background: #0f172a; color: #fff; display: inline-block; padding: 4px 18px; font-size: 15px; border-radius: 4px;">মানি রিসিপ্ট / পেমেন্ট ভাউচার</h4>
+        </div>
+        <div style="display: flex; justify-content: space-between; margin-bottom: 15px; font-size: 15px;">
+            <div><strong>রিসিপ্ট নং:</strong> <span id="v_receipt"></span></div>
+            <div><strong>তারিখ:</strong> <span id="v_date"></span></div>
+        </div>
+        <div style="margin-bottom: 20px; font-size: 15px; line-height: 1.8; background: #f8fafc; padding: 15px; border-radius: 6px; border: 1px solid #e2e8f0;">
+            <div><strong>শিক্ষার্থীর নাম:</strong> <span id="v_student" style="font-weight: 700; color: #0f172a;"></span></div>
+            <div><strong>রেজিস্ট্রেশন নং:</strong> <span id="v_reg"></span></div>
+            <div><strong>কোর্সের নাম:</strong> <span id="v_course"></span></div>
+            <div><strong>পেমেন্ট মাধ্যম:</strong> <span id="v_method"></span></div>
+        </div>
+        <div style="margin-bottom: 30px;">
+            <table style="width: 100%; border-collapse: collapse; margin-top: 10px;">
+                <thead>
+                    <tr style="background: #0f172a; color: #fff;">
+                        <th style="border: 1px solid #333; padding: 10px; text-align: left;">বিবরণ (Description)</th>
+                        <th style="border: 1px solid #333; padding: 10px; text-align: right;">টাকা (Amount)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td style="border: 1px solid #333; padding: 10px;">কোর্স ফি / অন্যান্য সার্ভিস ফি জমা</td>
+                        <td style="border: 1px solid #333; padding: 10px; text-align: right; font-weight: 700;">৳<span id="v_paid"></span></td>
+                    </tr>
+                    <tr>
+                        <td style="border: 1px solid #333; padding: 10px; text-align: right; font-weight: 700;">মোট নির্ধারিত ফি:</td>
+                        <td style="border: 1px solid #333; padding: 10px; text-align: right;">৳<span id="v_total"></span></td>
+                    </tr>
+                    <tr>
+                        <td style="border: 1px solid #333; padding: 10px; text-align: right; font-weight: 700; color: #dc2626;">বকেয়া পরিমাণ:</td>
+                        <td style="border: 1px solid #333; padding: 10px; text-align: right; color: #dc2626; font-weight: 700;">৳<span id="v_due"></span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div style="display: flex; justify-content: space-between; margin-top: 60px; font-size: 14px;">
+            <div style="text-align: center; border-top: 1px solid #333; width: 220px; padding-top: 5px;">শিক্ষার্থীর স্বাক্ষর</div>
+            <div style="text-align: center; border-top: 1px solid #333; width: 220px; padding-top: 5px;">হিসাবরক্ষক / ক্যাশিয়ার</div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    // Student Auto-fill logic
+    const preset = document.getElementById('student_preset');
+    if (preset) {
+        preset.addEventListener('change', function () {
+            const opt = this.options[this.selectedIndex];
+            if (opt.value) {
+                document.getElementById('reg_no').value = opt.getAttribute('data-reg');
+                document.getElementById('student_name').value = opt.getAttribute('data-name');
+                document.getElementById('course_name').value = opt.getAttribute('data-course');
+                const fee = parseFloat(opt.getAttribute('data-fee')) || 0;
+                document.getElementById('total_fee').value = fee;
+                document.getElementById('paid_amount').value = fee;
+                document.getElementById('due_amount').value = 0;
+            }
+        });
+    }
+
+    // Due amount auto calculation
+    const totalInput = document.getElementById('total_fee');
+    const paidInput = document.getElementById('paid_amount');
+    const dueInput = document.getElementById('due_amount');
+
+    function calcDue() {
+        const tot = parseFloat(totalInput.value) || 0;
+        const paid = parseFloat(paidInput.value) || 0;
+        let due = tot - paid;
+        if (due < 0) due = 0;
+        dueInput.value = due.toFixed(2);
+    }
+
+    if (totalInput && paidInput) {
+        totalInput.addEventListener('input', calcDue);
+        paidInput.addEventListener('input', calcDue);
+    }
+
+    // Voucher Print Handler
+    const voucherBtns = document.querySelectorAll('.print-receipt-btn');
+    voucherBtns.forEach(btn => {
+        btn.addEventListener('click', function () {
+            document.getElementById('v_receipt').innerText = this.getAttribute('data-receipt');
+            document.getElementById('v_date').innerText = this.getAttribute('data-date');
+            document.getElementById('v_student').innerText = this.getAttribute('data-student');
+            document.getElementById('v_reg').innerText = this.getAttribute('data-reg');
+            document.getElementById('v_course').innerText = this.getAttribute('data-course');
+            document.getElementById('v_method').innerText = this.getAttribute('data-method');
+            document.getElementById('v_paid').innerText = parseFloat(this.getAttribute('data-paid')).toFixed(2);
+            document.getElementById('v_total').innerText = parseFloat(this.getAttribute('data-total')).toFixed(2);
+            document.getElementById('v_due').innerText = parseFloat(this.getAttribute('data-due')).toFixed(2);
+
+            let printHTML = document.getElementById('printableVoucher').innerHTML;
+            let originalHTML = document.body.innerHTML;
+
+            document.body.innerHTML = printHTML;
+            window.print();
+            document.body.innerHTML = originalHTML;
+            location.reload();
+        });
+    });
+});
+</script>
+
 <?php require_once __DIR__ . '/footer.php'; ?>
