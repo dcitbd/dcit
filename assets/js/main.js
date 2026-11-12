@@ -117,13 +117,13 @@
         }
     });
 
-    // Inject Board-Style Certificate CSS, EB Garamond Typography, Signature Handwriting Font & Responsive Scaler
+    // Inject Board-Style Certificate CSS, EB Garamond Italic Typography & Responsive Scaler
     function ensureBoardCertificateStyles() {
         if (document.getElementById('dcitBoardCertStyles')) return;
         const st = document.createElement('style');
         st.id = 'dcitBoardCertStyles';
         st.textContent = `
-            @import url('https://fonts.googleapis.com/css2?family=Alex+Brush&family=Cormorant+Garamond:ital,wght@0,600;0,700;1,600;1,700&family=Dancing+Script:wght@700&family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,500;1,600;1,700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap');
+            @import url('https://fonts.googleapis.com/css2?family=Alex+Brush&family=Cormorant+Garamond:ital,wght@0,600;0,700;1,600;1,700&family=Dancing+Script:wght@700&family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,500;1,600;1,700;1,800&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap');
 
             /* Responsive Landscape Stage Wrapper */
             .dcit-cert-responsive-stage {
@@ -156,7 +156,7 @@
                 padding: 18px;
                 box-sizing: border-box;
                 color: #111827;
-                font-family: 'EB Garamond', 'Times New Roman', Georgia, serif;
+                font-family: 'EB Garamond', Georgia, serif;
                 -webkit-print-color-adjust: exact !important;
                 print-color-adjust: exact !important;
                 overflow: hidden;
@@ -233,7 +233,7 @@
                 transform: rotate(-14deg);
             }
             .dcit-watermark-text-row {
-                font-family: 'EB Garamond', 'Georgia', serif;
+                font-family: 'EB Garamond', Georgia, serif;
                 font-size: 10.5px;
                 font-weight: 700;
                 color: #475569;
@@ -308,7 +308,7 @@
             }
             .dcit-meta-left,
             .dcit-meta-right {
-                font-family: 'EB Garamond', 'Times New Roman', Georgia, serif;
+                font-family: 'EB Garamond', Georgia, serif;
                 font-size: 1.04rem;
                 font-weight: 600;
                 color: #0f172a;
@@ -318,11 +318,11 @@
             .dcit-meta-right {
                 text-align: right;
             }
-            /* Serial & Reg numbers rendered in Signature / Handwriting font style */
             .dcit-serial-num {
-                font-family: 'Dancing Script', 'Alex Brush', cursive;
+                font-family: 'EB Garamond', Georgia, serif;
+                font-style: italic;
                 font-weight: 700;
-                font-size: 1.32rem;
+                font-size: 1.18rem;
                 letter-spacing: 0.5px;
                 color: #0f172a;
                 margin-left: 5px;
@@ -345,7 +345,7 @@
             }
             .dcit-exam-banner-title {
                 text-align: center;
-                font-family: 'EB Garamond', 'Times New Roman', Georgia, serif;
+                font-family: 'EB Garamond', Georgia, serif;
                 font-size: 1.22rem;
                 font-weight: 800;
                 letter-spacing: 1.1px;
@@ -383,30 +383,30 @@
                 font-weight: 500;
                 color: #1e293b;
             }
-            /* ALL Student / Certificate Person Data Rendered in Signature Handwriting Font ('Dancing Script') */
+            /* ALL Student & Certificate Data fields unified in EB Garamond Italic */
             .dcit-cert-blank {
                 flex: 1;
                 border-bottom: 1.4px solid #1e293b;
                 padding: 0 12px 1px;
-                font-family: 'Dancing Script', 'Alex Brush', cursive;
-                font-style: normal;
+                font-family: 'EB Garamond', Georgia, serif;
+                font-style: italic;
                 font-weight: 700;
-                font-size: 1.55rem;
+                font-size: 1.38rem;
                 color: #090d16;
-                letter-spacing: 0.6px;
+                letter-spacing: 0.35px;
                 text-align: left;
                 min-width: 80px;
-                line-height: 1.1;
+                line-height: 1.15;
             }
             .dcit-cert-blank.center-val {
                 text-align: center;
             }
             .dcit-cert-blank.mono-val {
-                font-family: 'Dancing Script', 'Alex Brush', cursive;
-                font-style: normal;
+                font-family: 'EB Garamond', Georgia, serif;
+                font-style: italic;
                 font-weight: 700;
-                font-size: 1.48rem;
-                letter-spacing: 0.8px;
+                font-size: 1.32rem;
+                letter-spacing: 0.5px;
                 text-align: center;
                 color: #090d16;
             }
@@ -451,7 +451,7 @@
                 line-height: 1;
             }
             .dcit-footer-left {
-                font-family: 'EB Garamond', 'Times New Roman', Georgia, serif;
+                font-family: 'EB Garamond', Georgia, serif;
                 color: #0f172a;
                 line-height: 1.45;
             }
@@ -466,10 +466,10 @@
                 font-weight: 600;
             }
             .dcit-footer-left .pub-date span {
-                font-family: 'Dancing Script', 'Alex Brush', cursive;
-                font-style: normal;
+                font-family: 'EB Garamond', Georgia, serif;
+                font-style: italic;
                 font-weight: 700;
-                font-size: 1.25rem;
+                font-size: 1.2rem;
             }
             .dcit-footer-sign-group {
                 display: flex;
@@ -703,7 +703,7 @@
         setTimeout(window.fitDcitLandscapeCertificates, 150);
     });
 
-    // Build SSC-Board-Style Certificate HTML with Signature Handwriting Font for All Person Data
+    // Build SSC-Board-Style Certificate HTML with EB Garamond Italic for All Student/Person Data Fields
     window.buildDcitBoardCertificateHTML = function (certObj, isModalPreview) {
         ensureBoardCertificateStyles();
         const esc = s => String(s ?? '').replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
@@ -780,7 +780,7 @@
                             </div>
                         </div>
 
-                        <!-- Inner Statement Box with Signature Font for All Data Fields -->
+                        <!-- Inner Statement Box with EB Garamond Italic for All Data Fields -->
                         <div class="dcit-board-inner-box">
                             <div class="dcit-cert-line">
                                 <span class="dcit-cert-label">This is to certify that</span>
