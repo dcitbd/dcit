@@ -61,7 +61,7 @@ foreach ($payments as $p) {
     $sum_due   += (float)$p['due_amount'];
 }
 
-$page_title = 'পেমেন্ট, ফি ও ক্যাশ মেমো ম্যানেজমেন্ট';
+$page_title = 'পেমেন্ট ও হিসাব (ভাউচার ও মানি রিসিপ্ট ম্যানেজমেন্ট)';
 require_once __DIR__ . '/header.php';
 ?>
 <div class="kpi-grid" style="margin-bottom:20px;">
@@ -209,8 +209,9 @@ require_once __DIR__ . '/header.php';
                         </span>
                     </td>
                     <td style="white-space:nowrap;">
-                        <!-- Print/View Invoice Link -->
-                        <a href="invoice.php?id=<?= (int)$p['id'] ?>" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-xs" title="মেমো প্রিন্ট"><i class="fa fa-print"></i></a>
+                        <!-- Print & View Voucher / Money Receipt Links -->
+                        <a href="invoice.php?id=<?= (int)$p['id'] ?>&auto_print=1" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-xs" title="ভাউচার / মানি রিসিপ্ট সরাসরি প্রিন্ট করুন"><i class="fa fa-print"></i> ভাউচার প্রিন্ট</a>
+                        <a href="invoice.php?id=<?= (int)$p['id'] ?>" target="_blank" rel="noopener noreferrer" class="btn btn-outline btn-xs" title="ভাউচার / রিসিপ্ট ভিউ"><i class="fa fa-eye"></i> রিসিপ্ট ভিউ</a>
                         
                         <!-- Send SMS Button -->
                         <button type="button" class="btn btn-info btn-xs send-sms-btn" title="পেমেন্ট কনফার্মেশন এসএমএস পাঠান"

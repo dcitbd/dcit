@@ -561,3 +561,27 @@ body, h1, h2, h3, h4, h5, h6, p, a, span:not(.fa):not([class*="fa-"]), li, td, t
     margin-top: auto;
     justify-content: center;
 }
+
+
+/* ==========================================================================
+   PAYMENT VOUCHER / MONEY RECEIPT PRINT STYLES
+   ========================================================================== */
+#dcpVoucherPrintContainer {
+    display: none;
+}
+
+@media print {
+    body.printing-payment-voucher > *:not(#dcpVoucherPrintContainer) {
+        display: none !important;
+    }
+    body.printing-payment-voucher {
+        background: #ffffff !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        display: block !important;
+    }
+    body.printing-payment-voucher #dcpVoucherPrintContainer {
+        display: block !important;
+        width: 100% !important;
+    }
+}

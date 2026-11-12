@@ -1170,7 +1170,10 @@ function renderTabDashboard(body, db) {
                         <td>${esc(p.student_name)} (${esc(p.reg_no)})</td>
                         <td>${esc(p.course_name)}</td>
                         <td style="color:#dc2626; font-weight:800;">৳${Number(p.due_amount)}</td>
-                        <td><button onclick="openAutoSmsGatewayModal('${esc(p.phone||'01771770044')}','প্রিয় ${esc(p.student_name)}, আপনার ${esc(p.course_name)} কোর্সের বকেয়া ফি ৳${Number(p.due_amount)} পরিশোধ করার অনুরোধ করা হচ্ছে। - Dream Career IT')" class="btn btn-accent btn-xs"><i class="fa fa-paper-plane"></i> অটো SMS</button></td>
+                        <td style="white-space:nowrap;">
+                            <button onclick="printPaymentVoucherByReceipt('${esc(p.receipt_no)}')" class="btn btn-primary btn-xs" title="ভাউচার / রিসিপ্ট প্রিন্ট"><i class="fa fa-print"></i> ভাউচার</button>
+                            <button onclick="openAutoSmsGatewayModal('${esc(p.phone||'01771770044')}','প্রিয় ${esc(p.student_name)}, আপনার ${esc(p.course_name)} কোর্সের বকেয়া ফি ৳${Number(p.due_amount)} পরিশোধ করার অনুরোধ করা হচ্ছে। - Dream Career IT')" class="btn btn-accent btn-xs"><i class="fa fa-paper-plane"></i> অটো SMS</button>
+                        </td>
                     </tr>`).join('')}
                 </tbody>
             </table></div>
@@ -2864,55 +2867,800 @@ function deleteNotice(idx) {
 }
 
 /* ==========================================================================
-   10. PAYMENTS & UNIFIED STUDENT/PAYMENT REPORT WITH BRANDED PRINT HEADER
+   10. PAYMENTS, VOUCHER / MONEY RECEIPT PRINT & UNIFIED REPORT
    ========================================================================== */
+function ensureVoucherPrintStyles() {
+    if (document.getElementById('dcitVoucherPrintStyles')) return;
+    const st = document.createElement('style');
+    st.id = 'dcitVoucherPrintStyles';
+    st.textContent = `
+        #dcpVoucherPrintContainer {
+            display: none;
+        }
+        .dcp-voucher-card {
+            background: #ffffff;
+            border: 2px solid #0f766e;
+            border-radius: 12px;
+            padding: 24px 28px;
+            color: #0f172a;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 8px 24px rgba(15, 23, 42, 0.08);
+            margin-bottom: 16px;
+        }
+        .dcp-voucher-watermark {
+            position: absolute;
+            top: 54%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(-18deg);
+            font-size: 3.4rem;
+            font-weight: 900;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            pointer-events: none;
+            opacity: 0.07;
+            white-space: nowrap;
+            z-index: 0;
+        }
+        .dcp-voucher-watermark.paid { color: #15803d; }
+        .dcp-voucher-watermark.due { color: #dc2626; }
+        .dcp-voucher-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 16px;
+            border-bottom: 2px dashed #0f766e;
+            padding-bottom: 14px;
+            margin-bottom: 16px;
+            position: relative;
+            z-index: 1;
+        }
+        .dcp-voucher-header img {
+            width: 68px;
+            height: 68px;
+            border-radius: 50%;
+            border: 2.5px solid #0f766e;
+            object-fit: cover;
+            background: #fff;
+        }
+        .dcp-voucher-org {
+            text-align: center;
+            flex: 1;
+        }
+        .dcp-voucher-org h2 {
+            margin: 0;
+            color: #0f766e;
+            font-size: 1.45rem;
+            font-weight: 900;
+        }
+        .dcp-voucher-org p {
+            margin: 2px 0;
+            font-size: 0.82rem;
+            color: #334155;
+            font-weight: 600;
+        }
+        .dcp-voucher-badge-col {
+            text-align: right;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 6px;
+        }
+        .dcp-voucher-title-pill {
+            background: linear-gradient(135deg, #151442, #0f766e);
+            color: #fff;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-weight: 800;
+            font-size: 0.82rem;
+            letter-spacing: 0.5px;
+            white-space: nowrap;
+        }
+        .dcp-voucher-copy-tag {
+            background: #f1f5f9;
+            border: 1px solid #cbd5e1;
+            color: #0f172a;
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-size: 0.74rem;
+            font-weight: 800;
+        }
+        .dcp-voucher-meta-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 8px 18px;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 12px 16px;
+            margin-bottom: 16px;
+            font-size: 0.88rem;
+            position: relative;
+            z-index: 1;
+        }
+        .dcp-voucher-meta-grid div {
+            display: flex;
+            justify-content: space-between;
+            gap: 8px;
+            border-bottom: 1px dotted #cbd5e1;
+            padding-bottom: 4px;
+        }
+        .dcp-voucher-meta-grid span.lbl {
+            color: #475569;
+            font-weight: 700;
+        }
+        .dcp-voucher-meta-grid span.val {
+            color: #0f172a;
+            font-weight: 800;
+            text-align: right;
+        }
+        .dcp-voucher-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 14px;
+            position: relative;
+            z-index: 1;
+        }
+        .dcp-voucher-table th,
+        .dcp-voucher-table td {
+            border: 1px solid #94a3b8;
+            padding: 9px 12px;
+            font-size: 0.86rem;
+            text-align: left;
+        }
+        .dcp-voucher-table th {
+            background: #151442 !important;
+            color: #ffffff !important;
+            font-weight: 800;
+            -webkit-print-color-adjust: exact !important;
+            print-color-adjust: exact !important;
+        }
+        .dcp-voucher-table td.num,
+        .dcp-voucher-table th.num {
+            text-align: right;
+        }
+        .dcp-voucher-words-bar {
+            background: #f0fdf4;
+            border: 1px solid #bbf7d0;
+            border-radius: 8px;
+            padding: 8px 14px;
+            font-size: 0.86rem;
+            margin-bottom: 18px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            position: relative;
+            z-index: 1;
+        }
+        .dcp-voucher-sign-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            gap: 16px;
+            margin-top: 34px;
+            padding-top: 8px;
+            position: relative;
+            z-index: 1;
+        }
+        .dcp-voucher-sign-col {
+            border-top: 1.5px solid #334155;
+            width: 30%;
+            min-width: 150px;
+            text-align: center;
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: #1e293b;
+            padding-top: 5px;
+        }
+        .dcp-voucher-footer-note {
+            margin-top: 12px;
+            padding-top: 8px;
+            border-top: 1px solid #e2e8f0;
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.75rem;
+            color: #64748b;
+            font-weight: 600;
+        }
+        .dcp-voucher-cut-line {
+            border-top: 2px dashed #64748b;
+            margin: 14px 0;
+            text-align: center;
+            position: relative;
+        }
+        .dcp-voucher-cut-line span {
+            background: #fff;
+            padding: 0 12px;
+            font-size: 0.74rem;
+            color: #475569;
+            position: relative;
+            top: -10px;
+            font-weight: 700;
+        }
+        @media print {
+            @page {
+                size: A4 portrait;
+                margin: 10mm;
+            }
+            body.printing-payment-voucher > *:not(#dcpVoucherPrintContainer) {
+                display: none !important;
+            }
+            body.printing-payment-voucher {
+                background: #ffffff !important;
+                margin: 0 !important;
+                padding: 0 !important;
+                display: block !important;
+            }
+            body.printing-payment-voucher #dcpVoucherPrintContainer {
+                display: block !important;
+                width: 100% !important;
+                margin: 0 !important;
+                padding: 0 !important;
+            }
+            body.printing-payment-voucher .dcp-voucher-card {
+                box-shadow: none !important;
+                page-break-inside: avoid;
+                margin-bottom: 8px !important;
+                padding: 18px 22px !important;
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+        }
+    `;
+    document.head.appendChild(st);
+}
+
+function numberToBanglaWords(amount) {
+    const n = Math.round(Number(amount) || 0);
+    if (n === 0) return 'শূন্য টাকা মাত্র';
+    const ones = ['', 'এক', 'দুই', 'তিন', 'চার', 'পাঁচ', 'ছয়', 'সাত', 'আট', 'নয়', 'দশ',
+        'এগারো', 'বারো', 'তেরো', 'চৌদ্দ', 'পনেরো', 'ষোল', 'সতেরো', 'আঠারো', 'উনিশ', 'বিশ',
+        'একুশ', 'বাইশ', 'তেইশ', 'চব্বিশ', 'পঁচিশ', 'ছাব্বিশ', 'সাতাশ', 'আটাশ', 'ঊনত্রিশ', 'ত্রিশ',
+        'একত্রিশ', 'বত্রিশ', 'তেত্রিশ', 'চৌত্রিশ', 'পঁয়ত্রিশ', 'ছত্রিশ', 'সাঁইত্রিশ', 'আটত্রিশ', 'ঊনচল্লিশ', 'চল্লিশ',
+        'একচল্লিশ', 'বিয়াল্লিশ', 'তেতাল্লিশ', 'চুয়াল্লিশ', 'পঁয়তাল্লিশ', 'ছেচল্লিশ', 'সাতচল্লিশ', 'আটচল্লিশ', 'ঊনপঞ্চাশ', 'পঞ্চাশ',
+        'একান্ন', 'বায়ান্ন', 'তিপ্পান্ন', 'চুয়ান্ন', 'পঞ্চান্ন', 'ছাপ্পান্ন', 'সাতান্ন', 'আটান্ন', 'ঊনষাট', 'ষাট',
+        'একষট্টি', 'বাষট্টি', 'তেষট্টি', 'চৌষট্টি', 'পঁয়ষট্টি', 'ছেষট্টি', 'সাতষট্টি', 'আটষট্টি', 'ঊনসত্তর', 'সত্তর',
+        'একাত্তর', 'বাহাত্তর', 'তিয়াত্তর', 'চুয়াত্তর', 'পঁচাত্তর', 'ছিয়াত্তর', 'সাতাত্তর', 'আটাত্তর', 'ঊনআশি', 'আশি',
+        'একাশি', 'বিরাশি', 'তিরাশি', 'চুরাশি', 'পঁচাশি', 'ছিয়াশি', 'সাতাশি', 'আটাশি', 'ঊননব্বই', 'নব্বই',
+        'একানব্বই', 'বিরানব্বই', 'তিরানব্বই', 'চুরানব্বই', 'পঁচানব্বই', 'ছিয়ানব্বই', 'সাতানব্বই', 'আটানব্বই', 'নিরানব্বই'];
+
+    const parts = [];
+    let rem = n;
+    if (rem >= 100000) {
+        const lakh = Math.floor(rem / 100000);
+        parts.push((ones[lakh] || lakh) + ' লক্ষ');
+        rem %= 100000;
+    }
+    if (rem >= 1000) {
+        const th = Math.floor(rem / 1000);
+        parts.push((ones[th] || th) + ' হাজার');
+        rem %= 1000;
+    }
+    if (rem >= 100) {
+        const hun = Math.floor(rem / 100);
+        parts.push((ones[hun] || hun) + 'শত');
+        rem %= 100;
+    }
+    if (rem > 0) {
+        parts.push(ones[rem] || String(rem));
+    }
+    return parts.join(' ') + ' টাকা মাত্র';
+}
+
+function buildVoucherCardHTML(p, copyLabel = 'স্টুডেন্ট কপি (Student Copy)') {
+    const db = DCITStore.getDB();
+    const stu = (db.students || []).find(s => String(s.reg_no) === String(p.reg_no)) || {};
+    const siteNameBn = DCITStore.setting('site_name_bn', 'ড্রিম ক্যারিয়ার আইটি');
+    const siteNameEn = DCITStore.setting('site_name', 'Dream Career IT');
+    const addrBn = DCITStore.setting('address_bn', 'ভাই ভাই সুপার মার্কেট, নতুন পদুয়ার বাজার মসজিদের পাশে, পদুয়ার বাজার, বিশ্বরোড, কুমিল্লা - ৩৫০০');
+    const phone1 = DCITStore.setting('phone_1', '01771770044');
+    const phone2 = DCITStore.setting('phone_2', '01879653143');
+    const email1 = DCITStore.setting('email_1', 'dc13edubd@gmail.com');
+
+    const totalFee = Number(p.total_fee ?? p.amount ?? stu.course_fee ?? 1500);
+    const discount = Number(p.discount_amount || 0);
+    const paidAmt = Number(p.paid_amount ?? p.amount ?? 0);
+    const dueAmt = Math.max(0, Number(p.due_amount ?? (totalFee - discount - paidAmt)));
+    const statusText = dueAmt <= 0 ? 'PAID (পরিশোধিত)' : (paidAmt > 0 ? 'PARTIAL (আংশিক বকেয়া)' : 'DUE (বকেয়া)');
+    const isPaid = dueAmt <= 0;
+    const payType = p.payment_type || (isPaid ? 'Full Course Fee' : 'Installment');
+    const payMethod = p.payment_method || p.method || 'Cash';
+    const trxId = p.trx_id || 'CASH';
+    const payDate = p.payment_date || new Date().toISOString().slice(0, 10);
+    const batchName = p.batch_name || p.batch_no || stu.batch_no || 'Batch-2026-01';
+    const rollNo = p.roll_no || stu.roll_no || '-';
+    const fatherName = p.father_name || stu.father_name || '-';
+    const phoneNo = p.phone || stu.phone || phone1;
+    const collectedBy = p.collected_by || 'DR. A.K.M Lokman / Admin';
+    const remarks = p.remarks || (isPaid ? 'সম্পূর্ণ কোর্স ফি পরিশোধিত' : 'কিস্তিতে পরিশোধিত, বকেয়া প্রযোজ্য');
+
+    return `
+    <div class="dcp-voucher-card">
+        <div class="dcp-voucher-watermark ${isPaid ? 'paid' : 'due'}">${isPaid ? 'PAID / পরিশোধিত' : 'DUE / বকেয়া'}</div>
+        <div class="dcp-voucher-header">
+            <img src="../assets/img/logo.jpg" alt="Logo" onerror="this.src='assets/img/logo.jpg'">
+            <div class="dcp-voucher-org">
+                <h2>${esc(siteNameBn)} (${esc(siteNameEn)})</h2>
+                <p>${esc(addrBn)}</p>
+                <p>হটলাইনঃ ${esc(phone1)}, ${esc(phone2)} | ইমেইলঃ ${esc(email1)}</p>
+            </div>
+            <div class="dcp-voucher-badge-col">
+                <span class="dcp-voucher-title-pill"><i class="fa fa-file-text-o"></i> মানি রিসিপ্ট / ক্যাশ ভাউচার</span>
+                <span class="dcp-voucher-copy-tag">${esc(copyLabel)}</span>
+            </div>
+        </div>
+
+        <div class="dcp-voucher-meta-grid">
+            <div><span class="lbl">ভাউচার / রিসিপ্ট নং:</span><span class="val">${esc(p.receipt_no)}</span></div>
+            <div><span class="lbl">তারিখ (Date):</span><span class="val">${esc(payDate)}</span></div>
+            <div><span class="lbl">শিক্ষার্থীর নাম:</span><span class="val">${esc(p.student_name)}</span></div>
+            <div><span class="lbl">রেজিঃ ও রোল নং:</span><span class="val">রেজিঃ ${esc(p.reg_no)} | রোলঃ ${esc(rollNo)}</span></div>
+            <div><span class="lbl">পিতার নাম:</span><span class="val">${esc(fatherName)}</span></div>
+            <div><span class="lbl">মোবাইল নাম্বার:</span><span class="val">${esc(phoneNo)}</span></div>
+            <div><span class="lbl">পেমেন্ট মাধ্যম ও TrxID:</span><span class="val">${esc(payMethod)} (${esc(trxId)})</span></div>
+            <div><span class="lbl">পেমেন্ট স্ট্যাটাস:</span><span class="val" style="color:${isPaid ? '#15803d' : '#dc2626'};">${esc(statusText)}</span></div>
+        </div>
+
+        <table class="dcp-voucher-table">
+            <thead>
+                <tr>
+                    <th style="width:45px;">ক্রমিক</th>
+                    <th>কোর্স ও বিবরণ (Course & Description)</th>
+                    <th>পেমেন্টের ধরন</th>
+                    <th class="num">মোট ফি (৳)</th>
+                    <th class="num">জমা / পরিশোধ (৳)</th>
+                    <th class="num">বকেয়া (৳)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>০১</td>
+                    <td>
+                        <strong>${esc(p.course_name)}</strong> (${esc(batchName)})<br>
+                        <small style="color:#475569;">মন্তব্য: ${esc(remarks)}</small>
+                    </td>
+                    <td>${esc(payType)}</td>
+                    <td class="num">৳ ${totalFee.toLocaleString('en-IN', {minimumFractionDigits: 2})}</td>
+                    <td class="num" style="color:#15803d; font-weight:800;">৳ ${paidAmt.toLocaleString('en-IN', {minimumFractionDigits: 2})}</td>
+                    <td class="num" style="color:${dueAmt > 0 ? '#dc2626' : '#475569'}; font-weight:800;">৳ ${dueAmt.toLocaleString('en-IN', {minimumFractionDigits: 2})}</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="dcp-voucher-words-bar">
+            <div><strong>কথায় (পরিশোধিত):</strong> ${esc(numberToBanglaWords(paidAmt))}</div>
+            <div><strong>সর্বমোট জমা: <span style="color:#15803d;font-size:1rem;">৳ ${paidAmt.toLocaleString('en-IN')}</span></strong> ${dueAmt > 0 ? `| <strong style="color:#dc2626;">বকেয়া: ৳ ${dueAmt.toLocaleString('en-IN')}</strong>` : ''}</div>
+        </div>
+
+        <div class="dcp-voucher-sign-row">
+            <div class="dcp-voucher-sign-col">শিক্ষার্থী / অভিভাবকের স্বাক্ষর</div>
+            <div class="dcp-voucher-sign-col">আদায়কারীর স্বাক্ষর (${esc(collectedBy)})</div>
+            <div class="dcp-voucher-sign-col">কর্তৃপক্ষের স্বাক্ষর ও সিল</div>
+        </div>
+
+        <div class="dcp-voucher-footer-note">
+            <span>কম্পিউটার জেনারেটেড অফিশিয়াল মানি রিসিপ্ট / ভাউচার — ${esc(siteNameEn)}</span>
+            <span>ভেরিফিকেশন আইডি: ${esc(p.receipt_no)} / Reg-${esc(p.reg_no)}</span>
+        </div>
+    </div>`;
+}
+
+function quickViewPaymentVoucher(idx) {
+    ensureVoucherPrintStyles();
+    const db = DCITStore.getDB();
+    const p = (db.payments || [])[idx];
+    if (!p) {
+        showAdminToast('error', 'পাওয়া যায়নি!', 'পেমেন্ট ভাউচার রেকর্ডটি পাওয়া যায়নি।');
+        return;
+    }
+    const html = `
+        <div class="no-print" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; margin-bottom:14px; background:#eff6ff; padding:12px 16px; border-radius:10px; border:1px solid #bfdbfe;">
+            <div>
+                <strong style="color:#1e3a8a;"><i class="fa fa-print"></i> ভাউচার / মানি রিসিপ্ট প্রিন্ট অপশন:</strong>
+                <small style="display:block; color:#475569;">A4 কাগজে ১ কপি অথবা একই পেজে অফিস কপি + স্টুডেন্ট কপি প্রিন্ট করতে পারবেন।</small>
+            </div>
+            <div style="display:flex; gap:8px; flex-wrap:wrap;">
+                <button type="button" onclick="printPaymentVoucher(${idx}, false)" class="btn btn-primary btn-xs"><i class="fa fa-print"></i> 🖨️ সিঙ্গেল কপি প্রিন্ট</button>
+                <button type="button" onclick="printPaymentVoucher(${idx}, true)" class="btn btn-success btn-xs"><i class="fa fa-copy"></i> 🖨️ ডুয়াল কপি প্রিন্ট (অফিস + স্টুডেন্ট)</button>
+                <button type="button" onclick="closeAdminModal(); openPaymentModal(${idx});" class="btn btn-outline btn-xs"><i class="fa fa-edit"></i> এডিট</button>
+            </div>
+        </div>
+        ${buildVoucherCardHTML(p, 'স্টুডেন্ট কপি (Student Copy)')}
+    `;
+    openAdminModal(`🧾 পেমেন্ট ভাউচার ও মানি রিসিপ্ট — ${esc(p.receipt_no)}`, html);
+}
+
+function printPaymentVoucher(idx, dualCopy = false) {
+    ensureVoucherPrintStyles();
+    const db = DCITStore.getDB();
+    const p = (db.payments || [])[idx];
+    if (!p) {
+        showAdminToast('error', 'ত্রুটি!', 'ভাউচার পাওয়া যায়নি!');
+        return;
+    }
+    let container = document.getElementById('dcpVoucherPrintContainer');
+    if (!container) {
+        container = document.createElement('div');
+        container.id = 'dcpVoucherPrintContainer';
+        document.body.appendChild(container);
+    }
+    if (dualCopy) {
+        container.innerHTML = `
+            ${buildVoucherCardHTML(p, 'অফিস কপি (Office Copy)')}
+            <div class="dcp-voucher-cut-line"><span>✂️ এখান থেকে কাটুন (Cut Here) ✂️</span></div>
+            ${buildVoucherCardHTML(p, 'স্টুডেন্ট কপি (Student Copy)')}
+        `;
+    } else {
+        container.innerHTML = buildVoucherCardHTML(p, 'স্টুডেন্ট কপি (Student Copy)');
+    }
+
+    document.body.classList.add('printing-payment-voucher');
+    const cleanup = () => {
+        document.body.classList.remove('printing-payment-voucher');
+        window.removeEventListener('afterprint', cleanup);
+    };
+    window.addEventListener('afterprint', cleanup);
+    setTimeout(() => {
+        window.print();
+        setTimeout(cleanup, 800);
+    }, 120);
+}
+
+function printPaymentVoucherByReceipt(receiptNo, dualCopy = false) {
+    const db = DCITStore.getDB();
+    const idx = (db.payments || []).findIndex(p => String(p.receipt_no) === String(receiptNo));
+    if (idx >= 0) {
+        printPaymentVoucher(idx, dualCopy);
+    } else {
+        showAdminToast('error', 'পাওয়া যায়নি!', 'এই রিসিপ্ট নম্বরের ভাউচার পাওয়া যায়নি।');
+    }
+}
+
+function printPaymentVoucherByStudentReg(regNo) {
+    const db = DCITStore.getDB();
+    let idx = (db.payments || []).findIndex(p => String(p.reg_no) === String(regNo));
+    if (idx < 0) {
+        const s = (db.students || []).find(st => String(st.reg_no) === String(regNo));
+        if (!s) {
+            showAdminToast('error', 'পাওয়া যায়নি!', 'শিক্ষার্থীর পেমেন্ট রেকর্ড পাওয়া যায়নি।');
+            return;
+        }
+        const fee = Number(s.course_fee || 1500);
+        const paid = Number(s.paid_amount ?? fee);
+        const due = Math.max(0, fee - paid);
+        DCITStore.updateDB(d => {
+            d.payments = d.payments || [];
+            d.payments.unshift({
+                id: Date.now(),
+                receipt_no: 'INV-' + (s.batch_year || 2026) + '-' + String(d.payments.length + 1).padStart(3, '0'),
+                reg_no: s.reg_no,
+                student_name: s.name,
+                phone: s.phone || '01771770044',
+                course_name: s.course_name,
+                batch_name: s.batch_no || 'Batch-2026-01',
+                total_fee: fee,
+                paid_amount: paid,
+                due_amount: due,
+                payment_type: due > 0 ? 'Installment' : 'Full Course Fee',
+                payment_method: s.payment_method || 'Cash',
+                trx_id: s.trx_id || 'CASH',
+                payment_date: new Date().toISOString().slice(0, 10),
+                collected_by: 'DR. A.K.M Lokman',
+                status: due > 0 ? 'Partial' : 'Paid'
+            });
+        });
+        idx = 0;
+    }
+    printPaymentVoucher(idx, false);
+}
+
+function openPaymentModal(editIdx = null) {
+    const db = DCITStore.getDB();
+    const payments = db.payments || [];
+    const students = db.students || [];
+    const courses = db.courses || [];
+    const p = editIdx !== null ? payments[editIdx] : null;
+    const nextInv = 'INV-' + new Date().getFullYear() + '-' + String(payments.length + 1).padStart(3, '0');
+    let payMethods = ['Cash', 'bKash (01771770044)', 'Nagad (01771770044)', 'Rocket (01771770044)', 'Bank Transfer'];
+    try {
+        const parsed = JSON.parse(DCITStore.setting('payment_methods_json', '[]'));
+        if (Array.isArray(parsed) && parsed.length) payMethods = parsed;
+    } catch (e) {}
+
+    const html = `
+    <form onsubmit="savePaymentModal(event, ${editIdx !== null ? editIdx : 'null'})">
+        ${editIdx === null ? `
+        <div class="form-group" style="background:#eff6ff; padding:12px 14px; border-radius:10px; border:1px dashed #3b82f6; margin-bottom:14px;">
+            <label style="color:#1e40af;"><i class="fa fa-user-plus"></i> স্টুডেন্ট তালিকা থেকে সিলেক্ট করুন (অটো-ফিল):</label>
+            <select id="pm-student-preset" class="form-control" onchange="autoFillPaymentByStudentSelect()">
+                <option value="">-- শিক্ষার্থী নির্বাচন করুন (অথবা নিচে ম্যানুয়ালি লিখুন) --</option>
+                ${students.map(s => {
+                    const crs = courses.find(c => c.title === s.course_name);
+                    const fee = Number(s.course_fee || crs?.fee || 1500);
+                    return `<option value="${esc(s.reg_no)}"
+                        data-reg="${esc(s.reg_no)}"
+                        data-name="${esc(s.name)}"
+                        data-phone="${esc(s.phone || '01771770044')}"
+                        data-course="${esc(s.course_name)}"
+                        data-batch="${esc(s.batch_no || 'Batch-2026-01')}"
+                        data-fee="${fee}">
+                        ${esc(s.reg_no)} — ${esc(s.name)} (${esc(s.course_name)} - ৳${fee})
+                    </option>`;
+                }).join('')}
+            </select>
+        </div>` : ''}
+
+        <div class="form-grid">
+            <div class="form-group">
+                <label>ভাউচার / রিসিপ্ট নং *</label>
+                <input type="text" id="pm-receipt" class="form-control" value="${esc(p?.receipt_no || nextInv)}" required>
+            </div>
+            <div class="form-group">
+                <label>শিক্ষার্থীর রেজিঃ নং *</label>
+                <input type="text" id="pm-reg" class="form-control" value="${esc(p?.reg_no || '')}" required>
+            </div>
+            <div class="form-group">
+                <label>শিক্ষার্থীর নাম *</label>
+                <input type="text" id="pm-name" class="form-control" value="${esc(p?.student_name || '')}" required>
+            </div>
+            <div class="form-group">
+                <label>মোবাইল নাম্বার *</label>
+                <input type="text" id="pm-phone" class="form-control" value="${esc(p?.phone || '01771770044')}" required>
+            </div>
+            <div class="form-group">
+                <label>কোর্সের নাম *</label>
+                <input type="text" id="pm-course" class="form-control" value="${esc(p?.course_name || 'Advance Microsoft Office')}" required>
+            </div>
+            <div class="form-group">
+                <label>ব্যাচ নং</label>
+                <input type="text" id="pm-batch" class="form-control" value="${esc(p?.batch_name || p?.batch_no || 'Batch-2026-01')}">
+            </div>
+            <div class="form-group">
+                <label>মোট নির্ধারিত ফি (Total Fee ৳) *</label>
+                <input type="number" step="0.01" id="pm-total" class="form-control" value="${Number(p?.total_fee ?? p?.amount ?? 1500)}" oninput="recalcPaymentModalDue()" required>
+            </div>
+            <div class="form-group">
+                <label>জমা / পরিশোধিত টাকা (Paid ৳) *</label>
+                <input type="number" step="0.01" id="pm-paid" class="form-control" value="${Number(p?.paid_amount ?? p?.amount ?? 1500)}" oninput="recalcPaymentModalDue()" required>
+            </div>
+            <div class="form-group">
+                <label>বকেয়া টাকা (Due ৳ - অটো হিসাব)</label>
+                <input type="number" step="0.01" id="pm-due" class="form-control" value="${Number(p?.due_amount ?? 0)}" readonly style="background:#fff1f2; color:#dc2626; font-weight:800;">
+            </div>
+            <div class="form-group">
+                <label>পেমেন্টের ধরন</label>
+                <select id="pm-type" class="form-control">
+                    ${['Full Course Fee', 'Installment', 'Admission Fee', 'Exam / Certificate Fee'].map(t => `<option value="${t}" ${(p?.payment_type || '') === t ? 'selected' : ''}>${t}</option>`).join('')}
+                </select>
+            </div>
+            <div class="form-group">
+                <label>পেমেন্ট মাধ্যম (Method)</label>
+                <select id="pm-method" class="form-control">
+                    ${payMethods.map(m => `<option value="${esc(m)}" ${(p?.payment_method || '') === m ? 'selected' : ''}>${esc(m)}</option>`).join('')}
+                </select>
+            </div>
+            <div class="form-group">
+                <label>ট্রানজেকশন আইডি (TrxID / রেফারেন্স)</label>
+                <input type="text" id="pm-trx" class="form-control" value="${esc(p?.trx_id || 'CASH')}">
+            </div>
+            <div class="form-group">
+                <label>পেমেন্ট তারিখ *</label>
+                <input type="date" id="pm-date" class="form-control" value="${esc(p?.payment_date || new Date().toISOString().slice(0, 10))}" required>
+            </div>
+            <div class="form-group">
+                <label>আদায়কারী (Collected By)</label>
+                <input type="text" id="pm-collector" class="form-control" value="${esc(p?.collected_by || 'DR. A.K.M Lokman')}">
+            </div>
+            <div class="form-group" style="grid-column:1/-1;">
+                <label>মন্তব্য (Remarks)</label>
+                <input type="text" id="pm-remarks" class="form-control" value="${esc(p?.remarks || '')}" placeholder="যেমন: ১ম কিস্তি পরিশোধ / সম্পূর্ণ ফি পরিশোধ">
+            </div>
+        </div>
+        <div style="margin-top:16px; display:flex; justify-content:flex-end; gap:10px; flex-wrap:wrap;">
+            <button type="button" onclick="closeAdminModal()" class="btn btn-outline">বাতিল</button>
+            <button type="submit" name="save_only" class="btn btn-primary"><i class="fa fa-check-circle"></i> ${p ? 'পেমেন্ট আপডেট করুন' : 'সেভ ও ভাউচার তৈরি করুন'}</button>
+        </div>
+    </form>`;
+    openAdminModal(p ? 'পেমেন্ট ও ভাউচার তথ্য আপডেট করুন' : 'নতুন পেমেন্ট গ্রহণ / ক্যাশ ভাউচার তৈরি করুন', html);
+}
+
+function autoFillPaymentByStudentSelect() {
+    const sel = document.getElementById('pm-student-preset');
+    if (!sel) return;
+    const opt = sel.options[sel.selectedIndex];
+    if (!opt || !opt.value) return;
+    document.getElementById('pm-reg').value = opt.getAttribute('data-reg') || '';
+    document.getElementById('pm-name').value = opt.getAttribute('data-name') || '';
+    document.getElementById('pm-phone').value = opt.getAttribute('data-phone') || '01771770044';
+    document.getElementById('pm-course').value = opt.getAttribute('data-course') || '';
+    document.getElementById('pm-batch').value = opt.getAttribute('data-batch') || 'Batch-2026-01';
+    const fee = Number(opt.getAttribute('data-fee') || 1500);
+    document.getElementById('pm-total').value = fee;
+    document.getElementById('pm-paid').value = fee;
+    document.getElementById('pm-due').value = 0;
+}
+
+function recalcPaymentModalDue() {
+    const tot = Number(document.getElementById('pm-total')?.value || 0);
+    const paid = Number(document.getElementById('pm-paid')?.value || 0);
+    const dueEl = document.getElementById('pm-due');
+    if (dueEl) dueEl.value = Math.max(0, tot - paid).toFixed(2);
+}
+
+function savePaymentModal(e, editIdx) {
+    e.preventDefault();
+    const totalFee = Number(document.getElementById('pm-total').value || 0);
+    const paidAmt = Number(document.getElementById('pm-paid').value || 0);
+    const dueAmt = Math.max(0, totalFee - paidAmt);
+    const pDate = document.getElementById('pm-date').value || new Date().toISOString().slice(0, 10);
+    const obj = {
+        id: editIdx !== null ? (DCITStore.getDB().payments[editIdx]?.id || Date.now()) : Date.now(),
+        receipt_no: document.getElementById('pm-receipt').value.trim(),
+        reg_no: document.getElementById('pm-reg').value.trim(),
+        student_name: document.getElementById('pm-name').value.trim(),
+        phone: document.getElementById('pm-phone').value.trim(),
+        course_name: document.getElementById('pm-course').value.trim(),
+        batch_name: document.getElementById('pm-batch').value.trim(),
+        payment_year: Number(pDate.slice(0, 4)) || 2026,
+        total_fee: totalFee,
+        paid_amount: paidAmt,
+        due_amount: dueAmt,
+        payment_type: document.getElementById('pm-type').value,
+        payment_method: document.getElementById('pm-method').value,
+        trx_id: document.getElementById('pm-trx').value.trim() || 'CASH',
+        payment_date: pDate,
+        collected_by: document.getElementById('pm-collector').value.trim() || 'Admin',
+        remarks: document.getElementById('pm-remarks').value.trim(),
+        status: dueAmt <= 0 ? 'Paid' : (paidAmt > 0 ? 'Partial' : 'Due')
+    };
+
+    let targetIdx = 0;
+    DCITStore.updateDB(db => {
+        db.payments = db.payments || [];
+        if (editIdx !== null && db.payments[editIdx]) {
+            db.payments[editIdx] = { ...db.payments[editIdx], ...obj };
+            targetIdx = editIdx;
+        } else {
+            db.payments.unshift(obj);
+            targetIdx = 0;
+        }
+        const stu = (db.students || []).find(s => String(s.reg_no) === String(obj.reg_no));
+        if (stu) {
+            stu.course_fee = totalFee;
+            stu.paid_amount = paidAmt;
+            stu.due_amount = dueAmt;
+            stu.payment_method = obj.payment_method;
+            stu.trx_id = obj.trx_id;
+        }
+    });
+
+    closeAdminModal();
+    renderAdminApp();
+    notifyToast('পেমেন্ট ও মানি রিসিপ্ট সফলভাবে সংরক্ষিত হয়েছে!');
+    setTimeout(() => quickViewPaymentVoucher(targetIdx), 150);
+}
+
+function deletePaymentRecord(idx) {
+    if (!confirm('আপনি কি নিশ্চিতভাবে এই পেমেন্ট ও ভাউচার রেকর্ডটি মুছে ফেলতে চান?')) return;
+    DCITStore.updateDB(db => {
+        db.payments.splice(idx, 1);
+    });
+    renderAdminApp();
+    notifyToast('পেমেন্ট রেকর্ড মুছে ফেলা হয়েছে।', 'danger');
+}
+
 function renderTabPayments(el, db) {
+    ensureVoucherPrintStyles();
     const payments = db.payments || [];
     const dueCnt = payments.filter(p => Number(p.due_amount || 0) > 0).length;
+    const paidCnt = payments.filter(p => Number(p.due_amount || 0) <= 0).length;
+
+    const sumTotal = payments.reduce((s, p) => s + Number(p.total_fee || p.amount || 0), 0);
+    const sumPaid  = payments.reduce((s, p) => s + Number(p.paid_amount ?? p.amount ?? 0), 0);
+    const sumDue   = payments.reduce((s, p) => s + Number(p.due_amount || 0), 0);
+
     const filtered = payments.filter(p => {
-        if (currentCourseFilter === 'DUE') return Number(p.due_amount || 0) > 0;
+        if (currentCourseFilter === 'DUE' && Number(p.due_amount || 0) <= 0) return false;
+        if (currentCourseFilter === 'PAID' && Number(p.due_amount || 0) > 0) return false;
         const q = currentSearch.toLowerCase();
-        return !q || [p.receipt_no, p.student_name, p.reg_no, p.course_name].some(v => String(v||'').toLowerCase().includes(q));
+        return !q || [p.receipt_no, p.student_name, p.reg_no, p.course_name, p.trx_id, p.payment_method].some(v => String(v||'').toLowerCase().includes(q));
     });
     const pg = paginateAdminList(filtered, 'payments');
 
     el.innerHTML = `
+    <div class="kpi-grid" style="margin-bottom:18px;">
+        <div class="kpi-card">
+            <div class="kpi-info"><h4>মোট নির্ধারিত ফি (Receivable)</h4><h2>৳ ${sumTotal.toLocaleString()}</h2></div>
+            <div class="kpi-icon" style="background:#e0f2fe; color:#0369a1;"><i class="fa fa-calculator"></i></div>
+        </div>
+        <div class="kpi-card">
+            <div class="kpi-info"><h4>মোট আদায়কৃত পেমেন্ট (Collected)</h4><h2 style="color:#15803d;">৳ ${sumPaid.toLocaleString()}</h2></div>
+            <div class="kpi-icon" style="background:#dcfce7; color:#15803d;"><i class="fa fa-check-circle"></i></div>
+        </div>
+        <div class="kpi-card">
+            <div class="kpi-info"><h4>মোট বকেয়া ফি (Total Due)</h4><h2 style="color:#dc2626;">৳ ${sumDue.toLocaleString()}</h2></div>
+            <div class="kpi-icon" style="background:#fee2e2; color:#dc2626;"><i class="fa fa-exclamation-circle"></i></div>
+        </div>
+    </div>
+
     <div class="counter-filter-bar">
         <div class="counter-pills">
             <button class="counter-pill ${currentCourseFilter===''?'active':''}" onclick="currentCourseFilter='';renderAdminApp();">
                 <i class="fa fa-money"></i> সকল পেমেন্ট <b>${payments.length}</b>
             </button>
+            <button class="counter-pill ${currentCourseFilter==='PAID'?'active':''}" onclick="currentCourseFilter='PAID';renderAdminApp();">
+                <i class="fa fa-check-circle"></i> পরিশোধিত (Paid) <b>${paidCnt}</b>
+            </button>
             <button class="counter-pill ${currentCourseFilter==='DUE'?'active':''}" onclick="currentCourseFilter='DUE';renderAdminApp();">
                 <i class="fa fa-exclamation-triangle"></i> শুধুমাত্র বকেয়া (Due List) <b>${dueCnt}</b>
             </button>
+        </div>
+        <div style="display:flex; gap:8px; flex-wrap:wrap;">
+            <button onclick="openPaymentModal()" class="btn btn-primary btn-xs"><i class="fa fa-plus-circle"></i> ➕ নতুন পেমেন্ট / ভাউচার তৈরি</button>
+            <button onclick="window.print()" class="btn btn-outline btn-xs"><i class="fa fa-print"></i> লেজার প্রিন্ট</button>
         </div>
     </div>
 
     <div class="panel-card">
         <div class="panel-header">
-            <h3><i class="fa fa-money"></i> পেমেন্ট ও মানি রিসিপ্ট লেজার (${filtered.length})</h3>
+            <h3><i class="fa fa-money"></i> পেমেন্ট, হিসাব ও মানি রিসিপ্ট / ভাউচার লেজার (${filtered.length})</h3>
+            <div style="display:flex; gap:8px; flex-wrap:wrap; align-items:center;" class="no-print">
+                <input type="text" class="form-control" placeholder="রিসিপ্ট নং, নাম, রেজিঃ নং, কোর্স বা TrxID..." value="${esc(currentSearch)}" oninput="currentSearch=this.value;adminPages['payments']=1;renderAdminApp();" style="width:260px;">
+            </div>
         </div>
         <div class="panel-body">
             ${renderBulkToolbar('payments', ['Paid', 'Partial'])}
             <div class="dcp-table-wrap">
                 <table class="dcp-table">
-                    <thead><tr><th><input type="checkbox" onchange="toggleSelectAllRows('payments',this.checked)"></th><th>রিসিপ্ট নং</th><th>শিক্ষার্থী ও রেজিঃ</th><th>কোর্স ও ব্যাচ</th><th>মোট ফি</th><th>পরিশোধ (Paid)</th><th>বকেয়া (Due)</th><th>মেথড ও TrxID</th><th>তারিখ</th><th>অ্যাকশন</th></tr></thead>
+                    <thead>
+                        <tr>
+                            <th><input type="checkbox" onchange="toggleSelectAllRows('payments',this.checked)"></th>
+                            <th>রিসিপ্ট / ভাউচার নং</th>
+                            <th>শিক্ষার্থী ও রেজিঃ নং</th>
+                            <th>কোর্স ও ব্যাচ</th>
+                            <th>মোট ফি</th>
+                            <th>পরিশোধ (Paid)</th>
+                            <th>বকেয়া (Due)</th>
+                            <th>মেথড ও TrxID</th>
+                            <th>তারিখ ও স্ট্যাটাস</th>
+                            <th>ভাউচার প্রিন্ট ও অ্যাকশন</th>
+                        </tr>
+                    </thead>
                     <tbody>
-                        ${pg.slice.map(p => {
+                        ${pg.slice.length === 0 ? `<tr><td colspan="10" style="text-align:center; padding:26px; color:#64748b;">কোনো পেমেন্ট রেকর্ড পাওয়া যায়নি।</td></tr>` :
+                        pg.slice.map(p => {
                             const realIdx = payments.findIndex(x => x.receipt_no === p.receipt_no);
+                            const dueVal = Number(p.due_amount || 0);
+                            const stBadge = dueVal <= 0 ? 'badge-success' : 'badge-warning';
+                            const stLabel = dueVal <= 0 ? 'Paid' : (p.status || 'Partial');
                             return `
                             <tr>
                                 <td><input type="checkbox" class="row-bulk-chk" data-idx="${realIdx}" onchange="toggleBulkRow('payments','${esc(p.receipt_no)}',this.checked)"></td>
-                                <td><strong>${esc(p.receipt_no)}</strong></td>
-                                <td><strong>${esc(p.student_name)}</strong> (${esc(p.reg_no)})</td>
-                                <td>${esc(p.course_name)}<br><small>${esc(p.batch_name || p.batch_no || '')}</small></td>
-                                <td>৳${Number(p.total_fee || p.amount || 0)}</td>
-                                <td style="color:#16a34a;font-weight:700;">৳${Number(p.paid_amount ?? p.amount ?? 0)}</td>
-                                <td style="color:#dc2626;font-weight:800;">৳${Number(p.due_amount || 0)}</td>
-                                <td>${esc(p.payment_method || p.method || 'Cash')}<br><small>${esc(p.trx_id || 'CASH')}</small></td>
-                                <td>${esc(p.payment_date)}</td>
                                 <td>
-                                    <button onclick="openAutoSmsGatewayModal('${esc(p.phone||'01771770044')}','প্রিয় ${esc(p.student_name)}, রিসিপ্ট ${esc(p.receipt_no)}: পরিশোধিত ৳${Number(p.paid_amount||0)}, বকেয়া ৳${Number(p.due_amount||0)}। - Dream Career IT')" class="btn btn-accent btn-xs"><i class="fa fa-paper-plane"></i> SMS</button>
+                                    <strong>${esc(p.receipt_no)}</strong><br>
+                                    <small style="color:#64748b;">${esc(p.payment_type || 'Course Fee')}</small>
+                                </td>
+                                <td>
+                                    <strong>${esc(p.student_name)}</strong><br>
+                                    <small>রেজিঃ ${esc(p.reg_no)} ${p.phone ? '| ' + esc(p.phone) : ''}</small>
+                                </td>
+                                <td>${esc(p.course_name)}<br><small>${esc(p.batch_name || p.batch_no || '')}</small></td>
+                                <td>৳${Number(p.total_fee || p.amount || 0).toLocaleString()}</td>
+                                <td style="color:#16a34a;font-weight:700;">৳${Number(p.paid_amount ?? p.amount ?? 0).toLocaleString()}</td>
+                                <td style="color:${dueVal > 0 ? '#dc2626' : '#64748b'};font-weight:800;">৳${dueVal.toLocaleString()}</td>
+                                <td>${esc(p.payment_method || p.method || 'Cash')}<br><small>${esc(p.trx_id || 'CASH')}</small></td>
+                                <td>
+                                    ${esc(p.payment_date)}<br>
+                                    <span class="badge ${stBadge}">${esc(stLabel)}</span>
+                                </td>
+                                <td style="white-space:nowrap;">
+                                    <button onclick="printPaymentVoucher(${realIdx}, false)" class="btn btn-primary btn-xs" title="ভাউচার / মানি রিসিপ্ট প্রিন্ট করুন"><i class="fa fa-print"></i> ভাউচার প্রিন্ট</button>
+                                    <button onclick="quickViewPaymentVoucher(${realIdx})" class="btn btn-outline btn-xs" title="ভাউচার প্রিভিউ ও ডুয়াল কপি প্রিন্ট"><i class="fa fa-eye"></i> রিসিপ্ট ভিউ</button>
+                                    <button onclick="openPaymentModal(${realIdx})" class="btn btn-success btn-xs" title="পেমেন্ট ও কিস্তি এডিট"><i class="fa fa-edit"></i></button>
+                                    <button onclick="openAutoSmsGatewayModal('${esc(p.phone||'01771770044')}','প্রিয় ${esc(p.student_name)}, রিসিপ্ট ${esc(p.receipt_no)}: পরিশোধিত ৳${Number(p.paid_amount||0)}, বকেয়া ৳${Number(p.due_amount||0)}। - Dream Career IT')" class="btn btn-accent btn-xs" title="পেমেন্ট SMS পাঠান"><i class="fa fa-paper-plane"></i> SMS</button>
+                                    <button onclick="deletePaymentRecord(${realIdx})" class="btn btn-danger btn-xs" title="ডিলিট"><i class="fa fa-trash"></i></button>
                                 </td>
                             </tr>`;
                         }).join('')}
@@ -3026,6 +3774,7 @@ function renderTabReports(el, db) {
                         <th>পরিশোধ (Paid)</th>
                         <th>বকেয়া (Due)</th>
                         <th>স্ট্যাটাস ও জিপিএ</th>
+                        <th class="no-print">ভাউচার</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -3040,6 +3789,7 @@ function renderTabReports(el, db) {
                         <td style="color:#16a34a;font-weight:700;">৳${r.paid}</td>
                         <td style="color:#dc2626;font-weight:800;">৳${r.due}</td>
                         <td>${esc(r.exam_status)} (${esc(r.result)})</td>
+                        <td class="no-print"><button onclick="printPaymentVoucherByStudentReg('${esc(r.reg_no)}')" class="btn btn-primary btn-xs" title="মানি রিসিপ্ট / ভাউচার প্রিন্ট"><i class="fa fa-print"></i> রিসিপ্ট প্রিন্ট</button></td>
                     </tr>`).join('')}
                 </tbody>
             </table>
