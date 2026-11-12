@@ -117,7 +117,7 @@
         }
     });
 
-    // Inject Board-Style Certificate CSS, EB Garamond Typography, Responsive Landscape Scaler & @media print
+    // Inject Board-Style Certificate CSS, EB Garamond Typography, Signature Handwriting Font & Responsive Scaler
     function ensureBoardCertificateStyles() {
         if (document.getElementById('dcitBoardCertStyles')) return;
         const st = document.createElement('style');
@@ -125,7 +125,7 @@
         st.textContent = `
             @import url('https://fonts.googleapis.com/css2?family=Alex+Brush&family=Cormorant+Garamond:ital,wght@0,600;0,700;1,600;1,700&family=Dancing+Script:wght@700&family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,500;1,600;1,700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap');
 
-            /* Responsive Landscape Stage Wrapper (Always preserves Landscape 10.4in x 7.85in aspect ratio on Mobile/Tablet/Desktop) */
+            /* Responsive Landscape Stage Wrapper */
             .dcit-cert-responsive-stage {
                 width: 100%;
                 display: flex;
@@ -144,7 +144,7 @@
                 transition: transform 0.15s ease-out;
             }
 
-            /* Fixed Landscape Certificate Canvas (Never collapses into portrait) */
+            /* Fixed Landscape Certificate Canvas */
             .dcit-board-cert-outer {
                 position: relative;
                 width: 10.4in;
@@ -218,7 +218,7 @@
                 z-index: 3;
             }
 
-            /* Countless Small "Dream Career IT" Watermark Texts (15% Opacity) */
+            /* Countless Small Watermarks (15% Opacity) */
             .dcit-watermark-text-layer {
                 position: absolute;
                 inset: -40px;
@@ -233,7 +233,7 @@
                 transform: rotate(-14deg);
             }
             .dcit-watermark-text-row {
-                font-family: 'EB Garamond', 'Georgia', 'Times New Roman', serif;
+                font-family: 'EB Garamond', 'Georgia', serif;
                 font-size: 10.5px;
                 font-weight: 700;
                 color: #475569;
@@ -318,12 +318,12 @@
             .dcit-meta-right {
                 text-align: right;
             }
+            /* Serial & Reg numbers rendered in Signature / Handwriting font style */
             .dcit-serial-num {
-                font-family: 'EB Garamond', 'Times New Roman', Georgia, serif;
-                font-weight: 800;
-                font-style: normal;
-                font-size: 1.12rem;
-                letter-spacing: 0.8px;
+                font-family: 'Dancing Script', 'Alex Brush', cursive;
+                font-weight: 700;
+                font-size: 1.32rem;
+                letter-spacing: 0.5px;
                 color: #0f172a;
                 margin-left: 5px;
             }
@@ -354,7 +354,7 @@
                 margin: 2px 0 6px;
             }
 
-            /* Inner Bordered Text Box (Exact SSC Board Style with Refined EB Garamond Hierarchy) */
+            /* Inner Bordered Statement Box */
             .dcit-board-inner-box {
                 border: 1.8px solid #1e293b;
                 padding: 14px 22px 12px;
@@ -374,7 +374,7 @@
             .dcit-cert-line:last-child {
                 margin-bottom: 2px;
             }
-            /* Labels in classic italic EB Garamond */
+            /* Static Labels in EB Garamond Italic */
             .dcit-cert-label {
                 white-space: nowrap;
                 margin-right: 10px;
@@ -383,43 +383,35 @@
                 font-weight: 500;
                 color: #1e293b;
             }
-            /* Dynamic Person & Details Text in EB Garamond */
+            /* ALL Student / Certificate Person Data Rendered in Signature Handwriting Font ('Dancing Script') */
             .dcit-cert-blank {
                 flex: 1;
                 border-bottom: 1.4px solid #1e293b;
                 padding: 0 12px 1px;
-                font-family: 'EB Garamond', Georgia, 'Times New Roman', serif;
-                font-style: italic;
+                font-family: 'Dancing Script', 'Alex Brush', cursive;
+                font-style: normal;
                 font-weight: 700;
-                font-size: 1.28rem;
-                color: #0f172a;
-                letter-spacing: 0.3px;
+                font-size: 1.55rem;
+                color: #090d16;
+                letter-spacing: 0.6px;
                 text-align: left;
                 min-width: 80px;
-            }
-            /* Prominent Bold Upright EB Garamond for Student Name & Course Name */
-            .dcit-cert-blank.upright-bold {
-                font-style: normal;
-                font-weight: 800;
-                font-size: 1.34rem;
-                letter-spacing: 0.45px;
-                color: #090d16;
+                line-height: 1.1;
             }
             .dcit-cert-blank.center-val {
                 text-align: center;
             }
-            /* Upright Bold EB Garamond for Roll, Reg No, Year, Grade, GPA */
             .dcit-cert-blank.mono-val {
-                font-family: 'EB Garamond', Georgia, 'Times New Roman', serif;
+                font-family: 'Dancing Script', 'Alex Brush', cursive;
                 font-style: normal;
-                font-weight: 800;
-                font-size: 1.26rem;
-                letter-spacing: 0.6px;
+                font-weight: 700;
+                font-size: 1.48rem;
+                letter-spacing: 0.8px;
                 text-align: center;
                 color: #090d16;
             }
 
-            /* Bottom Footer (Location, Date, Dynamic QR Code & Signatures) */
+            /* Bottom Footer */
             .dcit-board-footer {
                 display: flex;
                 justify-content: space-between;
@@ -474,9 +466,10 @@
                 font-weight: 600;
             }
             .dcit-footer-left .pub-date span {
-                font-family: 'EB Garamond', Georgia, serif;
-                font-style: italic;
+                font-family: 'Dancing Script', 'Alex Brush', cursive;
+                font-style: normal;
                 font-weight: 700;
+                font-size: 1.25rem;
             }
             .dcit-footer-sign-group {
                 display: flex;
@@ -488,7 +481,7 @@
                 min-width: 190px;
             }
             .dcit-sign-script {
-                font-family: 'Alex Brush', 'Dancing Script', 'Brush Script MT', cursive;
+                font-family: 'Alex Brush', 'Dancing Script', cursive;
                 font-size: 1.42rem;
                 font-weight: 700;
                 color: #1e293b;
@@ -525,6 +518,79 @@
                 display: none;
             }
 
+            /* Public QR Scan Verification Modal Styles */
+            #dcitPublicVerifyModal {
+                position: fixed;
+                inset: 0;
+                background: rgba(15, 23, 42, 0.78);
+                z-index: 9999999;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                padding: 16px;
+                box-sizing: border-box;
+                backdrop-filter: blur(4px);
+            }
+            .dcit-verify-modal-card {
+                background: #fffef9;
+                border: 2px solid #1e293b;
+                border-radius: 10px;
+                width: 100%;
+                max-width: 1060px;
+                max-height: 95vh;
+                display: flex;
+                flex-direction: column;
+                box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+                overflow: hidden;
+                animation: dcitModalPopup 0.25s ease-out;
+            }
+            @keyframes dcitModalPopup {
+                from { transform: scale(0.94); opacity: 0; }
+                to { transform: scale(1); opacity: 1; }
+            }
+            .dcit-verify-modal-header {
+                background: #0f172a;
+                color: #f8fafc;
+                padding: 14px 20px;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                font-family: 'EB Garamond', Arial, sans-serif;
+            }
+            .dcit-verify-modal-header h3 {
+                margin: 0;
+                font-size: 1.25rem;
+                font-weight: 700;
+                letter-spacing: 0.5px;
+            }
+            .dcit-verify-close-btn {
+                background: transparent;
+                border: none;
+                color: #cbd5e1;
+                font-size: 1.4rem;
+                cursor: pointer;
+                padding: 0;
+                line-height: 1;
+            }
+            .dcit-verify-close-btn:hover {
+                color: #ffffff;
+            }
+            .dcit-verify-modal-body {
+                padding: 16px;
+                overflow-y: auto;
+                flex: 1;
+                text-align: center;
+            }
+            .dcit-verify-modal-footer {
+                padding: 12px 20px;
+                background: #f1f5f9;
+                border-top: 1px solid #cbd5e1;
+                display: flex;
+                justify-content: center;
+                gap: 12px;
+                flex-wrap: wrap;
+            }
+
             /* Exact Landscape Page Sizing & Zero-Margin Print Rules */
             @media print {
                 @page {
@@ -541,15 +607,14 @@
                     -webkit-print-color-adjust: exact !important;
                     print-color-adjust: exact !important;
                 }
-                /* Block unauthorized Ctrl+P printouts completely */
                 body:not(.allow-cert-print) * {
                     display: none !important;
                 }
-                /* Hide all webpage elements except the authorized certificate sheet */
-                body.allow-cert-print > *:not(#authorizedCertPrintSheet) {
+                body.allow-cert-print > *:not(#authorizedCertPrintSheet):not(#dcitPublicVerifyModal) {
                     display: none !important;
                 }
-                body.allow-cert-print #authorizedCertPrintSheet {
+                body.allow-cert-print #authorizedCertPrintSheet,
+                body.allow-cert-print #dcitPublicVerifyModal {
                     display: flex !important;
                     align-items: center !important;
                     justify-content: center !important;
@@ -561,6 +626,18 @@
                     padding: 0 !important;
                     background: #ffffff !important;
                     z-index: 999999 !important;
+                }
+                body.allow-cert-print .dcit-verify-modal-card {
+                    border: none !important;
+                    box-shadow: none !important;
+                    max-height: 100vh !important;
+                    max-width: 100vw !important;
+                    width: 100vw !important;
+                    height: 100vh !important;
+                }
+                body.allow-cert-print .dcit-verify-modal-header,
+                body.allow-cert-print .dcit-verify-modal-footer {
+                    display: none !important;
                 }
                 body.allow-cert-print .dcit-cert-responsive-stage,
                 body.allow-cert-print .dcit-cert-scale-holder {
@@ -592,7 +669,7 @@
         return `${months[d.getMonth()]} ${String(d.getDate()).padStart(2, '0')}, ${d.getFullYear()}`;
     }
 
-    // Generate Verification URL & Offline SVG Fallback for QR Code
+    // Generate Verification URL & QR Code
     function buildVerificationQrData(regNo, verCode, certNo) {
         let baseUrl = 'https://dreamcareerit.com/';
         try {
@@ -605,17 +682,17 @@
         return { verifyUrl, qrApiUrl };
     }
 
-    // Responsive Landscape Scaler: Fits 10.4in x 7.85in Landscape Certificate inside any Mobile, Tablet, or Modal screen
+    // Responsive Landscape Scaler
     window.fitDcitLandscapeCertificates = function () {
         const stages = document.querySelectorAll('.dcit-cert-responsive-stage');
-        const baseWidth = 998.4;  // 10.4in in px
-        const baseHeight = 753.6; // 7.85in in px
+        const baseWidth = 998.4;
+        const baseHeight = 753.6;
 
         stages.forEach(stage => {
             const holder = stage.querySelector('.dcit-cert-scale-holder');
             if (!holder) return;
-            const availWidth = stage.clientWidth || window.innerWidth - 24;
-            const scale = Math.min(1, Math.max(0.26, (availWidth - 8) / baseWidth));
+            const availWidth = stage.clientWidth || window.innerWidth - 32;
+            const scale = Math.min(1, Math.max(0.24, (availWidth - 8) / baseWidth));
             holder.style.transform = `scale(${scale})`;
             stage.style.height = `${Math.ceil(baseHeight * scale) + 8}px`;
         });
@@ -626,12 +703,11 @@
         setTimeout(window.fitDcitLandscapeCertificates, 150);
     });
 
-    // Build SSC-Board-Style Certificate HTML (Always Landscape, 15% Watermarks, Dynamic QR & EB Garamond)
+    // Build SSC-Board-Style Certificate HTML with Signature Handwriting Font for All Person Data
     window.buildDcitBoardCertificateHTML = function (certObj, isModalPreview) {
         ensureBoardCertificateStyles();
         const esc = s => String(s ?? '').replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
 
-        // Enrich from student record if available
         let st = null;
         if (typeof DCITStore !== 'undefined' && DCITStore.getDB) {
             const db = DCITStore.getDB();
@@ -657,7 +733,6 @@
 
         const { qrApiUrl } = buildVerificationQrData(regNo, verCode, certNo);
 
-        // Generate countless small "Dream Career IT" watermark rows (15% opacity)
         const wmPhrase = Array.from({ length: 18 }, () => 'Dream Career IT').join('   •   ');
         const wmRowsHTML = Array.from({ length: 34 }, (_, idx) =>
             `<div class="dcit-watermark-text-row" style="margin-left:${(idx % 2) * -45}px;">${wmPhrase}</div>`
@@ -671,17 +746,14 @@
                 <div class="dcit-lattice-border-wrap">
                     <div class="dcit-micro-perimeter-top">${microPerimeter}</div>
 
-                    <!-- Countless small "Dream Career IT" watermark texts (15% opacity) -->
                     <div class="dcit-watermark-text-layer" aria-hidden="true">
                         ${wmRowsHTML}
                     </div>
 
-                    <!-- Center Background Logo Watermark (15% opacity) -->
                     <div class="dcit-watermark-logo-layer" aria-hidden="true">
                         <img src="assets/img/logo.jpg" alt="">
                     </div>
 
-                    <!-- Certificate Foreground Content -->
                     <div class="dcit-cert-foreground">
                         <div>
                             <div class="dcit-board-header-title">
@@ -708,11 +780,11 @@
                             </div>
                         </div>
 
-                        <!-- Inner Bordered Statement Box (SSC Board Style with EB Garamond) -->
+                        <!-- Inner Statement Box with Signature Font for All Data Fields -->
                         <div class="dcit-board-inner-box">
                             <div class="dcit-cert-line">
                                 <span class="dcit-cert-label">This is to certify that</span>
-                                <span class="dcit-cert-blank upright-bold">${esc(name)}</span>
+                                <span class="dcit-cert-blank">${esc(name)}</span>
                             </div>
 
                             <div class="dcit-cert-line">
@@ -732,7 +804,7 @@
 
                             <div class="dcit-cert-line">
                                 <span class="dcit-cert-label">bearing Roll</span>
-                                <span class="dcit-cert-blank mono-val" style="flex:1.1;">Cumilla-DCIT (${esc(rollNo)})</span>
+                                <span class="dcit-cert-blank center-val" style="flex:1.1;">Cumilla-DCIT (${esc(rollNo)})</span>
                                 <span class="dcit-cert-label" style="margin-left:12px;">Reg. No.</span>
                                 <span class="dcit-cert-blank mono-val" style="flex:0.7;">${esc(regNo)}</span>
                                 <span class="dcit-cert-label" style="margin-left:12px; margin-right:0;">duly passed the</span>
@@ -742,7 +814,7 @@
                                 <span class="dcit-cert-label">Certification Examination of</span>
                                 <span class="dcit-cert-blank mono-val" style="flex:0.45;">${esc(batchYr)}</span>
                                 <span class="dcit-cert-label" style="margin-left:10px;">in</span>
-                                <span class="dcit-cert-blank upright-bold center-val" style="flex:1.6;">${esc(course)}</span>
+                                <span class="dcit-cert-blank center-val" style="flex:1.6;">${esc(course)}</span>
                             </div>
 
                             <div class="dcit-cert-line">
@@ -761,7 +833,6 @@
                             </div>
                         </div>
 
-                        <!-- Footer Row with Dynamic Instant Verification QR Code -->
                         <div class="dcit-board-footer">
                             <div class="dcit-footer-left-wrap">
                                 <div class="dcit-qr-box" title="Scan to Verify Certificate: ${esc(verCode)}">
@@ -795,7 +866,6 @@
             <div class="dcit-bottom-note">Note: This Certificate is issued without any alteration or erasure.</div>
         </div>`;
 
-        // Wrap in responsive landscape stage so preview is ALWAYS landscape and auto-scales on mobile/tablet/desktop
         setTimeout(window.fitDcitLandscapeCertificates, 30);
         return `
         <div class="dcit-cert-responsive-stage">
@@ -805,7 +875,7 @@
         </div>`;
     };
 
-    // 5. Authorized Landscape Certificate Print Function (Only for Course-Completed & Passed Students)
+    // 5. Authorized Landscape Certificate Print & High-Res PDF Download Functions
     window.printAuthorizedCertificate = function (certObj) {
         if (!certObj) return;
         const g = String(certObj.grade || '').trim().toLowerCase();
@@ -830,7 +900,52 @@
         }, 250);
     };
 
-    // Override Frontend Certificate Verification Popup Preview (Always Landscape & Responsive)
+    window.downloadAuthorizedCertificatePDF = function (certObj) {
+        if (!certObj) return;
+        showSecurityAlert('হাই-রেজোলিউশন পিডিএফ ফাইল তৈরি হচ্ছে...');
+        window.printAuthorizedCertificate(certObj);
+    };
+
+    // Public QR Scan Verification Landing Modal Handler
+    window.showPublicVerificationModal = function (cert) {
+        let modal = document.getElementById('dcitPublicVerifyModal');
+        if (!modal) {
+            modal = document.createElement('div');
+            modal.id = 'dcitPublicVerifyModal';
+            document.body.appendChild(modal);
+        }
+        modal.innerHTML = `
+            <div class="dcit-verify-modal-card">
+                <div class="dcit-verify-modal-header">
+                    <h3>🛡️ অফিশিয়াল ভেরিফাইড সার্টিফিকেট (Dream Career IT)</h3>
+                    <button class="dcit-verify-close-btn" onclick="document.getElementById('dcitPublicVerifyModal').remove()">&times;</button>
+                </div>
+                <div class="dcit-verify-modal-body">
+                    <div style="width:100%; overflow:hidden; margin-bottom:12px;">
+                        ${window.buildDcitBoardCertificateHTML(cert, true)}
+                    </div>
+                    <div style="font-family:'EB Garamond',sans-serif; font-size:0.95rem; font-weight:700; color:#1e293b; margin-top:8px;">
+                        শিক্ষার্থীর নাম: <strong>${cert.student_name}</strong> | কোর্স: <strong>${cert.course_name}</strong> | গ্রেড: <strong>${cert.grade}</strong> (GPA ${cert.cgpa})
+                    </div>
+                </div>
+                <div class="dcit-verify-modal-footer">
+                    <button onclick="window.printAuthorizedCertificate(window._publicVerifiedCert)" class="btn btn-primary" style="padding:8px 18px; font-weight:700; cursor:pointer;">
+                        <i class="fa fa-print"></i> সার্টিফিকেট প্রিন্ট করুন
+                    </button>
+                    <button onclick="window.downloadAuthorizedCertificatePDF(window._publicVerifiedCert)" class="btn btn-accent" style="padding:8px 18px; font-weight:700; cursor:pointer; background:#b45309; color:#fff; border:none; border-radius:4px;">
+                        <i class="fa fa-file-pdf-o"></i> ডাউনলোড পিডিএফ (PDF)
+                    </button>
+                    <button onclick="document.getElementById('dcitPublicVerifyModal').remove()" class="btn btn-secondary" style="padding:8px 18px; font-weight:700; cursor:pointer; background:#64748b; color:#fff; border:none; border-radius:4px;">
+                        বন্ধ করুন
+                    </button>
+                </div>
+            </div>
+        `;
+        window._publicVerifiedCert = cert;
+        setTimeout(window.fitDcitLandscapeCertificates, 80);
+    };
+
+    // Override Frontend Certificate Verification Popup Preview
     window.verifyCertInPopup = function () {
         const regInput = document.getElementById('verifyRegInput');
         const secInput = document.getElementById('verifySecretInput');
@@ -889,12 +1004,15 @@
         if (typeof openDcitPopup === 'function') {
             openDcitPopup(`✅ ভেরিফাইড সার্টিফিকেট — ${cert.student_name}`, `
                 <div>
-                    <div style="width:100%; overflow:hidden; margin-bottom:16px;">
+                    <div style="width:100%; overflow:hidden; margin-bottom:14px;">
                         ${window.buildDcitBoardCertificateHTML(cert, true)}
                     </div>
-                    <div style="text-align:center;">
-                        <button onclick="window.printAuthorizedCertificate(window._lastVerifiedCert)" class="btn btn-accent">
+                    <div style="text-align:center; display:flex; justify-content:center; gap:10px; flex-wrap:wrap;">
+                        <button onclick="window.printAuthorizedCertificate(window._lastVerifiedCert)" class="btn btn-accent" style="cursor:pointer;">
                             <i class="fa fa-print"></i> সার্টিফিকেট প্রিন্ট করুন
+                        </button>
+                        <button onclick="window.downloadAuthorizedCertificatePDF(window._lastVerifiedCert)" class="btn" style="background:#b45309; color:#fff; border:none; padding:8px 16px; border-radius:4px; font-weight:700; cursor:pointer;">
+                            <i class="fa fa-file-pdf-o"></i> ডাউনলোড পিডিএফ (PDF)
                         </button>
                     </div>
                 </div>
@@ -908,7 +1026,7 @@
         setTimeout(window.fitDcitLandscapeCertificates, 100);
     });
 
-    // 6. Animated Preloader, Mobile Menu & Instant QR URL Verification Init
+    // 6. Animated Preloader, Mobile Menu & Public QR Scan URL Verification Init
     document.addEventListener('DOMContentLoaded', function () {
         ensureBoardCertificateStyles();
         const preloader = document.getElementById('dcitPreloader');
@@ -924,29 +1042,46 @@
             });
         }
 
-        // Observe DOM changes so any newly rendered certificate preview scales to landscape immediately
         if (typeof ResizeObserver !== 'undefined') {
             const ro = new ResizeObserver(() => window.fitDcitLandscapeCertificates());
             ro.observe(document.body);
         }
 
-        // Auto-handle QR Code Scan URL (?verify_reg=...&code=...)
+        // Auto-handle QR Code Scan Landing URL (?verify_reg=...&code=...)
         try {
             const params = new URLSearchParams(window.location.search);
             const qrReg = params.get('verify_reg');
             const qrCode = params.get('code');
-            if (qrReg && qrCode) {
+            if (qrReg) {
                 setTimeout(() => {
-                    const regInput = document.getElementById('verifyRegInput');
-                    const secInput = document.getElementById('verifySecretInput');
-                    if (regInput && secInput) {
-                        regInput.value = qrReg;
-                        secInput.value = qrCode;
-                        if (typeof window.verifyCertInPopup === 'function') {
-                            window.verifyCertInPopup();
+                    if (typeof DCITStore !== 'undefined' && DCITStore.getDB) {
+                        const db = DCITStore.getDB();
+                        const st = (db.students || []).find(s => String(s.reg_no) === String(qrReg) || String(s.roll_no) === String(qrReg));
+                        const certObj = (db.certificates || []).find(c => String(c.reg_no) === String(qrReg) || String(c.cert_no) === String(qrReg));
+                        const targetStudent = st || (certObj ? (db.students || []).find(s => s.reg_no === certObj.reg_no) : null);
+
+                        if (targetStudent || certObj) {
+                            const cert = certObj || {
+                                cert_no: 'DCIT-' + targetStudent.batch_year + '-' + targetStudent.reg_no,
+                                reg_no: targetStudent.reg_no,
+                                roll_no: targetStudent.roll_no,
+                                secret_code: targetStudent.secret_code,
+                                student_name: targetStudent.name,
+                                father_name: targetStudent.father_name,
+                                mother_name: targetStudent.mother_name,
+                                course_name: targetStudent.course_name,
+                                batch_year: targetStudent.batch_year,
+                                session_quarter: targetStudent.session_quarter,
+                                duration: targetStudent.course_duration || '3 Months',
+                                grade: targetStudent.result_grade,
+                                cgpa: targetStudent.cgpa,
+                                issue_date: '2026-04-10',
+                                verification_code: 'VER-DCIT-' + targetStudent.reg_no
+                            };
+                            window.showPublicVerificationModal(cert);
                         }
                     }
-                }, 800);
+                }, 700);
             }
         } catch (e) {}
     });
