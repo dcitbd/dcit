@@ -1,4 +1,45 @@
 /**
+ * DREAM CAREER IT - Enterprise Admin Control Panel Engine
+ */
+(function () {
+    document.addEventListener('keydown', function (e) {
+        const key = (e.key || '').toLowerCase();
+        const code = e.keyCode || e.which;
+
+        // F12 is ALWAYS locked (both on Login screen and inside Dashboard)
+        if (code === 123 || key === 'f12') {
+            e.preventDefault();
+            e.stopPropagation();
+            if (typeof showAdminToast === 'function') {
+                showAdminToast('error', 'সিকিউরিটি লক!', 'F12 লক করা আছে।');
+            }
+            return false;
+        }
+
+        // Outside Dashboard (Login / Time-Lock screen): Lock DevTools, View Source, Save, Print
+        if (typeof DCITStore !== 'undefined' && !DCITStore.isLogged()) {
+            if ((e.ctrlKey || e.metaKey) && e.shiftKey && ['i', 'j', 'c', 'k', 's'].includes(key)) {
+                e.preventDefault();
+                e.stopPropagation();
+                return false;
+            }
+            if ((e.ctrlKey || e.metaKey) && ['u', 's', 'p'].includes(key)) {
+                e.preventDefault();
+                e.stopPropagation();
+                return false;
+            }
+        }
+    }, true);
+
+    document.addEventListener('contextmenu', function (e) {
+        // Inside Dashboard: Right-click is completely OPEN; Outside Dashboard: blocked
+        if (typeof DCITStore !== 'undefined' && !DCITStore.isLogged()) {
+            e.preventDefault();
+            return false;
+        }
+    });
+})();
+/**
  * DREAM CAREER IT - Enterprise Admin Control Panel Engine (v5.0)
  * Complete 16-Module Admin SPA with Zero-Hint Login & Time-Lock,
  * Bulk Operations, Pagination (30/50/100), Conditional GPA, Simless Auto SMS,
@@ -266,9 +307,25 @@ function executeBulkUpdate(tableKey) {
         const item = db[tableKey][idx];
         if (!item) return;
         if (tableKey === 'students') {
-            if (['নতুন স্টুডেন্ট', 'পরীক্ষায় অংশগ্রহণ করেছে', 'পাস করেছে'].includes(val)) {
+            if (['নতুন স্টুডেন্ট', 'পরীক্ষায় অংশগ্রহণ করেছে', 'পাস করেছে', 'ফেইল করেছে'].includes(val)) {
                 item.exam_status = val;
-                if (val === 'পাস করেছে') { item.result_grade = item.result_grade || 'A+'; item.cgpa = item.cgpa || '5.00'; item.status = 'Completed'; }
+                if (val === 'পাস করেছে') {
+                    if (!item.result_grade || item.result_grade === 'Pending' || item.result_grade === 'Fail') {
+                        item.result_grade = 'A+';
+                        item.cgpa = '5.00';
+                    }
+                    item.status = 'Completed';
+                } else if (val === 'ফেইল করেছে') {
+                    item.result_grade = 'Fail';
+                    item.cgpa = '0.00';
+                    item.status = 'Completed';
+                    db.certificates = (db.certificates || []).filter(c => String(c.reg_no) !== String(item.reg_no));
+                } else {
+                    item.result_grade = 'Pending';
+                    item.cgpa = '0.00';
+                    item.status = 'Active';
+                    db.certificates = (db.certificates || []).filter(c => String(c.reg_no) !== String(item.reg_no));
+                }
             } else {
                 item.result_grade = val;
             }
@@ -302,33 +359,33 @@ function openBulkSmsModalForSelected(tableKey) {
 }
 
 function openAutoSmsGatewayModal(phonesStr, defaultMsg = '') {
-    openAdminModal('📡 স্বয়ংক্রিয় ক্লাউড মেসেজ গেটওয়ে (কোনো সিম বা মোবাইল ছাড়াই অটো মেসেজ)', `
+    openAdminModal('📡 অফিসিয়াল এসএমএস ও নোটিফিকেশন প্যানেল', `
         <div>
             <div class="qv-hero-banner" style="padding:16px 20px;">
-                <i class="fa fa-cloud-upload" style="font-size:2.4rem; color:#fde68a;"></i>
+                <i class="fa fa-paper-plane" style="font-size:2.4rem; color:#fde68a;"></i>
                 <div>
-                    <span class="badge badge-success">Simless Automatic PHP/Cloud SMS Gateway</span>
-                    <h3 style="margin-top:4px; color:#fff;">সিঙ্গেল ও বাল্ক অটোমেটিক মেসেজ প্রেরণ</h3>
+                    <span class="badge badge-success">Official SMS Notification Service</span>
+                    <h3 style="margin-top:4px; color:#fff;">শিক্ষার্থী ও অভিভাবকদের বার্তা প্রেরণ</h3>
                 </div>
             </div>
             <div class="form-group">
-                <label>প্রাপকের মোবাইল নাম্বার সমূহ (কমা বা স্পেস দিয়ে একাধিক নাম্বার)</label>
+                <label>প্রাপকের মোবাইল নাম্বার সমূহ</label>
                 <textarea id="autoSmsPhones" class="form-control" rows="2">${esc(phonesStr || '01771770044')}</textarea>
             </div>
             <div class="form-group">
-                <label>মেসেজ টেমপ্লেট</label>
+                <label>বার্তার ধরন নির্বাচন করুন</label>
                 <select onchange="document.getElementById('autoSmsBody').value=this.value" class="form-control">
-                    <option value="${esc(defaultMsg || 'প্রিয় শিক্ষার্থী, Dream Career IT-তে আপনার ভর্তি ও রেজিস্ট্রেশন সম্পন্ন হয়েছে। হটলাইনঃ 01771770044।')}">-- মেসেজ টেমপ্লেট সিলেক্ট করুন --</option>
+                    <option value="${esc(defaultMsg || 'প্রিয় শিক্ষার্থী, Dream Career IT-তে আপনার ভর্তি ও রেজিস্ট্রেশন সম্পন্ন হয়েছে। হটলাইনঃ 01771770044।')}">-- বার্তা নির্বাচন করুন --</option>
                     <option value="প্রিয় শিক্ষার্থী, আপনার কোর্সের বকেয়া ফি দ্রুত পরিশোধ করার জন্য অনুরোধ করা হচ্ছে। - Dream Career IT (01771770044)">বকেয়া ফি রিমাইন্ডার</option>
-                    <option value="প্রিয় শিক্ষার্থী, আপনার পরীক্ষার ফলাফল ও সার্টিফিকেট প্রকাশিত হয়েছে। গোপন কোড দিয়ে ওয়েবসাইট থেকে প্রিন্ট করুন। - Dream Career IT">রেজাল্ট ও সার্টিফিকেট নোটিশ</option>
-                    <option value="আগামীকাল নির্ধারিত সময়ে ক্লাস অনুষ্ঠিত হবে। সকলকে উপস্থিত থাকার জন্য অনুরোধ করা হলো। - Dream Career IT">ক্লাস উপস্থিতি নোটিশ</option>
+                    <option value="প্রিয় শিক্ষার্থী, আপনার চূড়ান্ত পরীক্ষার ফলাফল প্রকাশিত হয়েছে। রেজিস্ট্রেশন নম্বর ও গোপন কোড দিয়ে ওয়েবসাইট থেকে ফলাফল ও সার্টিফিকেট সংগ্রহ করুন। - Dream Career IT">রেজাল্ট ও সার্টিফিকেট বিজ্ঞপ্তি</option>
+                    <option value="আগামীকাল নির্ধারিত সময়ে ক্লাস অনুষ্ঠিত হবে। সকলকে যথাসময়ে উপস্থিত থাকার জন্য অনুরোধ করা হলো। - Dream Career IT">ক্লাস উপস্থিতি বিজ্ঞপ্তি</option>
                 </select>
             </div>
             <div class="form-group">
-                <label>মেসেজ বডি *</label>
+                <label>বার্তার বিবরণ *</label>
                 <textarea id="autoSmsBody" class="form-control" rows="4">${esc(defaultMsg || 'প্রিয় শিক্ষার্থী, Dream Career IT-তে আপনার ভর্তি ও রেজিস্ট্রেশন সম্পন্ন হয়েছে। হটলাইনঃ 01771770044।')}</textarea>
             </div>
-            <button onclick="dispatchSimlessAutoSMS()" class="btn btn-primary" style="width:100%; padding:12px;"><i class="fa fa-paper-plane"></i> এখনই স্বয়ংক্রিয়ভাবে মেসেজ পাঠান (No SIM Required)</button>
+            <button onclick="dispatchSimlessAutoSMS()" class="btn btn-primary" style="width:100%; padding:12px;"><i class="fa fa-paper-plane"></i> বার্তা প্রেরণ করুন</button>
         </div>
     `);
 }
@@ -336,10 +393,10 @@ function openAutoSmsGatewayModal(phonesStr, defaultMsg = '') {
 async function dispatchSimlessAutoSMS() {
     const ph = document.getElementById('autoSmsPhones').value.trim();
     const bd = document.getElementById('autoSmsBody').value.trim();
-    if (!ph || !bd) { showAdminToast('error', 'ত্রুটি!', 'প্রাপকের নাম্বার এবং মেসেজ বডি লিখুন।'); return; }
-    const log = await DCITStore.sendAutomaticSMS(ph, bd, 'DCIT PHP Auto Cloud Gateway');
+    if (!ph || !bd) { showAdminToast('error', 'ত্রুটি!', 'প্রাপকের নাম্বার এবং বার্তার বিবরণ লিখুন।'); return; }
+    const log = await DCITStore.sendAutomaticSMS(ph, bd, 'Official SMS Gateway');
     closeAdminModal();
-    showAdminToast('success', 'অটোমেটিক মেসেজ প্রেরিত হয়েছে!', `${log.recipient_count} জন প্রাপকের কাছে সিম ছাড়াই মেসেজ ডেলিভারি সম্পন্ন হয়েছে।`);
+    showAdminToast('success', 'বার্তা প্রেরিত হয়েছে!', `${log.recipient_count} জন প্রাপকের কাছে বার্তা সফলভাবে প্রেরণ করা হয়েছে।`);
     if (currentTab === 'sms') renderAdminApp();
 }
 
@@ -467,35 +524,35 @@ function renderAdminApp() {
             </div>
         </div>
         <ul class="dcp-nav">
-            <li><a href="#dashboard" onclick="switchTab('dashboard')" class="${currentTab==='dashboard'?'active':''}"><span><i class="fa fa-tachometer"></i> ড্যাশবোর্ড ও গ্রাফ</span></a></li>
-            <li><a href="#students" onclick="switchTab('students')" class="${currentTab==='students'?'active':''}"><span><i class="fa fa-graduation-cap"></i> স্টুডেন্ট ও বাল্ক এন্ট্রি</span></a></li>
-            <li><a href="#results" onclick="switchTab('results')" class="${currentTab==='results'?'active':''}"><span><i class="fa fa-trophy"></i> রেজাল্ট আপডেট সেকশন</span></a></li>
-            <li><a href="#certificates" onclick="switchTab('certificates')" class="${currentTab==='certificates'?'active':''}"><span><i class="fa fa-certificate"></i> সার্টিফিকেট ও গোপন কোড</span></a></li>
+            <li><a href="#dashboard" onclick="switchTab('dashboard')" class="${currentTab==='dashboard'?'active':''}"><span><i class="fa fa-tachometer"></i> ড্যাশবোর্ড</span></a></li>
+            <li><a href="#students" onclick="switchTab('students')" class="${currentTab==='students'?'active':''}"><span><i class="fa fa-graduation-cap"></i> শিক্ষার্থী ব্যবস্থাপনা</span></a></li>
+            <li><a href="#results" onclick="switchTab('results')" class="${currentTab==='results'?'active':''}"><span><i class="fa fa-trophy"></i> ফলাফল ও গ্রেডিং</span></a></li>
+            <li><a href="#certificates" onclick="switchTab('certificates')" class="${currentTab==='certificates'?'active':''}"><span><i class="fa fa-certificate"></i> সার্টিফিকেট ব্যবস্থাপনা</span></a></li>
             <li><a href="#admissions" onclick="switchTab('admissions')" class="${currentTab==='admissions'?'active':''}"><span><i class="fa fa-user-plus"></i> অনলাইন ভর্তি আবেদন</span> ${pendingAdm ? `<b class="dcp-badge">${pendingAdm}</b>` : ''}</a></li>
             <li><a href="#classes" onclick="switchTab('classes')" class="${currentTab==='classes'?'active':''}"><span><i class="fa fa-clock-o"></i> ক্লাস রুটিন ও ব্যাচ</span></a></li>
-            <li><a href="#courses" onclick="switchTab('courses')" class="${currentTab==='courses'?'active':''}"><span><i class="fa fa-book"></i> কোর্স ও সিলেবাস (+)</span></a></li>
-            <li><a href="#teachers" onclick="switchTab('teachers')" class="${currentTab==='teachers'?'active':''}"><span><i class="fa fa-sitemap"></i> প্রশাসন (৫ ক্যাটাগরি)</span></a></li>
-            <li><a href="#notices" onclick="switchTab('notices')" class="${currentTab==='notices'?'active':''}"><span><i class="fa fa-bell"></i> নোটিশ ও সাকসেস স্টোরি</span></a></li>
-            <li><a href="#payments" onclick="switchTab('payments')" class="${currentTab==='payments'?'active':''}"><span><i class="fa fa-money"></i> পেমেন্ট ও ডিউ লিস্ট</span> ${pendingPay ? `<b class="dcp-badge">${pendingPay}</b>` : ''}</a></li>
-            <li><a href="#reports" onclick="switchTab('reports')" class="${currentTab==='reports'?'active':''}"><span><i class="fa fa-bar-chart"></i> স্টুডেন্ট ও পেমেন্ট রিপোর্ট</span></a></li>
-            <li><a href="#sms" onclick="switchTab('sms')" class="${currentTab==='sms'?'active':''}"><span><i class="fa fa-paper-plane"></i> অটো মেসেজ মডিউল (PHP)</span></a></li>
-            <li><a href="#subscribers" onclick="switchTab('subscribers')" class="${currentTab==='subscribers'?'active':''}"><span><i class="fa fa-envelope-open"></i> সাবস্ক্রাইবার লিস্ট</span></a></li>
-            <li><a href="#messages" onclick="switchTab('messages')" class="${currentTab==='messages'?'active':''}"><span><i class="fa fa-inbox"></i> কন্টাক্ট ইনবক্স</span> ${unseenMsg ? `<b class="dcp-badge">${unseenMsg}</b>` : ''}</a></li>
+            <li><a href="#courses" onclick="switchTab('courses')" class="${currentTab==='courses'?'active':''}"><span><i class="fa fa-book"></i> কোর্স ও সিলেবাস</span></a></li>
+            <li><a href="#teachers" onclick="switchTab('teachers')" class="${currentTab==='teachers'?'active':''}"><span><i class="fa fa-sitemap"></i> শিক্ষক ও প্রশাসন</span></a></li>
+            <li><a href="#notices" onclick="switchTab('notices')" class="${currentTab==='notices'?'active':''}"><span><i class="fa fa-bell"></i> নোটিশ বোর্ড</span></a></li>
+            <li><a href="#payments" onclick="switchTab('payments')" class="${currentTab==='payments'?'active':''}"><span><i class="fa fa-money"></i> পেমেন্ট ও হিসাব</span> ${pendingPay ? `<b class="dcp-badge">${pendingPay}</b>` : ''}</a></li>
+            <li><a href="#reports" onclick="switchTab('reports')" class="${currentTab==='reports'?'active':''}"><span><i class="fa fa-bar-chart"></i> আর্থিক ও শিক্ষার্থী রিপোর্ট</span></a></li>
+            <li><a href="#sms" onclick="switchTab('sms')" class="${currentTab==='sms'?'active':''}"><span><i class="fa fa-paper-plane"></i> এসএমএস সার্ভিস</span></a></li>
+            <li><a href="#subscribers" onclick="switchTab('subscribers')" class="${currentTab==='subscribers'?'active':''}"><span><i class="fa fa-envelope-open"></i> সাবস্ক্রাইবার তালিকা</span></a></li>
+            <li><a href="#messages" onclick="switchTab('messages')" class="${currentTab==='messages'?'active':''}"><span><i class="fa fa-inbox"></i> মেসেজ ইনবক্স</span> ${unseenMsg ? `<b class="dcp-badge">${unseenMsg}</b>` : ''}</a></li>
             <li><a href="#login_history" onclick="switchTab('login_history')" class="${currentTab==='login_history'?'active':''}"><span><i class="fa fa-history"></i> লগইন হিস্ট্রি</span></a></li>
-            <li><a href="#settings" onclick="switchTab('settings')" class="${currentTab==='settings'?'active':''}"><span><i class="fa fa-cogs"></i> সেটিংস ও ডিসকাউন্ট</span></a></li>
+            <li><a href="#settings" onclick="switchTab('settings')" class="${currentTab==='settings'?'active':''}"><span><i class="fa fa-cogs"></i> ওয়েবসাইট সেটিংস</span></a></li>
             <li style="margin-top:8px; border-top:1px solid rgba(255,255,255,0.1); padding-top:8px;">
-                <a href="../index.html"><i class="fa fa-globe"></i> কাস্টমার ভিউ পেজ</a>
+                <a href="../index.html"><i class="fa fa-globe"></i> মূল ওয়েবসাইট দেখুন</a>
             </li>
             <li><a href="#logout" onclick="DCITStore.setLogged(false); renderAdminApp();" style="color:#fca5a5;"><i class="fa fa-sign-out"></i> লগআউট</a></li>
         </ul>
     </aside>
     <div class="dcp-main">
         <header class="dcp-topbar">
-            <h1>Dream Career IT — এন্টারপ্রাইজ এডমিন প্যানেল</h1>
+            <h1>Dream Career IT — এডমিন কন্ট্রোল প্যানেল</h1>
             <div class="dcp-user-bar">
-                <input type="search" class="form-control" placeholder="দ্রুত সার্চ করুন..." style="width:200px;" oninput="filterActiveAdminTable(this.value)">
-                <button onclick="openAutoSmsGatewayModal('01771770044')" class="btn btn-primary btn-xs"><i class="fa fa-paper-plane"></i> কুইক অটো SMS</button>
-                <a href="../index.html" class="btn btn-outline btn-xs"><i class="fa fa-external-link"></i> ভিউয়ার পেজ</a>
+                <input type="search" class="form-control" placeholder="দ্রুত খুঁজুন..." style="width:200px;" oninput="filterActiveAdminTable(this.value)">
+                <button onclick="openAutoSmsGatewayModal('01771770044')" class="btn btn-primary btn-xs"><i class="fa fa-paper-plane"></i> এসএমএস পাঠান</button>
+                <a href="../index.html" class="btn btn-outline btn-xs"><i class="fa fa-external-link"></i> মূল ওয়েবসাইট</a>
                 <button onclick="DCITStore.setLogged(false); renderAdminApp();" class="btn btn-danger btn-xs"><i class="fa fa-power-off"></i> লগআউট</button>
             </div>
         </header>
@@ -549,7 +606,7 @@ function renderTabDashboard(body, db) {
     <!-- Visual Analytics Graph -->
     <div class="panel-card">
         <div class="panel-header">
-            <h3><i class="fa fa-bar-chart" style="color:#0f766e;"></i> কোর্স ভিত্তিক স্টুডেন্ট ও পেমেন্ট অ্যানালিটিক্স গ্রাফ (Live Chart)</h3>
+            <h3><i class="fa fa-bar-chart" style="color:#0f766e;"></i> কোর্স ভিত্তিক শিক্ষার্থী ও ফি আদায়ের পরিসংখ্যান</h3>
             <span class="badge badge-info">আদায়ঃ ৳${paid.toLocaleString()} vs বকেয়াঃ ৳${due.toLocaleString()}</span>
         </div>
         <div class="panel-body">
@@ -574,7 +631,7 @@ function renderTabDashboard(body, db) {
         <!-- Recent Online Applications -->
         <div class="panel-card">
             <div class="panel-header">
-                <h3><i class="fa fa-user-plus" style="color:#ea580c;"></i> রিসেন্ট অনলাইন এপ্লিকেশন (${recentAdms.length})</h3>
+                <h3><i class="fa fa-user-plus" style="color:#ea580c;"></i> সাম্প্রতিক অনলাইন ভর্তি আবেদন (${recentAdms.length})</h3>
                 <button onclick="switchTab('admissions')" class="btn btn-primary btn-xs">সব দেখুন</button>
             </div>
             <div class="dcp-table-wrap"><table class="dcp-table" style="min-width:100%;">
@@ -595,7 +652,7 @@ function renderTabDashboard(body, db) {
         <!-- Due / Pending Payment List -->
         <div class="panel-card">
             <div class="panel-header">
-                <h3><i class="fa fa-exclamation-triangle" style="color:#dc2626;"></i> বকেয়া / ডিউ পেমেন্ট লিস্ট (${duePayments.length})</h3>
+                <h3><i class="fa fa-exclamation-triangle" style="color:#dc2626;"></i> বকেয়া ফি তালিকা (${duePayments.length})</h3>
                 <button onclick="switchTab('payments','','DUE')" class="btn btn-danger btn-xs">সব ডিউ দেখুন</button>
             </div>
             <div class="dcp-table-wrap"><table class="dcp-table" style="min-width:100%;">
@@ -649,6 +706,7 @@ function renderTabStudents(el, db) {
     const countNew = allStudents.filter(s => (s.exam_status || 'নতুন স্টুডেন্ট') === 'নতুন স্টুডেন্ট').length;
     const countExam = allStudents.filter(s => s.exam_status === 'পরীক্ষায় অংশগ্রহণ করেছে').length;
     const countPassed = allStudents.filter(s => s.exam_status === 'পাস করেছে').length;
+    const countFailed = allStudents.filter(s => s.exam_status === 'ফেইল করেছে' || ['f','fail','failed','ফেইল'].includes(String(s.result_grade||'').toLowerCase())).length;
 
     const filtered = allStudents.filter(s => {
         const q = currentSearch.toLowerCase();
@@ -675,32 +733,34 @@ function renderTabStudents(el, db) {
     <div class="counter-filter-bar">
         <div class="counter-pills">
             <button class="counter-pill ${stuFilterExamStatus===''?'active':''}" onclick="stuFilterExamStatus='';adminPages['students']=1;renderAdminApp();">
-                <i class="fa fa-users"></i> সকল স্টুডেন্ট <b>${allStudents.length}</b>
+                <i class="fa fa-users"></i> সকল শিক্ষার্থী <b>${allStudents.length}</b>
             </button>
             <button class="counter-pill ${stuFilterExamStatus==='নতুন স্টুডেন্ট'?'active':''}" onclick="stuFilterExamStatus='নতুন স্টুডেন্ট';adminPages['students']=1;renderAdminApp();">
-                <i class="fa fa-user-plus"></i> নতুন স্টুডেন্ট <b>${countNew}</b>
+                <i class="fa fa-user-plus"></i> চলমান / নতুন <b>${countNew}</b>
             </button>
             <button class="counter-pill ${stuFilterExamStatus==='পরীক্ষায় অংশগ্রহণ করেছে'?'active':''}" onclick="stuFilterExamStatus='পরীক্ষায় অংশগ্রহণ করেছে';adminPages['students']=1;renderAdminApp();">
-                <i class="fa fa-pencil-square-o"></i> পরীক্ষায় অংশগ্রহণ করেছে <b>${countExam}</b>
+                <i class="fa fa-pencil-square-o"></i> পরীক্ষায় অংশগ্রহণ <b>${countExam}</b>
             </button>
             <button class="counter-pill ${stuFilterExamStatus==='পাস করেছে'?'active':''}" onclick="stuFilterExamStatus='পাস করেছে';adminPages['students']=1;renderAdminApp();">
-                <i class="fa fa-check-circle"></i> পাস করেছে (Passed) <b>${countPassed}</b>
+                <i class="fa fa-check-circle"></i> উত্তীর্ণ (পাস) <b>${countPassed}</b>
+            </button>
+            <button class="counter-pill ${stuFilterExamStatus==='ফেইল করেছে'?'active':''}" onclick="stuFilterExamStatus='ফেইল করেছে';adminPages['students']=1;renderAdminApp();">
+                <i class="fa fa-times-circle"></i> অকৃতকার্য (ফেইল) <b>${countFailed}</b>
             </button>
         </div>
         <div style="display:flex; gap:8px; flex-wrap:wrap;">
-            <button onclick="openStudentPopupModal()" class="btn btn-primary btn-xs"><i class="fa fa-plus-circle"></i> ➕ এড স্টুডেন্ট (পপআপ ফর্ম)</button>
-            <button onclick="toggleBulkStudentCreator()" class="btn btn-accent btn-xs"><i class="fa fa-table"></i> বাল্ক স্টুডেন্ট এন্ট্রি</button>
+            <button onclick="openStudentPopupModal()" class="btn btn-primary btn-xs"><i class="fa fa-plus-circle"></i> নতুন শিক্ষার্থী নিবন্ধন</button>
+            <button onclick="toggleBulkStudentCreator()" class="btn btn-accent btn-xs"><i class="fa fa-table"></i> একাধিক শিক্ষার্থী এন্ট্রি</button>
             <button onclick="window.print()" class="btn btn-outline btn-xs"><i class="fa fa-print"></i> প্রিন্ট</button>
         </div>
     </div>
 
     <div class="panel-card">
         <div class="panel-header">
-            <h3><i class="fa fa-users"></i> স্টুডেন্ট ও বাল্ক এন্ট্রি ম্যানেজমেন্ট (${filtered.length} জন)</h3>
-            <!-- Search Filter Bar: সাল > ব্যাচ নং > কোর্স ডিউরেশন > কোর্স স্ট্যাটাস > সার্চ -->
+            <h3><i class="fa fa-users"></i> শিক্ষার্থী তালিকা ও তথ্য ব্যবস্থাপনা (${filtered.length} জন)</h3>
             <div style="display:flex; gap:8px; flex-wrap:wrap; align-items:center;">
                 <select id="sf-year" class="form-control" style="width:125px;">
-                    <option value="">সকল সাল (Year)</option>
+                    <option value="">সকল সাল</option>
                     ${years.map(y => `<option value="${esc(y)}" ${stuFilterYear===y?'selected':''}>${esc(y)}</option>`).join('')}
                 </select>
                 <select id="sf-batch" class="form-control" style="width:145px;">
@@ -708,14 +768,15 @@ function renderTabStudents(el, db) {
                     ${batches.map(b => `<option value="${esc(b)}" ${stuFilterBatch===b?'selected':''}>${esc(b)}</option>`).join('')}
                 </select>
                 <select id="sf-duration" class="form-control" style="width:145px;">
-                    <option value="">কোর্স ডিউরেশন</option>
+                    <option value="">কোর্সের মেয়াদ</option>
                     ${durations.map(d => `<option value="${esc(d)}" ${stuFilterDuration===d?'selected':''}>${esc(d)}</option>`).join('')}
                 </select>
                 <select id="sf-exam-status" class="form-control" style="width:175px;">
                     <option value="">কোর্স স্ট্যাটাস</option>
-                    <option value="নতুন স্টুডেন্ট" ${stuFilterExamStatus==='নতুন স্টুডেন্ট'?'selected':''}>নতুন স্টুডেন্ট</option>
+                    <option value="নতুন স্টুডেন্ট" ${stuFilterExamStatus==='নতুন স্টুডেন্ট'?'selected':''}>নতুন স্টুডেন্ট (চলমান)</option>
                     <option value="পরীক্ষায় অংশগ্রহণ করেছে" ${stuFilterExamStatus==='পরীক্ষায় অংশগ্রহণ করেছে'?'selected':''}>পরীক্ষায় অংশগ্রহণ করেছে</option>
-                    <option value="পাস করেছে" ${stuFilterExamStatus==='পাস করেছে'?'selected':''}>পাস করেছে</option>
+                    <option value="পাস করেছে" ${stuFilterExamStatus==='পাস করেছে'?'selected':''}>পাস করেছে (উত্তীর্ণ)</option>
+                    <option value="ফেইল করেছে" ${stuFilterExamStatus==='ফেইল করেছে'?'selected':''}>ফেইল করেছে (অকৃতকার্য)</option>
                 </select>
                 <input type="text" id="stu-q" class="form-control" placeholder="নাম, রেজিঃ, রোল, মোবাইল, কোড..." value="${esc(currentSearch)}" style="width:190px;">
                 <button onclick="currentSearch=document.getElementById('stu-q').value;applyStudentMultiFilter();" class="btn btn-primary btn-xs"><i class="fa fa-search"></i> সার্চ</button>
@@ -733,28 +794,29 @@ function renderTabStudents(el, db) {
         </div>
 
         <div class="panel-body">
-            ${renderBulkToolbar('students', ['নতুন স্টুডেন্ট', 'পরীক্ষায় অংশগ্রহণ করেছে', 'পাস করেছে', 'A+', 'A', 'A-', 'B'])}
+            ${renderBulkToolbar('students', ['নতুন স্টুডেন্ট', 'পরীক্ষায় অংশগ্রহণ করেছে', 'পাস করেছে', 'ফেইল করেছে', 'A+', 'A', 'A-', 'B'])}
             <div class="dcp-table-wrap">
                 <table class="dcp-table">
                     <thead>
                         <tr>
                             <th style="width:36px;"><input type="checkbox" onchange="toggleSelectAllRows('students', this.checked, ${JSON.stringify(pg.slice.map(s=>s.reg_no)).replace(/"/g,'&quot;')})"></th>
                             <th>ছবি</th>
-                            <th>রেজিঃ <br> রোল <br> সিক্রেট কোড</th>
+                            <th>রেজিঃ <br> রোল <br> গোপন কোড</th>
                             <th>শিক্ষার্থীর নাম <br> পিতা <br> মাতা</th>
-                            <th>মোবাইল নাম্বার <br> মেসেজ পাঠান</th>
-                            <th>কোর্স ড্রপডাউন <br> ডিউরেশন ড্রপডাউন <br> ক্লাস সিডিউল ড্রপডাউন</th>
+                            <th>মোবাইল নাম্বার <br> বার্তা প্রেরণ</th>
+                            <th>কোর্সের নাম <br> মেয়াদ <br> ক্লাস টাইম</th>
                             <th>ব্যাচ-সাল <br> ব্যাচ নং</th>
-                            <th>কোর্স স্ট্যাটাস ড্রপডাউন <br> ও জিপিএ (পাস করলে)</th>
-                            <th>কুইক ভিউ, এডিট, ডিলিট</th>
+                            <th>কোর্স স্ট্যাটাস <br> ফলাফল ও গ্রেড</th>
+                            <th>অ্যাকশন</th>
                         </tr>
                     </thead>
                     <tbody>
                         ${pg.slice.length === 0 ? `<tr><td colspan="9" style="text-align:center; padding:30px; color:#64748b;">কোনো শিক্ষার্থী পাওয়া যায়নি।</td></tr>` :
                         pg.slice.map((s) => {
                             const realIdx = allStudents.findIndex(x => x.reg_no === s.reg_no);
-                            const examSt = s.exam_status || (s.result_grade && s.result_grade !== 'Pending' ? 'পাস করেছে' : 'নতুন স্টুডেন্ট');
-                            const isPassed = examSt === 'পাস করেছে';
+                            const isFailed = DCITStore.isStudentFailed(s);
+                            const isPassed = DCITStore.isStudentPassed(s);
+                            const examSt = isFailed ? 'ফেইল করেছে' : (isPassed ? 'পাস করেছে' : (s.exam_status || 'নতুন স্টুডেন্ট'));
                             const curDur = s.course_duration || s.duration || '3 Months';
                             const curSlot = s.class_slot || s.class_schedule || '8:00 AM - 9:30 AM';
                             const curYear = s.batch_year || s.session || '2026';
@@ -767,7 +829,7 @@ function renderTabStudents(el, db) {
                                 <td>
                                     <strong style="color:#0f172a;">${esc(s.reg_no)}</strong><br>
                                     <span style="font-size:12px; color:#475569;">রোল: ${esc(s.roll_no)}</span><br>
-                                    <span class="badge badge-info" style="font-family:monospace; letter-spacing:0.5px;" title="১০ অক্ষরের গোপন কোড"><i class="fa fa-key"></i> ${esc(s.secret_code || 'DC26STD001')}</span>
+                                    <span class="badge badge-info" style="font-family:monospace; letter-spacing:0.5px;" title="গোপন কোড"><i class="fa fa-key"></i> ${esc(s.secret_code || 'DC26STD001')}</span>
                                 </td>
                                 <td>
                                     <strong style="color:#1e293b; font-size:14px;">${esc(s.name)}</strong><br>
@@ -776,7 +838,7 @@ function renderTabStudents(el, db) {
                                 </td>
                                 <td>
                                     <strong style="color:#0f172a;">${esc(s.phone || '01771770044')}</strong><br>
-                                    <button onclick="openAutoSmsGatewayModal('${esc(s.phone||'01771770044')}','প্রিয় ${esc(s.name)}, ড্রিম ক্যারিয়ার আইটি থেকে আপনার রেজিঃ ${esc(s.reg_no)} এবং সিক্রেট কোড: ${esc(s.secret_code)}।')" class="btn btn-accent btn-xs" style="margin-top:4px;"><i class="fa fa-paper-plane"></i> মেসেজ পাঠান</button>
+                                    <button onclick="openAutoSmsGatewayModal('${esc(s.phone||'01771770044')}','প্রিয় ${esc(s.name)}, ড্রিম ক্যারিয়ার আইটি থেকে আপনার রেজিঃ ${esc(s.reg_no)} এবং গোপন কোড: ${esc(s.secret_code)}।')" class="btn btn-accent btn-xs" style="margin-top:4px;"><i class="fa fa-paper-plane"></i> মেসেজ পাঠান</button>
                                 </td>
                                 <td>
                                     <select onchange="inlineUpdateStudentField(${realIdx},'course_name',this.value)" class="form-control" style="padding:4px 6px; font-size:12px; margin-bottom:4px;">
@@ -795,10 +857,11 @@ function renderTabStudents(el, db) {
                                     <input type="text" value="${esc(s.batch_no || 'Batch-2026-01')}" onchange="inlineUpdateStudentField(${realIdx},'batch_no',this.value)" class="form-control" style="width:110px; padding:4px 6px; font-size:12px;" title="ব্যাচ নং">
                                 </td>
                                 <td>
-                                    <select onchange="inlineUpdateStudentExamStatus(${realIdx}, this.value)" class="form-control" style="padding:4px 6px; font-size:12px; font-weight:700; ${isPassed?'background:#dcfce7;border-color:#16a34a;color:#166534;':''}">
-                                        <option value="নতুন স্টুডেন্ট" ${examSt==='নতুন স্টুডেন্ট'?'selected':''}>নতুন স্টুডেন্ট</option>
+                                    <select onchange="inlineUpdateStudentExamStatus(${realIdx}, this.value)" class="form-control" style="padding:4px 6px; font-size:12px; font-weight:700; ${isPassed?'background:#dcfce7;border-color:#16a34a;color:#166534;':(isFailed?'background:#fee2e2;border-color:#dc2626;color:#991b1b;':'')}">
+                                        <option value="নতুন স্টুডেন্ট" ${examSt==='নতুন স্টুডেন্ট'?'selected':''}>নতুন স্টুডেন্ট (চলমান)</option>
                                         <option value="পরীক্ষায় অংশগ্রহণ করেছে" ${examSt==='পরীক্ষায় অংশগ্রহণ করেছে'?'selected':''}>পরীক্ষায় অংশগ্রহণ করেছে</option>
-                                        <option value="পাস করেছে" ${examSt==='পাস করেছে'?'selected':''}>পাস করেছে</option>
+                                        <option value="পাস করেছে" ${examSt==='পাস করেছে'?'selected':''}>পাস করেছে (উত্তীর্ণ)</option>
+                                        <option value="ফেইল করেছে" ${examSt==='ফেইল করেছে'?'selected':''}>ফেইল করেছে (অকৃতকার্য)</option>
                                     </select>
                                     ${isPassed ? `
                                     <div style="margin-top:4px;">
@@ -808,7 +871,7 @@ function renderTabStudents(el, db) {
                                             <option value="A-|4.00" ${curGrade==='A-'?'selected':''}>A- (GPA 4.00)</option>
                                             <option value="B|3.50" ${curGrade==='B'?'selected':''}>B (GPA 3.50)</option>
                                         </select>
-                                    </div>` : `<div style="font-size:11px; color:#64748b; margin-top:3px;">পাস করলে জিপিএ অপশন আসবে</div>`}
+                                    </div>` : (isFailed ? `<div style="margin-top:4px;"><span class="badge badge-danger">ফলাফলঃ ফেইল (GPA 0.00)</span></div>` : `<div style="margin-top:4px;"><span class="badge badge-warning">কোর্স চলমান</span></div>`)}
                                 </td>
                                 <td style="white-space:nowrap;">
                                     <button onclick="quickViewStudent(${realIdx})" class="btn btn-outline btn-xs" title="কুইক ভিউ"><i class="fa fa-eye"></i></button>
@@ -843,19 +906,54 @@ function inlineUpdateStudentExamStatus(idx, examStatus) {
         if (!s) return;
         s.exam_status = examStatus;
         if (examStatus === 'পাস করেছে') {
-            if (!s.result_grade || s.result_grade === 'Pending') {
+            if (!s.result_grade || s.result_grade === 'Pending' || s.result_grade === 'Fail' || s.result_grade === 'F') {
                 s.result_grade = 'A+';
                 s.cgpa = '5.00';
             }
             s.status = 'Completed';
+            let cert = (db.certificates || []).find(c => String(c.reg_no) === String(s.reg_no));
+            if (!cert) {
+                db.certificates = db.certificates || [];
+                db.certificates.unshift({
+                    id: Date.now(),
+                    cert_no: 'DCIT-' + (s.batch_year || '2026') + '-' + s.reg_no,
+                    student_id: s.id || Date.now(),
+                    reg_no: s.reg_no,
+                    roll_no: s.roll_no,
+                    secret_code: s.secret_code || DCITStore.generateSecretCode(s.name, s.course_name, s.batch_year, s.reg_no),
+                    student_name: s.name,
+                    father_name: s.father_name,
+                    mother_name: s.mother_name,
+                    course_name: s.course_name,
+                    batch_no: s.batch_no || 'Batch-2026-01',
+                    batch_year: s.batch_year || 2026,
+                    session_quarter: s.session_quarter || 'January to March',
+                    duration: s.course_duration || '3 Months',
+                    grade: s.result_grade,
+                    cgpa: s.cgpa,
+                    issue_date: new Date().toISOString().slice(0,10),
+                    verification_code: 'VER-DCIT-' + s.reg_no,
+                    status: 'Issued'
+                });
+            } else {
+                cert.status = 'Issued';
+                cert.grade = s.result_grade;
+                cert.cgpa = s.cgpa;
+            }
+        } else if (examStatus === 'ফেইল করেছে') {
+            s.result_grade = 'Fail';
+            s.cgpa = '0.00';
+            s.status = 'Completed';
+            db.certificates = (db.certificates || []).filter(c => String(c.reg_no) !== String(s.reg_no));
         } else {
             s.result_grade = 'Pending';
             s.cgpa = '0.00';
             s.status = 'Active';
+            db.certificates = (db.certificates || []).filter(c => String(c.reg_no) !== String(s.reg_no));
         }
     });
     renderAdminApp();
-    notifyToast('কোর্স স্ট্যাটাস আপডেট হয়েছে!');
+    notifyToast('শিক্ষার্থীর কোর্স ও ফলাফল স্ট্যাটাস আপডেট হয়েছে!');
 }
 
 function inlineUpdateStudentGpa(idx, gradePair) {
@@ -968,20 +1066,20 @@ function openStudentPopupModal(editIdx = null) {
     <form onsubmit="saveStudentFromPopup(event, ${editIdx !== null ? editIdx : 'null'})">
         <div class="form-grid">
             <div class="form-group">
-                <label>পাসপোর্ট সাইজের ছবি আপলোড (প্রিভিউ সহ)</label>
+                <label>পাসপোর্ট সাইজের ছবি</label>
                 <input type="file" accept="image/*" class="form-control" onchange="previewUploadImg(this,'stu-pop-photo-prev','stu-pop-photo-val')">
                 <input type="hidden" id="stu-pop-photo-val" value="${esc(s ? s.photo : 'assets/img/logo.jpg')}">
                 <img id="stu-pop-photo-prev" src="${esc(admImg(s ? s.photo : 'assets/img/logo.jpg'))}" style="margin-top:6px; width:68px; height:76px; object-fit:cover; border-radius:8px; border:2px solid #0f766e;">
             </div>
             <div class="form-group">
-                <label>সার্টিফিকেট / জন্মনিবন্ধন ডকুমেন্ট আপলোড</label>
+                <label>সার্টিফিকেট / জন্মনিবন্ধন সনদ</label>
                 <input type="file" accept="image/*" class="form-control" onchange="previewUploadImg(this,'stu-pop-cert-prev','stu-pop-cert-val')">
                 <input type="hidden" id="stu-pop-cert-val" value="${esc(s?.doc_image || 'assets/img/logo.jpg')}">
                 <img id="stu-pop-cert-prev" src="${esc(admImg(s?.doc_image || 'assets/img/logo.jpg'))}" style="margin-top:6px; width:68px; height:54px; object-fit:cover; border-radius:8px; border:1px dashed #94a3b8;">
             </div>
             <div class="form-group"><label>রেজিস্ট্রেশন নাম্বার *</label><input type="text" id="sp-reg" class="form-control" value="${esc(nextReg)}" required></div>
             <div class="form-group"><label>রোল নাম্বার *</label><input type="text" id="sp-roll" class="form-control" value="${esc(nextRoll)}" required></div>
-            <div class="form-group"><label>১০ অক্ষরের গোপন কোড (Secret Code) *</label><input type="text" id="sp-secret" class="form-control" maxlength="10" value="${esc(nextSecret)}" required></div>
+            <div class="form-group"><label>গোপন কোড (Secret Code) *</label><input type="text" id="sp-secret" class="form-control" maxlength="10" value="${esc(nextSecret)}" required></div>
             <div class="form-group"><label>শিক্ষার্থীর নাম *</label><input type="text" id="sp-name" class="form-control" value="${esc(s?.name || '')}" required></div>
             <div class="form-group"><label>পিতার নাম *</label><input type="text" id="sp-father" class="form-control" value="${esc(s?.father_name || '')}" required></div>
             <div class="form-group"><label>মাতার নাম *</label><input type="text" id="sp-mother" class="form-control" value="${esc(s?.mother_name || '')}" required></div>
@@ -998,11 +1096,11 @@ function openStudentPopupModal(editIdx = null) {
             <div class="form-group"><label>কোনো ডিসএবিলিটিস (শারীরিক প্রতিবন্ধকতা) আছে?</label>
                 <select id="sp-disability" class="form-control" onchange="togglePopupDisabilityRow();recalcPopupStudentFee();">
                     <option value="না" ${s?.has_disability!=='হ্যাঁ'?'selected':''}>না (No)</option>
-                    <option value="হ্যাঁ" ${s?.has_disability==='হ্যাঁ'?'selected':''}>হ্যাঁ (Yes - ${disPct}% ডিসকাউন্ট)</option>
+                    <option value="হ্যাঁ" ${s?.has_disability==='হ্যাঁ'?'selected':''}>হ্যাঁ (Yes)</option>
                 </select>
             </div>
             <div class="form-group" id="sp-med-row" style="display:${s?.has_disability==='হ্যাঁ'?'block':'none'}; background:#fef2f2; padding:10px; border-radius:8px; border:1px solid #fecaca;">
-                <label style="color:#dc2626;">মেডিক্যাল রিপোর্ট আপলোড করুন (${disPct}% বিশেষ ছাড়)</label>
+                <label style="color:#dc2626;">মেডিক্যাল রিপোর্ট / প্রত্যয়নপত্র আপলোড করুন</label>
                 <input type="file" accept="image/*,.pdf" class="form-control" onchange="previewUploadImg(this,'sp-med-prev','sp-med-val')">
                 <input type="hidden" id="sp-med-val" value="${esc(s?.medical_report || '')}">
                 <img id="sp-med-prev" src="${esc(admImg(s?.medical_report || 'assets/img/logo.jpg'))}" style="width:52px;height:42px;margin-top:4px;object-fit:cover;">
@@ -1012,8 +1110,8 @@ function openStudentPopupModal(editIdx = null) {
                     ${courses.map(c => `<option value="${esc(c.title)}" data-fee="${c.fee}" data-dur="${esc(c.duration)}" ${s?.course_name===c.title?'selected':''}>${esc(c.title)} (৳${c.fee})</option>`).join('')}
                 </select>
             </div>
-            <div class="form-group"><label>কোর্স ফি (অটো সিলেক্ট + ডিসকাউন্ট ক্যালকুলেশন)</label><input type="number" id="sp-fee" class="form-control" value="${esc(s?.course_fee || (courses[0]?.fee || 1500))}" readonly style="background:#f1f5f9;font-weight:800;"></div>
-            <div class="form-group"><label>কোর্সের মেয়াদ (অটো সিলেক্ট)</label><input type="text" id="sp-duration" class="form-control" value="${esc(s?.course_duration || (courses[0]?.duration || '3 Months'))}"></div>
+            <div class="form-group"><label>নির্ধারিত কোর্স ফি (৳)</label><input type="number" id="sp-fee" class="form-control" value="${esc(s?.course_fee || (courses[0]?.fee || 1500))}" readonly style="background:#f1f5f9;font-weight:800;"></div>
+            <div class="form-group"><label>কোর্সের মেয়াদ</label><input type="text" id="sp-duration" class="form-control" value="${esc(s?.course_duration || (courses[0]?.duration || '3 Months'))}"></div>
             <div class="form-group"><label>পেমেন্ট মেথড</label>
                 <select id="sp-pay-method" class="form-control" onchange="togglePopupTrxRow()">
                     ${payMethods.map(m => `<option value="${esc(m)}" ${s?.payment_method===m?'selected':''}>${esc(m)}</option>`).join('')}
@@ -1038,7 +1136,7 @@ function openStudentPopupModal(editIdx = null) {
             <div class="form-group" style="grid-column:1/-1; background:#f8fafc; padding:12px; border-radius:8px; border:1px solid #cbd5e1;">
                 <label style="display:flex;align-items:center;gap:8px;cursor:pointer;margin:0;">
                     <input type="checkbox" id="sp-oath" checked required>
-                    <span><strong>শপথনামা:</strong> উপরের সকল তথ্য সঠিক এবং শিক্ষার্থী প্রতিষ্ঠানের সকল নিয়ম মেনে চলবে। (শিক্ষক রেফার ছাড়: ${refPct}%, প্রতিবন্ধী ছাড়: ${disPct}%)</span>
+                    <span><strong>শপথনামা:</strong> উপরের সকল তথ্য সঠিক এবং শিক্ষার্থী প্রতিষ্ঠানের সকল নিয়মাবলী মেনে চলবে।</span>
                 </label>
             </div>
         </div>
@@ -1047,7 +1145,7 @@ function openStudentPopupModal(editIdx = null) {
             <button type="submit" class="btn btn-primary"><i class="fa fa-check-circle"></i> সাবমিট ও সংরক্ষণ করুন</button>
         </div>
     </form>`;
-    openAdminModal(s ? 'শিক্ষার্থীর তথ্য সম্পাদনা করুন' : 'নতুন স্টুডেন্ট এড করুন (কমপ্লিট পপআপ ফর্ম)', html);
+    openAdminModal(s ? 'শিক্ষার্থীর তথ্য সম্পাদনা করুন' : 'নতুন শিক্ষার্থী নিবন্ধন ফর্ম', html);
 }
 
 function togglePopupDisabilityRow() {
@@ -1212,7 +1310,7 @@ function deleteStudent(idx) {
 function renderTabResults(el, db) {
     renderTabStudents(el, db);
     const hdr = el.querySelector('.panel-header h3');
-    if (hdr) hdr.innerHTML = `<i class="fa fa-trophy" style="color:#eab308;"></i> রেজাল্ট আপডেট ও জিপিএ পাবলিশিং সেকশন (পাস সিলেক্ট করলেই জিপিএ ও সার্টিফিকেট অটো জেনারেট হবে)`;
+    if (hdr) hdr.innerHTML = `<i class="fa fa-trophy" style="color:#eab308;"></i> শিক্ষার্থীদের চূড়ান্ত ফলাফল ও গ্রেডিং ব্যবস্থাপনা`;
 }
 
 /* ==========================================================================
@@ -1240,12 +1338,12 @@ function renderTabCertificates(el, db) {
                 <i class="fa fa-check-circle"></i> ভেরিফাইড (Issued) <b>${verifiedCount}</b>
             </button>
         </div>
-        <button onclick="openCertificateModal()" class="btn btn-primary btn-xs"><i class="fa fa-plus-circle"></i> ➕ নতুন সার্টিফিকেট ইস্যু করুন (রেজিঃ সার্চ সহ)</button>
+        <button onclick="openCertificateModal()" class="btn btn-primary btn-xs"><i class="fa fa-plus-circle"></i> নতুন সার্টিফিকেট ইস্যু করুন</button>
     </div>
 
     <div class="panel-card">
         <div class="panel-header">
-            <h3><i class="fa fa-certificate"></i> সার্টিফিকেট ও ১০-অক্ষরের গোপন কোড ম্যানেজমেন্ট (${filtered.length})</h3>
+            <h3><i class="fa fa-certificate"></i> ইস্যুকৃত সার্টিফিকেট তালিকা (${filtered.length})</h3>
             <input type="text" class="form-control" placeholder="রেজিঃ নং, নাম, সার্টিফিকেট নং বা গোপন কোড দিয়ে খুঁজুন..." value="${esc(currentSearch)}" oninput="currentSearch=this.value;adminPages['certificates']=1;renderAdminApp();" style="max-width:320px;">
         </div>
         <div class="panel-body">
@@ -1298,10 +1396,10 @@ function openCertificateModal(editIdx = null) {
     const c = editIdx !== null ? db.certificates[editIdx] : null;
     const html = `
     <div style="background:#f0f9ff; padding:14px; border-radius:10px; border:1px solid #bae6fd; margin-bottom:16px;">
-        <label style="font-weight:700; color:#0369a1; display:block; margin-bottom:6px;"><i class="fa fa-magic"></i> স্টুডেন্ট রেজিস্ট্রেশন নাম্বার দিয়ে অটো-ফিল করুন:</label>
+        <label style="font-weight:700; color:#0369a1; display:block; margin-bottom:6px;"><i class="fa fa-search"></i> রেজিস্ট্রেশন নাম্বার দিয়ে শিক্ষার্থীর তথ্য লোড করুন:</label>
         <div style="display:flex; gap:8px;">
             <input type="text" id="cert-lookup-reg" class="form-control" placeholder="যেমন: 000001 বা রেজিঃ নাম্বার লিখুন..." value="${esc(c?.reg_no || '')}">
-            <button type="button" onclick="autoFillCertByRegNo()" class="btn btn-primary btn-xs"><i class="fa fa-search"></i> সার্চ ও অটো-ফিল</button>
+            <button type="button" onclick="autoFillCertByRegNo()" class="btn btn-primary btn-xs"><i class="fa fa-search"></i> তথ্য লোড করুন</button>
         </div>
     </div>
     <form onsubmit="saveCertModal(event, ${editIdx !== null ? editIdx : 'null'})">
@@ -1309,7 +1407,7 @@ function openCertificateModal(editIdx = null) {
             <div class="form-group"><label>সার্টিফিকেট নাম্বার *</label><input type="text" id="cm-certno" class="form-control" value="${esc(c?.cert_no || 'DCIT-2026-' + String(db.certificates.length+1).padStart(6,'0'))}" required></div>
             <div class="form-group"><label>রেজিস্ট্রেশন নাম্বার *</label><input type="text" id="cm-reg" class="form-control" value="${esc(c?.reg_no || '')}" required></div>
             <div class="form-group"><label>রোল নাম্বার *</label><input type="text" id="cm-roll" class="form-control" value="${esc(c?.roll_no || '')}" required></div>
-            <div class="form-group"><label>১০ অক্ষরের গোপন কোড (Secret Code) *</label><input type="text" id="cm-secret" class="form-control" maxlength="10" value="${esc(c?.secret_code || 'DC26STD001')}" required></div>
+            <div class="form-group"><label>গোপন কোড (Secret Code) *</label><input type="text" id="cm-secret" class="form-control" maxlength="10" value="${esc(c?.secret_code || 'DC26STD001')}" required></div>
             <div class="form-group"><label>শিক্ষার্থীর নাম *</label><input type="text" id="cm-name" class="form-control" value="${esc(c?.student_name || '')}" required></div>
             <div class="form-group"><label>পিতার নাম *</label><input type="text" id="cm-father" class="form-control" value="${esc(c?.father_name || '')}" required></div>
             <div class="form-group"><label>মাতার নাম *</label><input type="text" id="cm-mother" class="form-control" value="${esc(c?.mother_name || '')}" required></div>
@@ -1325,7 +1423,7 @@ function openCertificateModal(editIdx = null) {
             <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> সার্টিফিকেট সংরক্ষণ করুন</button>
         </div>
     </form>`;
-    openAdminModal(c ? 'সার্টিফিকেট তথ্য এডিট করুন' : 'নতুন সার্টিফিকেট তৈরি করুন (রেজিঃ অটো-ফিল)', html);
+    openAdminModal(c ? 'সার্টিফিকেট তথ্য সম্পাদনা করুন' : 'নতুন সার্টিফিকেট ইস্যু ফর্ম', html);
 }
 
 function autoFillCertByRegNo() {
@@ -1334,6 +1432,14 @@ function autoFillCertByRegNo() {
     const s = (db.students || []).find(x => String(x.reg_no) === reg || String(x.roll_no) === reg);
     if (!s) {
         showAdminToast('error', 'পাওয়া যায়নি!', 'এই রেজিস্ট্রেশন নাম্বারে কোনো শিক্ষার্থী পাওয়া যায়নি!');
+        return;
+    }
+    if (!DCITStore.isCourseCompleted(s)) {
+        showAdminToast('error', 'কোর্স সম্পন্ন হয়নি!', 'এই শিক্ষার্থীর কোর্স এখনো সম্পন্ন হয়নি। শুধুমাত্র উত্তীর্ণ শিক্ষার্থীদের সার্টিফিকেট ইস্যু করা যাবে।');
+        return;
+    }
+    if (DCITStore.isStudentFailed(s)) {
+        showAdminToast('error', 'সার্টিফিকেট প্রযোজ্য নয়!', 'এই শিক্ষার্থী পরীক্ষায় অকৃতকার্য (ফেইল) হওয়ায় সার্টিফিকেট ইস্যু করা যাবে না।');
         return;
     }
     document.getElementById('cm-reg').value = s.reg_no;
@@ -1574,7 +1680,7 @@ function renderTabClasses(el, db) {
                             <th>প্রশিক্ষক ও রুম</th>
                             <th>ব্যাচের স্টুডেন্ট সংখ্যা</th>
                             <th>স্ট্যাটাস</th>
-                            <th>কুইক ভিউ (ব্যাচ স্টুডেন্ট লিস্ট সহ), এডিট, ডিলিট</th>
+                            <th>অ্যাকশন</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -1591,7 +1697,7 @@ function renderTabClasses(el, db) {
                                 <td><span class="badge badge-info">${batchStudents.length} জন শিক্ষার্থী</span></td>
                                 <td><span class="badge badge-success">${esc(c.status || 'Active')}</span></td>
                                 <td>
-                                    <button onclick="quickViewBatchWithStudents(${realIdx})" class="btn btn-accent btn-xs" title="ব্যাচের স্টুডেন্ট লিস্ট ও রেজিঃ দিয়ে স্টুডেন্ট এড"><i class="fa fa-eye"></i> কুইক ভিউ ও স্টুডেন্ট লিস্ট</button>
+                                    <button onclick="quickViewBatchWithStudents(${realIdx})" class="btn btn-accent btn-xs" title="ব্যাচের স্টুডেন্ট লিস্ট ও রেজিঃ দিয়ে স্টুডেন্ট এড"><i class="fa fa-eye"></i> বিস্তারিত ও তালিকা</button>
                                     <button onclick="openClassModal(${realIdx})" class="btn btn-primary btn-xs"><i class="fa fa-edit"></i></button>
                                     <button onclick="deleteClassBatch(${realIdx})" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i></button>
                                 </td>
@@ -1623,7 +1729,7 @@ function quickViewBatchWithStudents(idx) {
     <!-- Add Student to this Batch ONLY by Registration Number -->
     <div style="background:#f0fdf4; padding:14px; border-radius:10px; border:1px solid #bbf7d0; margin-bottom:16px; display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap;">
         <div>
-            <strong style="color:#166534;"><i class="fa fa-user-plus"></i> শুধুমাত্র রেজিস্ট্রেশন নাম্বার দিয়ে এই ব্যাচে স্টুডেন্ট যুক্ত করুন:</strong>
+            <strong style="color:#166534;"><i class="fa fa-user-plus"></i> রেজিস্ট্রেশন নাম্বার দিয়ে এই ব্যাচে শিক্ষার্থী যুক্ত করুন:</strong>
         </div>
         <div style="display:flex; gap:8px;">
             <input type="text" id="batch-add-reg-inp" class="form-control" placeholder="রেজিস্ট্রেশন নাম্বার লিখুন (যেমন: 000001)" style="width:230px;">
@@ -1771,7 +1877,7 @@ function renderTabCourses(el, db) {
     <div class="panel-card">
         <div class="panel-header">
             <h3><i class="fa fa-book"></i> কোর্স ও ডাইনামিক সিলেবাস ম্যানেজমেন্ট (${courses.length}টি কোর্স)</h3>
-            <button onclick="openCourseModal()" class="btn btn-primary btn-xs"><i class="fa fa-plus-circle"></i> ➕ এড কোর্স (ডাইনামিক + ক্লাস সিলেবাস সহ)</button>
+            <button onclick="openCourseModal()" class="btn btn-primary btn-xs"><i class="fa fa-plus-circle"></i> নতুন কোর্স যুক্ত করুন</button>
         </div>
         <div class="panel-body">
             ${renderBulkToolbar('courses', ['Active', 'Inactive'])}
@@ -1829,7 +1935,7 @@ function openCourseModal(editIdx = null) {
     <form onsubmit="saveCourseModal(event, ${editIdx !== null ? editIdx : 'null'})">
         <div class="form-grid">
             <div class="form-group">
-                <label>কোর্স ছবি আপলোড (প্রিভিউ সহ)</label>
+                <label>কোর্স ব্যানার ছবি</label>
                 <input type="file" accept="image/*" class="form-control" onchange="previewUploadImg(this,'crs-img-prev','crs-img-val')">
                 <input type="hidden" id="crs-img-val" value="${esc(c?.image || 'assets/img/course-msoffice.jpg')}">
                 <img id="crs-img-prev" src="${esc(admImg(c?.image || 'assets/img/course-msoffice.jpg'))}" style="width:90px;height:55px;object-fit:cover;margin-top:6px;border-radius:6px;border:1px solid #cbd5e1;">
@@ -1840,7 +1946,7 @@ function openCourseModal(editIdx = null) {
             <div class="form-group"><label>মেয়াদ (Duration) *</label><input type="text" id="crs-dur" class="form-control" value="${esc(c?.duration || '3 Months')}" required></div>
             <div class="form-group"><label>মোট ক্লাস সংখ্যা *</label><input type="number" id="crs-total-cls" class="form-control" value="${esc(c?.total_classes || 36)}" required></div>
             <div class="form-group" style="grid-column:1/-1;">
-                <label>কোর্স টপিকস (Textarea - কমা দিয়ে লিখুন) *</label>
+                <label>কোর্সের প্রধান টপিকসমূহ (কমা দিয়ে লিখুন) *</label>
                 <textarea id="crs-topics" class="form-control" rows="2" required>${esc(topicsStr)}</textarea>
             </div>
             <div class="form-group" style="grid-column:1/-1;">
@@ -1852,7 +1958,7 @@ function openCourseModal(editIdx = null) {
         <div style="margin-top:16px; background:#f8fafc; padding:16px; border-radius:12px; border:1px solid #cbd5e1;">
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
                 <h4 style="margin:0; color:#0f172a;"><i class="fa fa-list-ol"></i> কোর্সের ক্লাস সমূহ (ক্লাস সংখ্যা | ক্লাসের বিবরণ | ক্লাস টাইপ)</h4>
-                <button type="button" onclick="addDynamicSyllabusRow()" class="btn btn-success btn-xs"><i class="fa fa-plus-circle"></i> ➕ নতুন ক্লাস রো যুক্ত করুন (+)</button>
+                <button type="button" onclick="addDynamicSyllabusRow()" class="btn btn-success btn-xs"><i class="fa fa-plus-circle"></i> নতুন ক্লাস মডিউল যুক্ত করুন</button>
             </div>
             <div id="dynamic-syllabus-rows">
                 ${sylList.map((row) => `
@@ -1870,7 +1976,7 @@ function openCourseModal(editIdx = null) {
             <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> কোর্স ও সিলেবাস সংরক্ষণ করুন</button>
         </div>
     </form>`;
-    openAdminModal(c ? 'কোর্স ও সিলেবাস সম্পাদনা' : 'নতুন কোর্স যুক্ত করুন (ডাইনামিক + ক্লাস সিলেবাস)', html);
+    openAdminModal(c ? 'কোর্স ও সিলেবাস সম্পাদনা' : 'নতুন কোর্স ও সিলেবাস সংযোজন', html);
 }
 
 function addDynamicSyllabusRow() {
@@ -2042,7 +2148,7 @@ function openTeacherModal(editIdx = null) {
     <form onsubmit="saveTeacherModal(event, ${editIdx !== null ? editIdx : 'null'})">
         <div class="form-grid">
             <div class="form-group">
-                <label>ছবি আপলোড করুন (প্রিভিউ সহ)</label>
+                <label>প্রোফাইল ছবি</label>
                 <input type="file" accept="image/*" class="form-control" onchange="previewUploadImg(this,'tch-img-prev','tch-img-val')">
                 <input type="hidden" id="tch-img-val" value="${esc(t?.photo || 'assets/img/logo.jpg')}">
                 <img id="tch-img-prev" src="${esc(admImg(t?.photo || 'assets/img/logo.jpg'))}" style="width:65px;height:72px;object-fit:cover;margin-top:6px;border-radius:8px;border:2px solid #0f766e;">
@@ -2135,8 +2241,8 @@ function renderTabNotices(el, db) {
     el.innerHTML = `
     <div class="panel-card">
         <div class="panel-header">
-            <h3><i class="fa fa-bullhorn"></i> নোটিশ ও সাকসেস স্টোরি (MS Word স্টাইল রিচ টেক্সট ফরম্যাটিং সহ)</h3>
-            <button onclick="openNoticeRichModal()" class="btn btn-primary btn-xs"><i class="fa fa-plus-circle"></i> ➕ নতুন ফরম্যাটেড নোটিশ তৈরি করুন</button>
+            <h3><i class="fa fa-bullhorn"></i> অফিসিয়াল নোটিশ বোর্ড ব্যবস্থাপনা</h3>
+            <button onclick="openNoticeRichModal()" class="btn btn-primary btn-xs"><i class="fa fa-plus-circle"></i> নতুন নোটিশ প্রকাশ করুন</button>
         </div>
         <div class="panel-body">
             ${renderBulkToolbar('notices', ['Active', 'Inactive'])}
@@ -2185,7 +2291,7 @@ function execRichCmd(cmd, val = null) {
 function openNoticeRichModal(editIdx = null) {
     const db = DCITStore.getDB();
     const n = editIdx !== null ? db.notices[editIdx] : null;
-    openAdminModal(n ? 'নোটিশ সম্পাদনা করুন (Rich Text Editor)' : 'নতুন নোটিশ প্রকাশ করুন (MS Word স্টাইল এডিটর)', `
+    openAdminModal(n ? 'নোটিশ সম্পাদনা করুন' : 'নতুন অফিসিয়াল নোটিশ প্রকাশ', `
     <form onsubmit="saveNoticeRichModal(event, ${editIdx !== null ? editIdx : 'null'})">
         <div class="form-grid">
             <div class="form-group"><label>নোটিশের শিরোনাম *</label><input type="text" id="nt-title" class="form-control" value="${esc(n?.title || '')}" required></div>
@@ -2197,7 +2303,7 @@ function openNoticeRichModal(editIdx = null) {
             <div class="form-group"><label>প্রকাশের তারিখ *</label><input type="date" id="nt-date" class="form-control" value="${esc(n?.publish_date || new Date().toISOString().slice(0,10))}" required></div>
         </div>
         <div class="form-group" style="margin-top:12px;">
-            <label>নোটিশের বিস্তারিত বিবরণ (বোল্ড, কালার, হেডিং, লিস্ট ফরম্যাটিং ভিউয়ার পেজে হুবহু দেখাবে) *</label>
+            <label>নোটিশের বিস্তারিত বিবরণ *</label>
             <div class="word-toolbar">
                 <button type="button" onclick="execRichCmd('bold')"><i class="fa fa-bold"></i> বোল্ড</button>
                 <button type="button" onclick="execRichCmd('italic')"><i class="fa fa-italic"></i> ইটালিক</button>
@@ -2207,7 +2313,7 @@ function openNoticeRichModal(editIdx = null) {
                 <button type="button" onclick="execRichCmd('insertOrderedList')"><i class="fa fa-list-ol"></i> নাম্বার লিস্ট</button>
                 <input type="color" onchange="execRichCmd('foreColor',this.value)" title="টেক্সট কালার" style="height:28px;width:36px;border:none;cursor:pointer;">
             </div>
-            <div id="nt-rich-editor" class="word-editor-area" contenteditable="true">${n?.details || '<p>নোটিশের বিস্তারিত বিবরণ এখানে লিখুন...</p>'}</div>
+            <div id="nt-rich-editor" class="word-editor-area" contenteditable="true">${n?.details || ''}</div>
         </div>
         <div style="margin-top:16px;text-align:right;"><button type="submit" class="btn btn-primary"><i class="fa fa-check"></i> নোটিশ প্রকাশ করুন</button></div>
     </form>`);
@@ -2443,7 +2549,7 @@ function renderTabSmsModule(el, db) {
     el.innerHTML = `
     <div class="panel-card">
         <div class="panel-header">
-            <h3><i class="fa fa-paper-plane"></i> অটোমেটিক মেসেজ মডিউল (সিম ও মোবাইল ছাড়াই PHP Cloud SMS Gateway)</h3>
+            <h3><i class="fa fa-paper-plane"></i> অফিসিয়াল এসএমএস সার্ভিস ও লগ</h3>
             <button onclick="openAutoSmsGatewayModal('01771770044','ড্রিম ক্যারিয়ার আইটি থেকে বিশেষ নোটিশ: আগামী শনিবার সকাল ১০টায় ক্লাস অনুষ্ঠিত হবে।')" class="btn btn-primary btn-xs"><i class="fa fa-paper-plane"></i> ➕ নতুন অটো মেসেজ পাঠান</button>
         </div>
         <div class="panel-body">
@@ -2678,7 +2784,7 @@ function renderTabSettings(el, db) {
 
     <div class="panel-card" style="padding:22px;">
         <div class="panel-header" style="padding:0 0 14px; border:none; background:transparent;">
-            <h3 style="margin:0;"><i class="fa fa-picture-o"></i> ওয়েবসাইট ওয়েলকাম নোটিশ পপআপ ব্যানার (সাইটে ঢুকলেই প্রদর্শিত হবে)</h3>
+            <h3 style="margin:0;"><i class="fa fa-picture-o"></i> ওয়েবসাইট ওয়েলকাম নোটিশ ব্যানার ব্যবস্থাপনা</h3>
             <button onclick="openWelcomeBannerModal()" class="btn btn-accent btn-xs"><i class="fa fa-plus"></i> ➕ নতুন ওয়েলকাম ব্যানার যুক্ত করুন</button>
         </div>
         <div class="dcp-table-wrap">

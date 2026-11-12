@@ -15,7 +15,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             header("Location: biodata.php?reg_no=" . urlencode($st['reg_no']));
             exit;
         } else {
-            $err = 'শিক্ষার্থী খুঁজে পাওয়া যায়নি! সঠিক রেজিস্ট্রেশন নম্বর (যেমন: 000001) বা মোবাইল নম্বর দিন, অথবা এডমিন লগইনের জন্য Admin Panel বাটনে ক্লিক করুন।';
+            $err = 'শিক্ষার্থী খুঁজে পাওয়া যায়নি! অনুগ্রহ করে সঠিক রেজিস্ট্রেশন নম্বর বা মোবাইল নম্বর প্রদান করুন।';
         }
     }
 }
@@ -38,11 +38,11 @@ require_once __DIR__ . '/includes/header.php';
                 <input type="hidden" name="auth_mode" value="signin">
                 <div class="form-group">
                     <label>রেজিস্ট্রেশন নম্বর / মোবাইল / ইমেইল *</label>
-                    <input type="text" name="login_id" class="form-control" required value="000001" placeholder="যেমন: 000001 বা 01879653143">
+                    <input type="text" name="login_id" class="form-control" required value="" placeholder="আপনার রেজিস্ট্রেশন নম্বর বা মোবাইল নম্বর লিখুন">
                 </div>
                 <div class="form-group">
-                    <label>পাসওয়ার্ড (ডিফল্ট: 123456)</label>
-                    <input type="password" name="password" class="form-control" value="123456" required>
+                    <label>পাসওয়ার্ড *</label>
+                    <input type="password" name="password" class="form-control" value="" required placeholder="আপনার পাসওয়ার্ড লিখুন">
                 </div>
                 <button type="submit" class="btn btn-primary" style="width:100%;"><i class="fa fa-unlock-alt"></i> প্রোফাইল ও রেজাল্ট দেখুন</button>
             </form>

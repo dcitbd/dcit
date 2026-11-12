@@ -1,6 +1,19 @@
 /**
- * Dream Career IT - Admin Panel Interactive Helpers
+ * Dream Career IT - Admin Dashboard Interactive Helpers
+ * Security Rule: On the Admin Dashboard, ONLY F12 is locked; all other actions (right-click, copy, paste, select, print) are open.
  */
+(function () {
+    document.addEventListener('keydown', function (e) {
+        const key = (e.key || '').toLowerCase();
+        const code = e.keyCode || e.which;
+        if (code === 123 || key === 'f12') {
+            e.preventDefault();
+            e.stopPropagation();
+            return false;
+        }
+    }, true);
+})();
+
 document.addEventListener('DOMContentLoaded', function () {
     // Instant table filtering in Admin Panel
     const filterBox = document.getElementById('adminSearchBox');

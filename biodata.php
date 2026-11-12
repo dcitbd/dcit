@@ -66,7 +66,7 @@ require_once __DIR__ . '/includes/header.php';
                         <p style="margin-bottom:8px;"><strong>Height & Weight:</strong> <?= h($profile['height']) ?> | <?= h($profile['weight']) ?></p>
                         <p style="margin-bottom:8px;"><strong>Education:</strong> <?= h($profile['education']) ?> (<?= h($profile['school_college']) ?>)</p>
                         <p style="margin-bottom:8px;"><strong>Class Schedule:</strong> <?= h($profile['class_slot']) ?></p>
-                        <p style="margin-bottom:8px;"><strong>Result / Grade:</strong> <span class="badge badge-success"><?= h($profile['result_grade']) ?> (GPA: <?= h($profile['cgpa']) ?>)</span></p>
+                        <p style="margin-bottom:8px;"><strong>Result / Grade:</strong> <?php if (!is_student_course_completed($profile)): ?><span class="badge badge-warning">কোর্স চলমান</span><?php elseif (is_student_failed($profile)): ?><span class="badge badge-danger">ফেইল (Fail - GPA: 0.00)</span><?php else: ?><span class="badge badge-success"><?= h($profile['result_grade']) ?> (GPA: <?= h($profile['cgpa']) ?>)</span><?php endif; ?></p>
                     </div>
                 </div>
                 <div style="margin-top:16px; padding:14px; background:#f8fafc; border-radius:8px; border-left:4px solid #0f766e;">
@@ -83,7 +83,7 @@ require_once __DIR__ . '/includes/header.php';
         <div class="filter-bar">
             <div class="form-group" style="flex:1;">
                 <label><i class="fa fa-search"></i> স্টুডেন্ট বায়োডাটা খুঁজুন (নাম, রেজিস্ট্রেশন নম্বর বা কোর্স)</label>
-                <input type="text" id="tableFilterInput" class="form-control" value="<?= h($q) ?>" placeholder="যেমন: Jainal Abedin, 000001, Graphic Design...">
+                <input type="text" id="tableFilterInput" class="form-control" value="<?= h($q) ?>" placeholder="শিক্ষার্থীর নাম, রেজিস্ট্রেশন নম্বর বা কোর্সের নাম লিখুন...">
             </div>
         </div>
 
@@ -104,7 +104,7 @@ require_once __DIR__ . '/includes/header.php';
                     <?php foreach ($students as $i => $s): ?>
                     <tr>
                         <td><?= str_pad((string)($i + 1), 2, '0', STR_PAD_LEFT) ?></td>
-                        <td><img src="<?= h($s['photo'] ?: 'assets/img/home-icon.png') ?>" style="width:42px; height:42px; border-radius:50%; object-fit:cover;"></td>
+                        <td><img src="<?= h($s['photo'] ?: 'assets/img/logo.jpg') ?>" style="width:42px; height:42px; border-radius:50%; object-fit:cover;"></td>
                         <td>
                             <a href="biodata.php?reg_no=<?= urlencode($s['reg_no']) ?>" style="font-weight:700; font-size:1rem; color:#0f766e;">
                                 <?= h($s['name']) ?>

@@ -417,7 +417,7 @@ if ($hasHeader) {
                 </div>
                 <div class="col-md-3 text-md-end no-print">
                     <a href="contact.php" class="btn btn-outline-primary btn-sm rounded-pill px-3 fw-semibold">
-                        <i class="fa-solid fa-circle-question me-1"></i> প্রশ্ন থাকলে জানান[cite: 1]
+                        <i class="fa-solid fa-circle-question me-1"></i> প্রশ্ন থাকলে জানান
                     </a>
                 </div>
             </div>
@@ -628,7 +628,7 @@ if ($hasHeader) {
                     </ul>
                     <div class="p-3 rounded-3 d-flex align-items-center justify-content-between flex-wrap gap-2 no-print" style="background: var(--dcit-emerald-soft); border: 1px solid #a7f3d0;">
                         <span class="small fw-semibold text-dark"><i class="fa-solid fa-qrcode text-success me-1"></i> অনলাইনে সার্টিফিকেট যাচাই করতে চান?</span>
-                        <a href="certificates.php" class="btn btn-success btn-sm rounded-pill px-3">Certificate Verification[cite: 1]</a>
+                        <a href="certificates.php" class="btn btn-success btn-sm rounded-pill px-3">Certificate Verification</a>
                     </div>
                 </section>
 
@@ -899,7 +899,7 @@ if ($hasHeader) {
                                 <i class="fa-solid fa-shield-halved me-1"></i> প্রাতিষ্ঠানিক বৈধতা
                             </a>
                             <a href="contact.php" class="btn btn-sm btn-info fw-semibold rounded-pill px-3">
-                                <i class="fa-solid fa-paper-plane me-1"></i> মেসেজ পাঠান[cite: 1]
+                                <i class="fa-solid fa-paper-plane me-1"></i> মেসেজ পাঠান
                             </a>
                         </div>
                     </div>

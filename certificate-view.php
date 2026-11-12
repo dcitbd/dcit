@@ -1,19 +1,75 @@
 <?php
 require_once __DIR__ . '/config/db.php';
 $pdo = get_db();
-$cert_no = trim($_GET['cert_no'] ?? '');
-$reg_no  = trim($_GET['reg_no'] ?? '');
+
+$cert_no = trim($_REQUEST['cert_no'] ?? '');
+$reg_no  = trim($_REQUEST['reg_no'] ?? '');
+$secret_code = strtoupper(trim($_REQUEST['secret_code'] ?? ''));
+
+$is_admin = is_admin_logged_in();
+
+$cert = null;
+$student = null;
 
 if ($cert_no !== '') {
     $stmt = $pdo->prepare("SELECT * FROM certificates WHERE cert_no=? LIMIT 1");
     $stmt->execute([$cert_no]);
-} else {
-    $stmt = $pdo->prepare("SELECT * FROM certificates WHERE reg_no=? LIMIT 1");
-    $stmt->execute([$reg_no ?: '000001']);
+    $cert = $stmt->fetch();
+    if ($cert) {
+        $sstmt = $pdo->prepare("SELECT * FROM students WHERE reg_no=? LIMIT 1");
+        $sstmt->execute([$cert['reg_no']]);
+        $student = $sstmt->fetch();
+    }
+} elseif ($reg_no !== '') {
+    $sstmt = $pdo->prepare("SELECT * FROM students WHERE reg_no=? OR roll_no=? LIMIT 1");
+    $sstmt->execute([$reg_no, $reg_no]);
+    $student = $sstmt->fetch();
+    if ($student) {
+        $stmt = $pdo->prepare("SELECT * FROM certificates WHERE reg_no=? LIMIT 1");
+        $stmt->execute([$student['reg_no']]);
+        $cert = $stmt->fetch();
+    }
 }
-$cert = $stmt->fetch();
-if (!$cert) {
-    die("Certificate not found.");
+
+if (!$student && !$cert) {
+    http_response_code(404);
+    die('<!DOCTYPE html><html lang="bn"><head><meta charset="UTF-8"><title>সার্টিফিকেট পাওয়া যায়নি</title></head><body style="font-family:sans-serif;text-align:center;padding:60px;"><h2>দুঃখিত! প্রদত্ত তথ্যের সাথে কোনো সার্টিফিকেট পাওয়া যায়নি।</h2><p><a href="certificates.php">ফিরে যান</a></p></body></html>');
+}
+
+if ($student) {
+    if (!is_student_course_completed($student)) {
+        http_response_code(403);
+        die('<!DOCTYPE html><html lang="bn"><head><meta charset="UTF-8"><title>কোর্স সম্পন্ন হয়নি</title></head><body style="font-family:sans-serif;text-align:center;padding:60px;color:#dc2626;"><h2>দুঃখিত! এই শিক্ষার্থীর কোর্স এখনো সম্পন্ন হয়নি।</h2><p>শুধুমাত্র কোর্স সম্পন্নকারী এবং উত্তীর্ণ শিক্ষার্থীরাই সার্টিফিকেট প্রিন্ট করতে পারবেন।</p><p><a href="result.php">ফিরে যান</a></p></body></html>');
+    }
+    if (is_student_failed($student)) {
+        http_response_code(403);
+        die('<!DOCTYPE html><html lang="bn"><head><meta charset="UTF-8"><title>সার্টিফিকেট প্রযোজ্য নয়</title></head><body style="font-family:sans-serif;text-align:center;padding:60px;color:#dc2626;"><h2>দুঃখিত! পরীক্ষায় অকৃতকার্য (ফেইল) হওয়ায় সার্টিফিকেট প্রিন্ট প্রযোজ্য নয়।</h2><p><a href="result.php">ফিরে যান</a></p></body></html>');
+    }
+}
+
+$expected_secret = strtoupper(trim((string)($student['secret_code'] ?? ($cert['secret_code'] ?? ''))));
+if (!$is_admin && ($secret_code === '' || $expected_secret === '' || $secret_code !== $expected_secret)) {
+    http_response_code(403);
+    die('<!DOCTYPE html><html lang="bn"><head><meta charset="UTF-8"><title>গোপন কোড প্রয়োজন</title></head><body style="font-family:sans-serif;text-align:center;padding:60px;color:#0f172a;"><h2>সার্টিফিকেট প্রিন্ট করার জন্য সঠিক গোপন কোড (Secret Code) প্রদান করা আবশ্যক।</h2><p><a href="certificates.php" style="color:#0f766e;font-weight:bold;">সার্টিফিকেট ভেরিফিকেশন পেজে যান</a></p></body></html>');
+}
+
+if (!$cert && $student) {
+    $cert = [
+        'cert_no' => 'DCIT-' . ($student['batch_year'] ?: date('Y')) . '-' . $student['reg_no'],
+        'reg_no' => $student['reg_no'],
+        'roll_no' => $student['roll_no'],
+        'student_name' => $student['name'],
+        'father_name' => $student['father_name'],
+        'mother_name' => $student['mother_name'],
+        'course_name' => $student['course_name'],
+        'batch_year' => $student['batch_year'],
+        'session_quarter' => $student['session_quarter'],
+        'duration' => $student['course_duration'] ?: '3 Months',
+        'grade' => $student['result_grade'],
+        'cgpa' => $student['cgpa'],
+        'issue_date' => date('Y-m-d'),
+        'verification_code' => 'VER-DCIT-' . $student['reg_no']
+    ];
 }
 ?>
 <!DOCTYPE html>
@@ -27,7 +83,7 @@ if (!$cert) {
     <meta charset="UTF-8">
     <title>Certificate - <?= h($cert['student_name']) ?> (<?= h($cert['cert_no']) ?>)</title>
     <style>
-        body { font-family: 'Georgia', 'Times New Roman', serif; background:#e2e8f0; padding:25px; margin:0; }
+        body { font-family: 'Georgia', 'Times New Roman', serif; background:#e2e8f0; padding:25px; margin:0; -webkit-user-select:none; user-select:none; }
         .cert-actions { max-width:960px; margin:0 auto 16px; display:flex; justify-content:space-between; font-family:sans-serif; }
         .cert-frame {
             max-width:960px; margin:0 auto; background:#fff; padding:18px;
@@ -64,23 +120,23 @@ if (!$cert) {
         @page { size: letter landscape; margin: 0; }
         @media print {
             body { background:#fff; padding:0; }
-            .cert-actions { display:none !important; }
+            .cert-actions, #dcitSecurityToast { display:none !important; }
             .cert-frame { box-shadow:none; width:100%; max-width:100%; }
         }
     </style>
 </head>
-<body>
+<body class="allow-cert-print">
 <div class="cert-actions">
-    <a href="certificates.php" style="text-decoration:none; background:#fff; padding:8px 16px; border-radius:6px; color:#0f766e; font-weight:700;">&larr; সার্টিফিকেট তালিকায় ফিরে যান</a>
-    <button onclick="window.print()" style="background:#ea580c; color:#fff; border:none; padding:10px 22px; border-radius:6px; font-weight:700; cursor:pointer;">🖨️ সার্টিফিকেট প্রিন্ট / PDF সেভ করুন</button>
+    <a href="certificates.php" style="text-decoration:none; background:#fff; padding:8px 16px; border-radius:6px; color:#0f766e; font-weight:700;">&larr; সার্টিফিকেট পেজে ফিরে যান</a>
+    <button onclick="document.body.classList.add('allow-cert-print'); window.print();" style="background:#ea580c; color:#fff; border:none; padding:10px 22px; border-radius:6px; font-weight:700; cursor:pointer;">🖨️ সার্টিফিকেট প্রিন্ট / PDF সেভ করুন</button>
 </div>
 
-<div class="cert-frame">
+<div class="cert-frame" id="authorizedCertPrintSheet">
     <div class="cert-inner">
         <div class="cert-top">
             <img src="assets/img/logo.jpg" alt="Logo">
             <div class="inst-title">
-                <h1><?= h(setting('site_name', 'Dream Career IT')) ?> IT CENTER</h1>
+                <h1><?= h(setting('site_name', 'Dream Career IT')) ?></h1>
                 <p><?= h(setting('address_en')) ?></p>
                 <p>Phone: <?= h(setting('phone_1')) ?> | Email: <?= h(setting('email_1')) ?></p>
             </div>
@@ -102,7 +158,7 @@ if (!$cert) {
             <strong><?= h($cert['duration']) ?></strong> professional training course on
             <b class="highlight"><?= h($cert['course_name']) ?></b> held during the session
             <strong><?= h($cert['session_quarter']) ?>, <?= (int)$cert['batch_year'] ?></strong>
-            at <strong><?= h(setting('site_name', 'Dream Career IT')) ?> IT Center</strong> and secured Grade
+            at <strong><?= h(setting('site_name', 'Dream Career IT')) ?></strong> and secured Grade
             <b class="highlight"><?= h($cert['grade']) ?></b>.
         </div>
 
@@ -119,10 +175,11 @@ if (!$cert) {
 
             <div class="sign-box">
                 <strong>DR. A.K.M Lokman</strong>
-                <span>Senior Teacher & Chief Administrator</span>
+                <span>Founder & Chief Administrator</span>
             </div>
         </div>
     </div>
 </div>
+<script src="assets/js/main.js"></script>
 </body>
 </html>

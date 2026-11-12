@@ -69,11 +69,11 @@ require_once __DIR__ . '/header.php';
             <div class="form-grid">
                 <div class="form-group">
                     <label>স্লট কোড (Slot Code) *</label>
-                    <input type="text" name="slot_code" class="form-control" required value="<?= h($edit_cls['slot_code'] ?? '') ?>" placeholder="যেমন: 8-9.30">
+                    <input type="text" name="slot_code" class="form-control" required value="<?= h($edit_cls['slot_code'] ?? '') ?>" placeholder="স্লট কোড লিখুন">
                 </div>
                 <div class="form-group">
                     <label>ক্লাসের সময় (Time Label) *</label>
-                    <input type="text" name="time_label" class="form-control" required value="<?= h($edit_cls['time_label'] ?? '') ?>" placeholder="যেমন: 8:00 AM - 9:30 AM">
+                    <input type="text" name="time_label" class="form-control" required value="<?= h($edit_cls['time_label'] ?? '') ?>" placeholder="ক্লাসের সময় লিখুন">
                 </div>
                 <div class="form-group">
                     <label>ব্যাচের নাম (Batch Name) *</label>

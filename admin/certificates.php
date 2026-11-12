@@ -74,8 +74,8 @@ require_once __DIR__ . '/header.php';
             <div class="form-group" style="background:#f0fdf4; padding:12px; border-radius:8px; border:1px dashed #16a34a;">
                 <label><i class="fa fa-magic"></i> স্টুডেন্ট তালিকা থেকে অটো-ফিল করুন (ঐচ্ছিক):</label>
                 <select id="student_preset" class="form-control">
-                    <option value="">-- স্টুডেন্ট নির্বাচন করলে নাম, পিতা-মাতা, কোর্স ও রেজিঃ নং অটো বসবে --</option>
-                    <?php foreach ($students_list as $st): ?>
+                    <option value="">-- উত্তীর্ণ শিক্ষার্থী নির্বাচন করুন --</option>
+                    <?php foreach ($students_list as $st): if (!is_student_passed($st)) continue; ?>
                         <option value="<?= (int)$st['id'] ?>"
                                 data-reg="<?= h($st['reg_no']) ?>"
                                 data-name="<?= h($st['name']) ?>"
@@ -99,7 +99,7 @@ require_once __DIR__ . '/header.php';
                 </div>
                 <div class="form-group">
                     <label>রেজিস্ট্রেশন নং (Registration No) *</label>
-                    <input type="text" id="reg_no" name="reg_no" class="form-control" required value="<?= h($edit_item['reg_no'] ?? '') ?>" placeholder="যেমন: 000001">
+                    <input type="text" id="reg_no" name="reg_no" class="form-control" required value="<?= h($edit_item['reg_no'] ?? '') ?>" placeholder="রেজিস্ট্রেশন নম্বর লিখুন">
                 </div>
                 <div class="form-group">
                     <label>শিক্ষার্থীর নাম (Student Name) *</label>

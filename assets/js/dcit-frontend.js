@@ -24,13 +24,13 @@ function renderNoticeCardHTML(n) {
         <div class="card-body">
             <div style="display:flex; justify-content:space-between; align-items:center; gap:8px; flex-wrap:wrap; margin-bottom:10px;">
                 <span class="badge badge-warning"><i class="fa fa-bell"></i> ${esc(n.category || 'নোটিশ')}</span>
-                <span class="seen-tag ${seen?'seen':'unseen'}" data-notice-seen="${Number(n.id)}">${seen?'✓ দেখা হয়েছে (Seen)':'● নতুন (Unseen)'}</span>
+                <span class="seen-tag ${seen?'seen':'unseen'}" data-notice-seen="${Number(n.id)}">${seen?'✓ পঠিত':'● নতুন'}</span>
             </div>
             <small style="color:#64748b; font-weight:700; margin-bottom:6px; display:block;"><i class="fa fa-calendar"></i> ${esc(n.publish_date)}</small>
             <h3 class="card-title-clamp" style="font-size:1.15rem; margin-bottom:8px;">${esc(n.title)}</h3>
             <p class="card-excerpt-clamp" style="color:#475569; font-size:0.93rem;">${esc(cleanText)}</p>
             <div class="card-footer" style="border-top:1px dashed #e2e8f0;">
-                <span style="font-size:0.82rem; font-weight:700; color:#0f766e;"><i class="fa fa-hand-pointer-o"></i> কার্ডে ক্লিক করে বিস্তারিত পড়ুন</span>
+                <span style="font-size:0.82rem; font-weight:700; color:#0f766e;"><i class="fa fa-bullhorn"></i> অফিসিয়াল বিজ্ঞপ্তি</span>
                 <button type="button" onclick="event.stopPropagation(); openNoticePopup(${Number(n.id)});" class="btn btn-primary btn-sm"><i class="fa fa-eye"></i> বিস্তারিত</button>
             </div>
         </div>
@@ -270,7 +270,7 @@ function previewUploadedFile(inputEl, previewBoxId) {
         box.innerHTML = `
             ${isImg ? `<img src="${e.target.result}" alt="Preview">` : `<div style="width:54px;height:54px;border-radius:10px;background:#0f766e;color:#fff;display:flex;align-items:center;justify-content:center;font-size:1.5rem;"><i class="fa fa-file-text-o"></i></div>`}
             <div>
-                <strong style="color:#0f766e; display:block; font-size:0.88rem;"><i class="fa fa-check-circle"></i> ফাইল যুক্ত হয়েছে (প্রিভিউ)</strong>
+                <strong style="color:#0f766e; display:block; font-size:0.88rem;"><i class="fa fa-check-circle"></i> ফাইল সফলভাবে যুক্ত হয়েছে</strong>
                 <small style="color:#475569;">${esc(file.name)} (${(file.size/1024).toFixed(1)} KB)</small>
             </div>
         `;
@@ -312,7 +312,7 @@ function syncHeaderFooter() {
     const navDrop = document.getElementById('navCoursesDropdown');
     if (navDrop) {
         navDrop.innerHTML = `
-            <li><a href="#courses" onclick="navigateView('courses')"><span><i class="fa fa-th-large"></i> সকল কোর্স লিস্ট ও কার্ড ভিউ</span></a></li>
+            <li><a href="#courses" onclick="navigateView('courses')"><span><i class="fa fa-th-large"></i> আমাদের সকল কোর্সসমূহ</span></a></li>
         ` + activeCourses.map(c => `
             <li>
                 <a href="#course-${esc(c.slug)}" onclick="navigateView('course-detail', {slug:'${esc(c.slug)}'})">
@@ -424,7 +424,7 @@ function renderHome(main) {
                 <p>"আজকের কম্পিউটার ও কারিগরি দক্ষতা, আগামী দিনের সফল ক্যারিয়ার ও আত্মনির্ভরশীলতা"</p>
             </div>
             <div class="view-toolbar">
-                <div><strong><i class="fa fa-book" style="color:#0f766e;"></i> মোট চলমান কোর্সঃ ${courses.length} টি</strong> (কার্ডে ক্লিক করে বিস্তারিত সিলেবাস দেখুন)</div>
+                <div><strong><i class="fa fa-book" style="color:#0f766e;"></i> মোট চলমান কোর্সঃ ${courses.length} টি</strong></div>
                 <div class="view-toggle-btns">
                     <button class="view-btn active" onclick="toggleViewMode('homeCoursesGrid','card',this)"><i class="fa fa-th-large"></i> কার্ড ভিউ</button>
                     <button class="view-btn" onclick="toggleViewMode('homeCoursesGrid','list',this)"><i class="fa fa-list"></i> লিস্ট ভিউ</button>
@@ -448,8 +448,8 @@ function renderHome(main) {
                 <div class="facility-card"><div class="facility-icon anim-float"><i class="fa fa-id-card-o"></i></div><h3>অভিজ্ঞ ও দক্ষ প্রশিক্ষক</h3><p>দক্ষ, অভিজ্ঞ ও প্রফেশনাল ট্রেইনার এবং মেন্টর দ্বারা প্রতিটি ক্লাস হাতে-কলমে পরিচালনা।</p></div>
                 <div class="facility-card"><div class="facility-icon anim-float"><i class="fa fa-laptop"></i></div><h3>আধুনিক মাল্টিমিডিয়া ল্যাব</h3><p>প্রত্যেক শিক্ষার্থীর জন্য আলাদা কম্পিউটার ও হাই-স্পিড ইন্টারনেট সমৃদ্ধ ল্যাব।</p></div>
                 <div class="facility-card"><div class="facility-icon anim-float"><i class="fa fa-headphones"></i></div><h3>২৪/৭ ও আজীবন সাপোর্ট</h3><p>অনলাইন ও অফলাইনে সার্বক্ষণিক সাপোর্ট এবং কোর্স শেষে আজীবন প্র্যাকটিস সুবিধা।</p></div>
-                <div class="facility-card"><div class="facility-icon anim-float"><i class="fa fa-certificate"></i></div><h3>১০-অক্ষরের গোপন কোড সার্টিফিকেট</h3><p>কোর্স শেষে ১০ অক্ষরের গোপন কোড ও বারকোড ভেরিফিকেশন যুক্ত প্রফেশনাল সার্টিফিকেট।</p></div>
-                <div class="facility-card"><div class="facility-icon anim-float"><i class="fa fa-gift"></i></div><h3>শিক্ষক রেফার ও বিশেষ ডিসকাউন্ট</h3><p>শিক্ষক রেফারেন্স এবং বিশেষ চাহিদাসম্পন্ন শিক্ষার্থীদের জন্য বিশেষ ফি ডিসকাউন্ট সুবিধা।</p></div>
+                <div class="facility-card"><div class="facility-icon anim-float"><i class="fa fa-certificate"></i></div><h3>অনলাইন ভেরিফাইড সার্টিফিকেট</h3><p>কোর্স শেষে অনলাইন ভেরিফিকেশন ও গোপন কোড সুরক্ষিত প্রফেশনাল সার্টিফিকেট প্রদান।</p></div>
+                <div class="facility-card"><div class="facility-icon anim-float"><i class="fa fa-gift"></i></div><h3>স্কলারশিপ ও বিশেষ ছাড়</h3><p>মেধাবী এবং বিশেষ চাহিদাসম্পন্ন শিক্ষার্থীদের জন্য কোর্স ফিতে বিশেষ স্কলারশিপ সুবিধা।</p></div>
                 <div class="facility-card"><div class="facility-icon anim-float"><i class="fa fa-briefcase"></i></div><h3>জব ও ফ্রিল্যান্সিং গাইডলাইন</h3><p>চাকরি ও আন্তর্জাতিক ফ্রিল্যান্সিং মার্কেটপ্লেসে কাজ পাওয়ার জন্য বিশেষ মেন্টরশিপ।</p></div>
             </div>
 
@@ -460,7 +460,7 @@ function renderHome(main) {
                     <li><i class="fa fa-check-circle"></i> প্রত্যেক শিক্ষার্থীর জন্য আলাদা কম্পিউটার ও ব্যাকআপ ক্লাসের সুবিধা।</li>
                     <li><i class="fa fa-check-circle"></i> আপডেটেড কোর্স কারিকুলাম এবং প্রতিটি ক্লাসের মানসম্মত লেকচার শিট।</li>
                     <li><i class="fa fa-check-circle"></i> নিয়মিত তাত্ত্বিক ও ব্যবহারিক ক্লাস এবং চূড়ান্ত মূল্যায়ন পরীক্ষা।</li>
-                    <li><i class="fa fa-check-circle"></i> অনলাইনে ১০-অক্ষরের গোপন কোড দিয়ে ভেরিফিকেশন ও ল্যান্ডস্কেপ সার্টিফিকেট প্রিন্ট।</li>
+                    <li><i class="fa fa-check-circle"></i> অনলাইনে রেজিস্ট্রেশন নম্বর ও গোপন কোড দিয়ে ফলাফল ও সার্টিফিকেট যাচাইয়ের সুবিধা।</li>
                     <li><i class="fa fa-check-circle"></i> ফ্রিল্যান্সিং ও কর্মসংস্থান তৈরিতে সরাসরি প্রজেক্ট ভিত্তিক প্রশিক্ষণ।</li>
                     <li><i class="fa fa-check-circle"></i> শিক্ষার্থী ও অভিভাবকদের জন্য নিরাপদ, সুশৃঙ্খল ও আন্তরিক পরিবেশ।</li>
                 </ul>
@@ -513,7 +513,7 @@ function renderHome(main) {
                 ${notices.map(n => renderNoticeCardHTML(n)).join('')}
             </div>
             <div style="text-align:center; margin-top:28px;">
-                <button onclick="navigateView('notices')" class="btn btn-accent"><i class="fa fa-list"></i> সকল নোটিশ ও ফিল্টার দেখুন</button>
+                <button onclick="navigateView('notices')" class="btn btn-accent"><i class="fa fa-list"></i> সকল নোটিশ দেখুন</button>
             </div>
         </div>
     </section>
@@ -599,7 +599,7 @@ function renderCoursesList(main, params = {}) {
     <div class="page-hero-strip" style="background:linear-gradient(135deg,#151442,#0f766e); color:#fff; padding:42px 0; text-align:center;">
         <div class="container">
             <h1>আমাদের সকল কোর্স সমূহ (All Courses)</h1>
-            <p>যেকোনো কোর্সের কার্ডে ক্লিক করে আলাদা পেজে সম্পূর্ণ সিলেবাস ও বিস্তারিত তথ্য দেখুন</p>
+            <p>দক্ষ প্রশিক্ষকদের তত্ত্বাবধানে হাতে-কলমে কম্পিউটার ও কারিগরি প্রশিক্ষণ গ্রহণ করুন</p>
         </div>
     </div>
     <section class="section">
@@ -691,33 +691,27 @@ function renderCourseDetail(main, slug = '') {
 }
 
 /* ==========================================================================
-   3. RESULT PAGE (Registration Number ONLY + 10-Char Secret Code Print)
+   3. RESULT PAGE (Course Completion Check + Pass/Fail + Secret Code Print)
    ========================================================================== */
 function renderResult(main, params = {}) {
     const db = DCITStore.getDB();
     const regQ = (params.reg_no || '').trim();
-    const found = regQ ? (db.students || []).find(s => s.reg_no === regQ) : null;
+    const found = regQ ? (db.students || []).find(s => s.reg_no === regQ || s.roll_no === regQ) : null;
 
-    main.innerHTML = `
-    <div class="page-hero-strip" style="background:linear-gradient(135deg,#151442,#0f766e); color:#fff; padding:42px 0; text-align:center;">
-        <div class="container">
-            <h1>অনলাইন ফলাফল ও সার্টিফিকেট প্রিন্ট (Student Result)</h1>
-            <p>শুধুমাত্র আপনার রেজিস্ট্রেশন নাম্বার (যেমন: 000001) দিয়ে রেজাল্ট দেখুন এবং ১০-অক্ষরের গোপন কোড দিয়ে সার্টিফিকেট প্রিন্ট করুন</p>
-        </div>
-    </div>
-    <section class="section">
-        <div class="container" style="max-width:880px;">
-            <div class="form-card" style="margin-bottom:30px;">
-                <h3 style="margin-bottom:14px; color:#151442;"><i class="fa fa-trophy" style="color:#ea580c;"></i> রেজিস্ট্রেশন নাম্বার দিয়ে ফলাফল খুঁজুন</h3>
-                <form onsubmit="event.preventDefault(); navigateView('result', {reg_no: document.getElementById('resOnlyRegInput').value});" style="display:flex; gap:12px; flex-wrap:wrap;">
-                    <input type="text" id="resOnlyRegInput" class="form-control" value="${esc(regQ || '000001')}" required placeholder="আপনার রেজিস্ট্রেশন নাম্বার লিখুন (যেমন: 000001)" style="flex:1; min-width:240px;">
-                    <button type="submit" class="btn btn-primary"><i class="fa fa-search"></i> রেজাল্ট দেখুন</button>
-                </form>
-            </div>
-
-            ${regQ ? (found ? `
-            <div class="form-card" style="border-top:6px solid #0f766e;">
-                <div class="qv-hero-banner">
+    let resultContentHTML = '';
+    if (regQ) {
+        if (!found) {
+            resultContentHTML = `<div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i> দুঃখিত! প্রদত্ত রেজিস্ট্রেশন নাম্বারের (${esc(regQ)}) সাথে কোনো শিক্ষার্থীর তথ্য পাওয়া যায়নি।</div>`;
+        } else if (!DCITStore.isCourseCompleted(found)) {
+            resultContentHTML = `
+            <div class="alert alert-danger" style="border-left:5px solid #dc2626;">
+                <i class="fa fa-clock-o"></i> দুঃখিত! শিক্ষার্থী <strong>${esc(found.name)}</strong> (রেজিঃ নং: <strong>${esc(found.reg_no)}</strong>)-এর কোর্স এখনো সম্পন্ন হয়নি। শুধুমাত্র কোর্স সম্পন্নকারী শিক্ষার্থীরাই ফলাফল দেখতে পারবেন।
+            </div>`;
+        } else {
+            const isFailed = DCITStore.isStudentFailed(found);
+            resultContentHTML = `
+            <div class="form-card" style="border-top:6px solid ${isFailed ? '#dc2626' : '#0f766e'};">
+                <div class="qv-hero-banner" style="${isFailed ? 'background:linear-gradient(135deg,#450a0a,#991b1b);' : ''}">
                     <img src="${esc(found.photo || 'assets/img/logo.jpg')}" alt="${esc(found.name)}">
                     <div style="flex:1;">
                         <span class="badge badge-warning">রেজিঃ নং: ${esc(found.reg_no)} | রোলঃ ${esc(found.roll_no)}</span>
@@ -725,12 +719,19 @@ function renderResult(main, params = {}) {
                         <p style="color:#5eead4; font-weight:700;">${esc(found.course_name)} (${esc(found.course_duration || '3 Months')})</p>
                     </div>
                     <div style="text-align:right;">
-                        <div class="badge badge-success" style="font-size:1.1rem; padding:8px 16px; margin-bottom:8px;">
-                            গ্রেডঃ ${esc(found.result_grade)} (GPA: ${esc(found.cgpa)})
-                        </div><br>
-                        <button onclick="promptSecretCodeAndPrint('${esc(found.reg_no)}')" class="btn btn-accent btn-sm">
-                            <i class="fa fa-print"></i> সার্টিফিকেট প্রিন্ট করুন (গোপন কোড)
-                        </button>
+                        ${isFailed ? `
+                            <div class="badge badge-danger" style="font-size:1.1rem; padding:8px 16px; margin-bottom:8px;">
+                                ফলাফলঃ ফেইল (Fail) (GPA: 0.00)
+                            </div><br>
+                            <span style="font-size:0.84rem; color:#fecaca; font-weight:700;"><i class="fa fa-ban"></i> সার্টিফিকেট প্রিন্ট প্রযোজ্য নয়</span>
+                        ` : `
+                            <div class="badge badge-success" style="font-size:1.1rem; padding:8px 16px; margin-bottom:8px;">
+                                ফলাফলঃ ${esc(found.result_grade)} (GPA: ${esc(found.cgpa)})
+                            </div><br>
+                            <button onclick="promptSecretCodeAndPrint('${esc(found.reg_no)}')" class="btn btn-accent btn-sm">
+                                <i class="fa fa-print"></i> সার্টিফিকেট প্রিন্ট করুন (গোপন কোড)
+                            </button>
+                        `}
                     </div>
                 </div>
 
@@ -739,10 +740,34 @@ function renderResult(main, params = {}) {
                     <div class="qv-info-card"><small>মাতার নাম (Mother's Name)</small><strong>${esc(found.mother_name)}</strong></div>
                     <div class="qv-info-card"><small>ব্যাচ নং ও সেশন</small><strong>${esc(found.batch_no || ('Batch-' + found.batch_year))} (${esc(found.session_quarter)})</strong></div>
                     <div class="qv-info-card"><small>ক্লাস টাইম (Class Schedule)</small><strong>${esc(found.class_slot)}</strong></div>
-                    <div class="qv-info-card"><small>শিক্ষাগত যোগ্যতা</small><strong>${esc(found.education)} (${esc(found.school_college)})</strong></div>
+                    <div class="qv-info-card"><small>অর্জিত ফলাফল (Result Status)</small><strong style="color:${isFailed ? '#dc2626' : '#15803d'};">${isFailed ? 'অকৃতকার্য — ফেইল (GPA: 0.00)' : ('উত্তীর্ণ — গ্রেড ' + esc(found.result_grade) + ' (GPA: ' + esc(found.cgpa) + ')')}</strong></div>
                     <div class="qv-info-card"><small>ঠিকানা (Address)</small><strong>${esc(found.present_address)}</strong></div>
                 </div>
-            </div>` : `<div class="alert alert-danger">দুঃখিত! প্রদত্ত রেজিস্ট্রেশন নাম্বারের (${esc(regQ)}) সাথে কোনো ফলাফল পাওয়া যায়নি।</div>`) : ''}
+                ${isFailed ? `
+                <div class="alert alert-danger" style="margin-bottom:0;">
+                    <i class="fa fa-exclamation-triangle"></i> চূড়ান্ত মূল্যায়ন পরীক্ষায় অকৃতকার্য (ফেইল) হওয়ায় সার্টিফিকেট প্রিন্ট করা যাবে না। শুধুমাত্র উত্তীর্ণ শিক্ষার্থীরাই গোপন কোড দিয়ে সার্টিফিকেট প্রিন্ট করতে পারবেন।
+                </div>` : ''}
+            </div>`;
+        }
+    }
+
+    main.innerHTML = `
+    <div class="page-hero-strip" style="background:linear-gradient(135deg,#151442,#0f766e); color:#fff; padding:42px 0; text-align:center;">
+        <div class="container">
+            <h1>অনলাইন ফলাফল ও সার্টিফিকেট প্রিন্ট (Student Result)</h1>
+            <p>আপনার রেজিস্ট্রেশন নাম্বার দিয়ে কোর্সের চূড়ান্ত ফলাফল দেখুন এবং উত্তীর্ণ শিক্ষার্থীরা গোপন কোড দিয়ে সার্টিফিকেট প্রিন্ট করুন</p>
+        </div>
+    </div>
+    <section class="section">
+        <div class="container" style="max-width:880px;">
+            <div class="form-card" style="margin-bottom:30px;">
+                <h3 style="margin-bottom:14px; color:#151442;"><i class="fa fa-trophy" style="color:#ea580c;"></i> রেজিস্ট্রেশন নাম্বার দিয়ে ফলাফল খুঁজুন</h3>
+                <form onsubmit="event.preventDefault(); navigateView('result', {reg_no: document.getElementById('resOnlyRegInput').value});" style="display:flex; gap:12px; flex-wrap:wrap;">
+                    <input type="text" id="resOnlyRegInput" class="form-control" value="${esc(regQ)}" required placeholder="আপনার রেজিস্ট্রেশন নাম্বার লিখুন" style="flex:1; min-width:240px;">
+                    <button type="submit" class="btn btn-primary"><i class="fa fa-search"></i> ফলাফল দেখুন</button>
+                </form>
+            </div>
+            ${resultContentHTML}
         </div>
     </section>`;
 }
@@ -750,7 +775,20 @@ function renderResult(main, params = {}) {
 function promptSecretCodeAndPrint(regNo) {
     const db = DCITStore.getDB();
     const st = (db.students || []).find(s => s.reg_no === regNo);
-    const cert = (db.certificates || []).find(c => c.reg_no === regNo) || (st ? {
+    if (!st) {
+        showAwesomeToast('error', 'তথ্য পাওয়া যায়নি!', 'শিক্ষার্থীর রেকর্ড খুঁজে পাওয়া যায়নি।');
+        return;
+    }
+    if (!DCITStore.isCourseCompleted(st)) {
+        showAwesomeToast('error', 'কোর্স সম্পন্ন হয়নি!', 'কোর্স সম্পন্ন না হওয়ায় সার্টিফিকেট প্রিন্ট করা যাবে না।');
+        return;
+    }
+    if (DCITStore.isStudentFailed(st)) {
+        showAwesomeToast('error', 'সার্টিফিকেট প্রযোজ্য নয়!', 'পরীক্ষায় অকৃতকার্য (ফেইল) শিক্ষার্থীদের সার্টিফিকেট প্রিন্ট করা যাবে না।');
+        return;
+    }
+
+    const cert = (db.certificates || []).find(c => c.reg_no === regNo && c.status !== 'Revoked') || {
         cert_no: 'DCIT-' + st.batch_year + '-' + st.reg_no,
         reg_no: st.reg_no,
         roll_no: st.roll_no,
@@ -766,23 +804,22 @@ function promptSecretCodeAndPrint(regNo) {
         cgpa: st.cgpa,
         issue_date: '2026-04-10',
         verification_code: 'VER-DCIT-' + st.reg_no
-    } : null);
+    };
 
-    if (!st && !cert) return;
     const expectedCode = (st && st.secret_code) ? st.secret_code : (cert ? cert.secret_code : '');
 
-    openDcitPopup('🔒 সার্টিফিকেট প্রিন্ট সিকিউরিটি ভেরিফিকেশন', `
+    openDcitPopup('🔒 সার্টিফিকেট প্রিন্ট ভেরিফিকেশন', `
         <div style="text-align:center; padding:12px;">
             <div class="qv-hero-banner" style="flex-direction:column; text-align:center;">
                 <i class="fa fa-key" style="font-size:2.8rem; color:#fde68a;"></i>
-                <h3 style="color:#fff;">১০-অক্ষরের স্টুডেন্ট গোপন কোড (Secret Code) দিন</h3>
-                <p style="color:#e2e8f0; font-size:0.9rem;">শিক্ষার্থীঃ <strong>${esc(st ? st.name : cert.student_name)}</strong> (রেজিঃ নং: <strong>${esc(regNo)}</strong>)</p>
+                <h3 style="color:#fff;">আপনার গোপন কোড (Secret Code) প্রদান করুন</h3>
+                <p style="color:#e2e8f0; font-size:0.9rem;">শিক্ষার্থীঃ <strong>${esc(st.name)}</strong> (রেজিঃ নং: <strong>${esc(regNo)}</strong>)</p>
             </div>
             <form id="verifySecCodeForm" style="max-width:420px; margin:0 auto;">
                 <div class="form-group">
-                    <input type="text" id="secCodeInput" maxlength="10" class="form-control" required placeholder="১০ অক্ষরের গোপন কোড লিখুন" style="text-align:center; font-weight:800; font-size:1.15rem; letter-spacing:2px; text-transform:uppercase;">
+                    <input type="text" id="secCodeInput" maxlength="10" class="form-control" required placeholder="আপনার গোপন কোড লিখুন" style="text-align:center; font-weight:800; font-size:1.15rem; letter-spacing:2px; text-transform:uppercase;">
                 </div>
-                <button type="submit" class="btn btn-accent" style="width:100%;"><i class="fa fa-print"></i> যাচাই করে সার্টিফিকেট প্রিন্ট করুন (Landscape Letter)</button>
+                <button type="submit" class="btn btn-accent" style="width:100%;"><i class="fa fa-print"></i> যাচাই করে সার্টিফিকেট প্রিন্ট করুন</button>
             </form>
         </div>
     `);
@@ -790,12 +827,12 @@ function promptSecretCodeAndPrint(regNo) {
     document.getElementById('verifySecCodeForm').addEventListener('submit', function(e) {
         e.preventDefault();
         const entered = document.getElementById('secCodeInput').value.trim().toUpperCase();
-        if (entered === String(expectedCode).toUpperCase()) {
+        if (expectedCode && entered === String(expectedCode).toUpperCase()) {
             closeDcitPopup();
-            showAwesomeToast('success', 'গোপন কোড যাচাই সফল!', 'ল্যান্ডস্কেপ লেটার সাইজে সার্টিফিকেট প্রিন্ট উইন্ডো চালু হচ্ছে...');
+            showAwesomeToast('success', 'গোপন কোড যাচাই সফল!', 'আপনার সার্টিফিকেট প্রিন্টের জন্য প্রস্তুত হচ্ছে...');
             window.printAuthorizedCertificate(cert);
         } else {
-            showAwesomeToast('error', 'ভুল গোপন কোড!', 'সঠিক ১০-অক্ষরের স্টুডেন্ট সিক্রেট কোড প্রদান করুন।');
+            showAwesomeToast('error', 'ভুল গোপন কোড!', 'সঠিক গোপন কোড প্রদান করুন।');
         }
     });
 }
@@ -825,8 +862,8 @@ function renderAdmission(main, preCourse = '') {
     main.innerHTML = `
     <div class="page-hero-strip" style="background:linear-gradient(135deg,#151442,#0f766e); color:#fff; padding:42px 0; text-align:center;">
         <div class="container">
-            <h1>স্মার্ট অনলাইন ভর্তি ফর্ম (Smart Online Admission)</h1>
-            <p>ছবি ও সনদ প্রিভিউ, শিক্ষক রেফার ডিসকাউন্ট (${refPercent}%), ডিসএবিলিটি ডিসকাউন্ট (${disPercent}%) ও ১০-অক্ষরের অটো গোপন কোড</p>
+            <h1>অনলাইন ভর্তি আবেদন ফর্ম (Online Admission)</h1>
+            <p>আপনার পছন্দের কোর্সে ভর্তির জন্য নিচের ফর্মটি সঠিকভাবে পূরণ করে সাবমিট করুন</p>
         </div>
     </div>
     <section class="section">
@@ -843,12 +880,12 @@ function renderAdmission(main, preCourse = '') {
                     </div>
                     <div class="form-grid">
                         <div class="form-group">
-                            <label><i class="fa fa-camera" style="color:#0f766e;"></i> পাসপোর্ট সাইজের ছবি (আপলোড করলেই প্রিভিউ দেখাবে) *</label>
+                            <label><i class="fa fa-camera" style="color:#0f766e;"></i> পাসপোর্ট সাইজের ছবি *</label>
                             <input type="file" id="admPhotoFile" class="form-control" accept="image/*" onchange="previewUploadedFile(this,'admPhotoPrev'); if(this.files[0]){const r=new FileReader();r.onload=e=>document.getElementById('admLiveAvatar').src=e.target.result;r.readAsDataURL(this.files[0]);}">
                             <div id="admPhotoPrev" class="upload-preview-box"></div>
                         </div>
                         <div class="form-group">
-                            <label><i class="fa fa-file-image-o" style="color:#ea580c;"></i> সার্টিফিকেট / জন্মনিবন্ধন / এনআইডি কপি আপলোড *</label>
+                            <label><i class="fa fa-file-image-o" style="color:#ea580c;"></i> সার্টিফিকেট / জন্মনিবন্ধন / এনআইডি কপি *</label>
                             <input type="file" id="admCertDocFile" class="form-control" accept="image/*,.pdf" onchange="previewUploadedFile(this,'admDocPrev')">
                             <div id="admDocPrev" class="upload-preview-box"></div>
                         </div>
@@ -873,13 +910,13 @@ function renderAdmission(main, preCourse = '') {
 
                 <!-- Card 2: Course, Discounts (Disability & Teacher Referral) & Auto Payment Calculation -->
                 <div class="form-card" style="margin-bottom:26px; border-top:5px solid #ea580c;">
-                    <h3 style="margin-bottom:18px; color:#151442;"><i class="fa fa-calculator" style="color:#ea580c;"></i> ধাপ ২ঃ কোর্স, ডিসকাউন্ট ও অটো পেমেন্ট ক্যালকুলেশন</h3>
+                    <h3 style="margin-bottom:18px; color:#151442;"><i class="fa fa-calculator" style="color:#ea580c;"></i> ধাপ ২ঃ কোর্স ও ফি পরিশোধ সংক্রান্ত তথ্য</h3>
                     <div class="form-grid">
                         <div class="form-group">
-                            <label><i class="fa fa-wheelchair"></i> কোনো ডিসএবিলিটিস আছে কি? (${disPercent}% ছাড়)</label>
+                            <label><i class="fa fa-wheelchair"></i> বিশেষ চাহিদাসম্পন্ন (শারীরিক প্রতিবন্ধকতা) কোটা</label>
                             <select id="admDisabilitySelect" name="has_disability" class="form-control">
                                 <option value="না">না (No)</option>
-                                <option value="হ্যাঁ">হ্যাঁ (Yes — ${disPercent}% ডিসকাউন্ট)</option>
+                                <option value="হ্যাঁ">হ্যাঁ (Yes)</option>
                             </select>
                         </div>
                         <div class="form-group" id="admMedicalReportRow" style="display:none; background:#fffbeb; padding:12px; border-radius:10px; border:1px dashed #d97706;">
@@ -888,10 +925,10 @@ function renderAdmission(main, preCourse = '') {
                             <div id="admMedPrev" class="upload-preview-box"></div>
                         </div>
                         <div class="form-group">
-                            <label><i class="fa fa-user-md" style="color:#0f766e;"></i> শিক্ষক রেফারেন্স ডিসকাউন্ট (${refPercent}% ছাড়)</label>
+                            <label><i class="fa fa-user-md" style="color:#0f766e;"></i> রেফারেন্স (যদি থাকে)</label>
                             <select id="admTeacherRefSelect" name="teacher_ref" class="form-control">
                                 <option value="">-- কোনো রেফারেন্স নেই --</option>
-                                ${teachers.map(t => `<option value="${esc(t.name)}">${esc(t.name)} (${esc(t.role_type)}) — ${refPercent}% ছাড়</option>`).join('')}
+                                ${teachers.map(t => `<option value="${esc(t.name)}">${esc(t.name)} (${esc(t.role_type)})</option>`).join('')}
                             </select>
                         </div>
                         <div class="form-group">
@@ -901,11 +938,11 @@ function renderAdmission(main, preCourse = '') {
                             </select>
                         </div>
                         <div class="form-group">
-                            <label>কোর্স ফি (ডিসকাউন্ট বাদে অটো সিলেক্ট)</label>
+                            <label>নির্ধারিত কোর্স ফি (৳)</label>
                             <input type="number" id="admCourseFee" name="course_fee" class="form-control" readonly value="${Number(initCourse.fee)}" style="background:#f1f5f9; font-weight:800; color:#0f766e;">
                         </div>
                         <div class="form-group">
-                            <label>কোর্সের মেয়াদ (অটো সিলেক্ট)</label>
+                            <label>কোর্সের মেয়াদ</label>
                             <input type="text" id="admCourseDuration" name="course_duration" class="form-control" readonly value="${esc(initCourse.duration)}" style="background:#f1f5f9; font-weight:700;">
                         </div>
                         <div class="form-group">
@@ -925,7 +962,7 @@ function renderAdmission(main, preCourse = '') {
                             <input type="number" id="admPaidAmount" name="paid_amount" class="form-control" value="500" min="0" required>
                         </div>
                         <div class="form-group">
-                            <label>ডিউ এমাউন্ট (Due ৳ - অটো ক্যালকুলেট)</label>
+                            <label>বকেয়া ফি (Due ৳)</label>
                             <input type="number" id="admDueAmount" name="due_amount" class="form-control" readonly value="${Math.max(0, Number(initCourse.fee) - 500)}" style="background:#f1f5f9; font-weight:800; color:#dc2626;">
                         </div>
                         <div class="form-group" id="admTrxRow">
@@ -1064,7 +1101,7 @@ function renderBatches(main, params = {}) {
     <div class="page-hero-strip" style="background:linear-gradient(135deg,#151442,#0f766e); color:#fff; padding:42px 0; text-align:center;">
         <div class="container">
             <h1>${batchType === 'Old Batch' ? 'পুরাতন ব্যাচ আর্কাইভ (2010 - 2026)' : 'নতুন ব্যাচ (New Batch) ও শিক্ষার্থী তালিকা'}</h1>
-            <p>শিক্ষার্থীদের প্রাইভেসি সুরক্ষিত — শুধুমাত্র ছবি, নাম ও কোর্সের তথ্য প্রদর্শিত</p>
+            <p>ড্রিম ক্যারিয়ার আইটির বিভিন্ন ব্যাচ ও সেশনের শিক্ষার্থীদের তালিকা</p>
         </div>
     </div>
     <section class="section">
@@ -1179,7 +1216,7 @@ function renderRoutine(main) {
                             <h3>${esc(cl.batch_name)}</h3>
                             <div class="title-bn">${esc(cl.course_name)}</div>
                             <p><strong>প্রশিক্ষক:</strong> ${esc(cl.teacher_name)}<br><strong>রুম:</strong> ${esc(cl.room_no)} | <strong>বার:</strong> ${esc(cl.days_of_week)}</p>
-                            <button class="btn btn-primary btn-sm" style="width:100%;"><i class="fa fa-window-maximize"></i> বিস্তারিত পপআপ ভিউ</button>
+                            <button class="btn btn-primary btn-sm" style="width:100%;"><i class="fa fa-eye"></i> বিস্তারিত দেখুন</button>
                         </div>
                     </div>`;
                 }).join('')}
@@ -1195,7 +1232,7 @@ function openRoutinePopup(id) {
     if (!cl) return;
     const enrolled = (db.students || []).filter(s => s.class_slot === cl.time_label);
 
-    openDcitPopup(`🕒 ক্লাস রুটিন কুইক ভিউ — ${esc(cl.time_label)}`, `
+    openDcitPopup(`🕒 ক্লাস রুটিন ও সময়সূচি — ${esc(cl.time_label)}`, `
         <div>
             <div class="qv-hero-banner">
                 <img src="assets/img/logo.jpg" alt="Batch">
@@ -1209,7 +1246,7 @@ function openRoutinePopup(id) {
                 <div class="qv-info-card"><small>সেশন ও সাল</small><strong>${esc(cl.session_name)} (${esc(cl.batch_year)})</strong></div>
                 <div class="qv-info-card"><small>ভর্তিকৃত শিক্ষার্থী</small><strong>${enrolled.length} / ${Number(cl.max_seats || 20)} জন</strong></div>
             </div>
-            <h4 style="margin-bottom:10px;">এই শিফটের শিক্ষার্থী তালিকা (নাম ও কোর্স):</h4>
+            <h4 style="margin-bottom:10px;">এই শিফটের শিক্ষার্থী তালিকা:</h4>
             <div class="table-responsive">
                 <table class="data-table" style="min-width:100%;">
                     <thead><tr><th>ছবি</th><th>শিক্ষার্থীর নাম</th><th>কোর্সের নাম</th></tr></thead>
@@ -1228,32 +1265,32 @@ function renderRoutineDetail(main, id) {
 }
 
 /* ==========================================================================
-   7. CERTIFICATE VERIFICATION (10-Char Secret Code + Landscape Print)
+   7. CERTIFICATE VERIFICATION (Course Completed + Passed + Secret Code Print)
    ========================================================================== */
 function renderCertificates(main) {
     main.innerHTML = `
     <div class="page-hero-strip" style="background:linear-gradient(135deg,#151442,#0f766e); color:#fff; padding:42px 0; text-align:center;">
         <div class="container">
             <h1>সার্টিফিকেট ভেরিফিকেশন ও প্রিন্ট (Certificate Verification)</h1>
-            <p>রোল/রেজিস্ট্রেশন নাম্বার এবং ১০-অক্ষরের স্টুডেন্ট গোপন কোড দিয়ে পপআপে সার্টিফিকেট যাচাই ও প্রিন্ট করুন</p>
+            <p>রেজিস্ট্রেশন বা রোল নাম্বার এবং গোপন কোড দিয়ে অনলাইনে সার্টিফিকেট যাচাই ও প্রিন্ট করুন</p>
         </div>
     </div>
     <section class="section">
         <div class="container" style="max-width:820px;">
             <div class="form-card" style="border-top:5px solid #ea580c;">
-                <h3 style="margin-bottom:14px; color:#151442;"><i class="fa fa-shield" style="color:#ea580c;"></i> রোল/রেজিস্ট্রেশন নাম্বার ও ১০-অক্ষরের গোপন কোড দিন</h3>
+                <h3 style="margin-bottom:14px; color:#151442;"><i class="fa fa-shield" style="color:#ea580c;"></i> সার্টিফিকেট যাচাই ও প্রিন্ট ফর্ম</h3>
                 <form onsubmit="event.preventDefault(); verifyCertInPopup();">
                     <div class="form-grid">
                         <div class="form-group">
                             <label>রোল অথবা রেজিস্ট্রেশন নাম্বার *</label>
-                            <input type="text" id="verifyRegInput" class="form-control" value="000001" required placeholder="যেমন: 000001">
+                            <input type="text" id="verifyRegInput" class="form-control" value="" required placeholder="রোল বা রেজিস্ট্রেশন নাম্বার লিখুন">
                         </div>
                         <div class="form-group">
-                            <label>১০-অক্ষরের স্টুডেন্ট গোপন কোড (Secret Code) *</label>
-                            <input type="text" id="verifySecretInput" maxlength="10" class="form-control" value="DC20SAG001" required placeholder="যেমন: DC20SAG001" style="text-transform:uppercase; font-weight:800;">
+                            <label>গোপন কোড (Secret Code) *</label>
+                            <input type="text" id="verifySecretInput" maxlength="10" class="form-control" value="" required placeholder="আপনার গোপন কোড লিখুন" style="text-transform:uppercase; font-weight:800;">
                         </div>
                     </div>
-                    <button type="submit" class="btn btn-accent" style="width:100%;"><i class="fa fa-check-circle"></i> পপআপে সার্টিফিকেট ভেরিফাই ও প্রিন্ট করুন</button>
+                    <button type="submit" class="btn btn-accent" style="width:100%;"><i class="fa fa-check-circle"></i> সার্টিফিকেট যাচাই ও প্রিন্ট করুন</button>
                 </form>
             </div>
         </div>
@@ -1266,27 +1303,45 @@ function verifyCertInPopup() {
     const db = DCITStore.getDB();
 
     const st = (db.students || []).find(s => s.reg_no === regOrRoll || s.roll_no === regOrRoll);
-    const cert = (db.certificates || []).find(c => (c.reg_no === regOrRoll || c.roll_no === regOrRoll || c.cert_no === regOrRoll)) || (st ? {
-        cert_no: 'DCIT-' + st.batch_year + '-' + st.reg_no,
-        reg_no: st.reg_no,
-        roll_no: st.roll_no,
-        secret_code: st.secret_code,
-        student_name: st.name,
-        father_name: st.father_name,
-        mother_name: st.mother_name,
-        course_name: st.course_name,
-        batch_year: st.batch_year,
-        session_quarter: st.session_quarter,
-        duration: st.course_duration || '3 Months',
-        grade: st.result_grade,
-        cgpa: st.cgpa,
+    const certObj = (db.certificates || []).find(c => (c.reg_no === regOrRoll || c.roll_no === regOrRoll || c.cert_no === regOrRoll) && c.status !== 'Revoked');
+    const targetStudent = st || (certObj ? (db.students || []).find(s => s.reg_no === certObj.reg_no) : null);
+
+    if (!targetStudent && !certObj) {
+        showAwesomeToast('error', 'তথ্য পাওয়া যায়নি!', 'প্রদত্ত রোল বা রেজিস্ট্রেশন নাম্বারের সাথে কোনো শিক্ষার্থীর তথ্য পাওয়া যায়নি।');
+        return;
+    }
+
+    if (targetStudent && !DCITStore.isCourseCompleted(targetStudent)) {
+        showAwesomeToast('error', 'কোর্স সম্পন্ন হয়নি!', 'এই শিক্ষার্থীর কোর্স এখনো সম্পন্ন হয়নি। শুধুমাত্র কোর্স সম্পন্নকারী ও উত্তীর্ণ শিক্ষার্থীরাই সার্টিফিকেট প্রিন্ট করতে পারবেন।');
+        return;
+    }
+
+    if ((targetStudent && DCITStore.isStudentFailed(targetStudent)) || (certObj && ['f', 'fail', 'failed', 'ফেইল'].includes(String(certObj.grade || '').toLowerCase()))) {
+        showAwesomeToast('error', 'সার্টিফিকেট প্রযোজ্য নয়!', 'পরীক্ষায় অকৃতকার্য (ফেইল) হওয়ায় সার্টিফিকেট প্রিন্ট প্রযোজ্য নয়।');
+        return;
+    }
+
+    const cert = certObj || (targetStudent ? {
+        cert_no: 'DCIT-' + targetStudent.batch_year + '-' + targetStudent.reg_no,
+        reg_no: targetStudent.reg_no,
+        roll_no: targetStudent.roll_no,
+        secret_code: targetStudent.secret_code,
+        student_name: targetStudent.name,
+        father_name: targetStudent.father_name,
+        mother_name: targetStudent.mother_name,
+        course_name: targetStudent.course_name,
+        batch_year: targetStudent.batch_year,
+        session_quarter: targetStudent.session_quarter,
+        duration: targetStudent.course_duration || '3 Months',
+        grade: targetStudent.result_grade,
+        cgpa: targetStudent.cgpa,
         issue_date: '2026-04-10',
-        verification_code: 'VER-DCIT-' + st.reg_no
+        verification_code: 'VER-DCIT-' + targetStudent.reg_no
     } : null);
 
-    const validSecret = (cert && cert.secret_code ? cert.secret_code : (st ? st.secret_code : '')).toUpperCase();
+    const validSecret = (targetStudent && targetStudent.secret_code ? targetStudent.secret_code : (cert ? cert.secret_code : '')).toUpperCase();
     if (!cert || !validSecret || secCode !== validSecret) {
-        showAwesomeToast('error', 'ভেরিফিকেশন ব্যর্থ!', 'রেজিস্ট্রেশন নাম্বার অথবা ১০-অক্ষরের গোপন কোড সঠিক নয়।');
+        showAwesomeToast('error', 'ভেরিফিকেশন ব্যর্থ!', 'রেজিস্ট্রেশন নাম্বার অথবা গোপন কোড সঠিক নয়।');
         return;
     }
 
@@ -1316,7 +1371,7 @@ function verifyCertInPopup() {
             </div>
             <div style="text-align:center;">
                 <button onclick="window.printAuthorizedCertificate(window._lastVerifiedCert)" class="btn btn-accent">
-                    <i class="fa fa-print"></i> সার্টিফিকেট প্রিন্ট করুন (Landscape Letter Size Only)
+                    <i class="fa fa-print"></i> সার্টিফিকেট প্রিন্ট করুন
                 </button>
             </div>
         </div>
@@ -1338,7 +1393,7 @@ function renderTeachers(main, params = {}) {
     <div class="page-hero-strip" style="background:linear-gradient(135deg,#151442,#0f766e); color:#fff; padding:42px 0; text-align:center;">
         <div class="container">
             <h1>প্রশাসন ও শিক্ষকবৃন্দ (${roleFilter || 'সকল ক্যাটাগরি'})</h1>
-            <p>শিক্ষক, ট্রেইনার, পরিচালক, ফাউন্ডার ও সদস্যদের এনিমেটেড প্রোফাইল</p>
+            <p>ড্রিম ক্যারিয়ার আইটির অভিজ্ঞ শিক্ষক, প্রশিক্ষক ও পরিচালনা পর্ষদ</p>
         </div>
     </div>
     <section class="section">
@@ -1369,7 +1424,7 @@ function renderTeachers(main, params = {}) {
                             <h3>${esc(t.name)}</h3>
                             <div class="title-bn">${esc(t.designation)}</div>
                             <p style="font-size:0.88rem;"><i class="fa fa-phone" style="color:#0f766e;"></i> ${esc(t.phone)}</p>
-                            <button class="btn btn-primary btn-sm" style="width:100%;"><i class="fa fa-id-badge"></i> প্রিমিয়াম প্রোফাইল কার্ড দেখুন</button>
+                            <button class="btn btn-primary btn-sm" style="width:100%;"><i class="fa fa-id-badge"></i> বিস্তারিত প্রোফাইল দেখুন</button>
                         </div>
                     </div>`;
                 }).join('')}
@@ -1448,7 +1503,7 @@ function renderNotices(main, params = {}) {
         </div>
 
         <div class="view-toolbar">
-            <div><strong><i class="fa fa-bullhorn" style="color:#0f766e;"></i> মোট নোটিশঃ ${list.length} টি</strong> (যেকোনো নোটিশ কার্ডে ক্লিক করলে বিস্তারিত দেখা যাবে)</div>
+            <div><strong><i class="fa fa-bullhorn" style="color:#0f766e;"></i> মোট নোটিশঃ ${list.length} টি</strong></div>
             <div class="view-toggle-btns">
                 <button class="view-btn active" onclick="toggleViewMode('allNoticesGrid','card',this)"><i class="fa fa-th-large"></i> কার্ড ভিউ</button>
                 <button class="view-btn" onclick="toggleViewMode('allNoticesGrid','list',this)"><i class="fa fa-list"></i> লিস্ট ভিউ</button>
@@ -1466,7 +1521,7 @@ function openNoticePopup(id) {
     const n = (db.notices || []).find(x => Number(x.id) === Number(id)) || db.notices[0];
     if (!n) return;
     DCITStore.markSeen('notice', n.id);
-    document.querySelectorAll(`[data-notice-seen="${Number(n.id)}"]`).forEach(el => { el.className = 'seen-tag seen'; el.textContent = '✓ দেখা হয়েছে (Seen)'; });
+    document.querySelectorAll(`[data-notice-seen="${Number(n.id)}"]`).forEach(el => { el.className = 'seen-tag seen'; el.textContent = '✓ পঠিত'; });
     openDcitPopup(`📢 অফিসিয়াল নোটিশ — ${esc(n.title)}`, `
         <div>
             <div class="qv-hero-banner" style="padding:18px 22px;">
@@ -1922,7 +1977,7 @@ function renderAbout(main) {
 
                     <div class="mt-4 pt-3 border-top border-secondary border-opacity-50 d-flex align-items-center justify-content-between position-relative" style="z-index: 2;">
                         <span class="small text-info fw-semibold"><i class="fa-solid fa-check-double me-1"></i> ১০০% বাস্তবমুখী ও কর্মমুখী শিক্ষা</span>
-                        <a href="#courses" onclick="navigateView('courses')" class="btn btn-sm btn-outline-light rounded-pill px-3">কোর্সসমূহ[cite: 1]</a>
+                        <a href="#courses" onclick="navigateView('courses')" class="btn btn-sm btn-outline-light rounded-pill px-3">কোর্সসমূহ</a>
                     </div>
                 </div>
             </div>
@@ -2288,10 +2343,10 @@ function renderAbout(main) {
                 </div>
                 <div class="d-flex flex-wrap gap-2">
                     <a href="#admission" onclick="navigateView('admission')" class="btn btn-primary btn-sm rounded-pill px-4 py-2 fw-semibold">
-                        <i class="fa-solid fa-user-plus me-1"></i> ভর্তি আবেদন করুন[cite: 1]
+                        <i class="fa-solid fa-user-plus me-1"></i> ভর্তি আবেদন করুন
                     </a>
                     <a href="#contact" onclick="navigateView('contact')" class="btn btn-outline-light btn-sm rounded-pill px-4 py-2">
-                        <i class="fa-solid fa-paper-plane me-1"></i> যোগাযোগ পেজ[cite: 1]
+                        <i class="fa-solid fa-paper-plane me-1"></i> যোগাযোগ পেজ
                     </a>
                 </div>
             </div>
@@ -3370,7 +3425,7 @@ function renderTerms(main) {
                 </div>
                 <div class="col-md-3 text-md-end no-print">
                     <a href="#contact" onclick="navigateView('contact')" class="btn btn-outline-primary btn-sm rounded-pill px-3 fw-semibold">
-                        <i class="fa-solid fa-circle-question me-1"></i> প্রশ্ন থাকলে জানান[cite: 1]
+                        <i class="fa-solid fa-circle-question me-1"></i> প্রশ্ন থাকলে জানান
                     </a>
                 </div>
             </div>
@@ -3581,7 +3636,7 @@ function renderTerms(main) {
                     </ul>
                     <div class="p-3 rounded-3 d-flex align-items-center justify-content-between flex-wrap gap-2 no-print" style="background: var(--dcit-emerald-soft); border: 1px solid #a7f3d0;">
                         <span class="small fw-semibold text-dark"><i class="fa-solid fa-qrcode text-success me-1"></i> অনলাইনে সার্টিফিকেট যাচাই করতে চান?</span>
-                        <a href="#certificates" onclick="navigateView('certificates')" class="btn btn-success btn-sm rounded-pill px-3">Certificate Verification[cite: 1]</a>
+                        <a href="#certificates" onclick="navigateView('certificates')" class="btn btn-success btn-sm rounded-pill px-3">Certificate Verification</a>
                     </div>
                 </section>
 
@@ -3852,7 +3907,7 @@ function renderTerms(main) {
                                 <i class="fa-solid fa-shield-halved me-1"></i> প্রাতিষ্ঠানিক বৈধতা
                             </a>
                             <a href="#contact" onclick="navigateView('contact')" class="btn btn-sm btn-info fw-semibold rounded-pill px-3">
-                                <i class="fa-solid fa-paper-plane me-1"></i> মেসেজ পাঠান[cite: 1]
+                                <i class="fa-solid fa-paper-plane me-1"></i> মেসেজ পাঠান
                             </a>
                         </div>
                     </div>
@@ -4303,7 +4358,7 @@ function renderLicense(main) {
                     <h1>প্রাতিষ্ঠানিক বৈধতা ও স্বচ্ছতা</h1>
                     <div class="subtitle-en">Institutional Legitimacy, Legal Identity &amp; Transparency Charter</div>
                     <p class="text-light opacity-75 mb-0 fs-6" style="max-width: 700px;">
-                        Dream Career IT শিক্ষার্থী, অভিভাবক এবং সংশ্লিষ্ট সকলের কাছে প্রতিষ্ঠানের আইনগত পরিচয়, প্রশাসনিক কাঠামো, প্রশিক্ষণ কার্যক্রম ও আর্থিক স্বচ্ছতা সুস্পষ্টভাবে তুলে ধরতে অঙ্গীকারবদ্ধ[cite: 1]।
+                        Dream Career IT শিক্ষার্থী, অভিভাবক এবং সংশ্লিষ্ট সকলের কাছে প্রতিষ্ঠানের আইনগত পরিচয়, প্রশাসনিক কাঠামো, প্রশিক্ষণ কার্যক্রম ও আর্থিক স্বচ্ছতা সুস্পষ্টভাবে তুলে ধরতে অঙ্গীকারবদ্ধ।
                     </p>
                 </div>
                 <div class="col-lg-4 text-lg-end mt-4 mt-lg-0 no-print">
@@ -4325,7 +4380,7 @@ function renderLicense(main) {
                     </div>
                     <div>
                         <div class="text-muted small fw-medium">প্রতিষ্ঠানের ধরন</div>
-                        <div class="fw-bold text-dark">কম্পিউটার ও কারিগরি প্রশিক্ষণ[cite: 1]</div>
+                        <div class="fw-bold text-dark">কম্পিউটার ও কারিগরি প্রশিক্ষণ</div>
                     </div>
                 </div>
             </div>
@@ -4336,7 +4391,7 @@ function renderLicense(main) {
                     </div>
                     <div>
                         <div class="text-muted small fw-medium">সার্টিফিকেট যাচাই</div>
-                        <div class="fw-bold text-dark">১০০% অনলাইন ভেরিফিকেশন[cite: 1]</div>
+                        <div class="fw-bold text-dark">১০০% অনলাইন ভেরিফিকেশন</div>
                     </div>
                 </div>
             </div>
@@ -4347,7 +4402,7 @@ function renderLicense(main) {
                     </div>
                     <div>
                         <div class="text-muted small fw-medium">আর্থিক লেনদেন</div>
-                        <div class="fw-bold text-dark">ডিজিটাল রিসিট ও পূর্ণ স্বচ্ছতা[cite: 1]</div>
+                        <div class="fw-bold text-dark">ডিজিটাল রিসিট ও পূর্ণ স্বচ্ছতা</div>
                     </div>
                 </div>
             </div>
@@ -4358,7 +4413,7 @@ function renderLicense(main) {
                     </div>
                     <div>
                         <div class="text-muted small fw-medium">অবস্থান</div>
-                        <div class="fw-bold text-dark">পদুয়ার বাজার, বিশ্বরোড, কুমিল্লা[cite: 1]</div>
+                        <div class="fw-bold text-dark">পদুয়ার বাজার, বিশ্বরোড, কুমিল্লা</div>
                     </div>
                 </div>
             </div>
@@ -4375,22 +4430,22 @@ function renderLicense(main) {
                         <i class="fa-solid fa-list-check text-primary"></i> সূচিপত্র (Quick Index)
                     </div>
                     <ul class="toc-list" id="legitimacyToc">
-                        <li><a href="javascript:void(0)" onclick="document.getElementById(\'sec-1\')?.scrollIntoView({behavior:\'smooth\'})" class="active"><span class="toc-num">১</span> প্রতিষ্ঠানের পরিচিতি[cite: 1]</a></li>
-                        <li><a href="javascript:void(0)" onclick="document.getElementById(\'sec-2\')?.scrollIntoView({behavior:\'smooth\'})"><span class="toc-num">২</span> আইনগত অবস্থান[cite: 1]</a></li>
-                        <li><a href="javascript:void(0)" onclick="document.getElementById(\'sec-3\')?.scrollIntoView({behavior:\'smooth\'})"><span class="toc-num">৩</span> নিবন্ধন ও অনুমোদন[cite: 1]</a></li>
-                        <li><a href="javascript:void(0)" onclick="document.getElementById(\'sec-4\')?.scrollIntoView({behavior:\'smooth\'})"><span class="toc-num">৪</span> প্রশাসনিক কাঠামো[cite: 1]</a></li>
-                        <li><a href="javascript:void(0)" onclick="document.getElementById(\'sec-5\')?.scrollIntoView({behavior:\'smooth\'})"><span class="toc-num">৫</span> শিক্ষা ও প্রশিক্ষণ কার্যক্রম[cite: 1]</a></li>
-                        <li><a href="javascript:void(0)" onclick="document.getElementById(\'sec-6\')?.scrollIntoView({behavior:\'smooth\'})"><span class="toc-num">৬</span> সার্টিফিকেটের সত্যতা যাচাই[cite: 1]</a></li>
-                        <li><a href="javascript:void(0)" onclick="document.getElementById(\'sec-7\')?.scrollIntoView({behavior:\'smooth\'})"><span class="toc-num">৭</span> আর্থিক ও প্রশাসনিক স্বচ্ছতা[cite: 1]</a></li>
-                        <li><a href="javascript:void(0)" onclick="document.getElementById(\'sec-8\')?.scrollIntoView({behavior:\'smooth\'})"><span class="toc-num">৮</span> শিক্ষার্থী ও অভিভাবকদের অধিকার[cite: 1]</a></li>
-                        <li><a href="javascript:void(0)" onclick="document.getElementById(\'sec-9\')?.scrollIntoView({behavior:\'smooth\'})"><span class="toc-num">৯</span> অভিযোগ ও তথ্য যাচাই[cite: 1]</a></li>
-                        <li><a href="javascript:void(0)" onclick="document.getElementById(\'sec-10\')?.scrollIntoView({behavior:\'smooth\'})"><span class="toc-num">১০</span> আমাদের অঙ্গীকার ও যোগাযোগ[cite: 1]</a></li>
+                        <li><a href="javascript:void(0)" onclick="document.getElementById(\'sec-1\')?.scrollIntoView({behavior:\'smooth\'})" class="active"><span class="toc-num">১</span> প্রতিষ্ঠানের পরিচিতি</a></li>
+                        <li><a href="javascript:void(0)" onclick="document.getElementById(\'sec-2\')?.scrollIntoView({behavior:\'smooth\'})"><span class="toc-num">২</span> আইনগত অবস্থান</a></li>
+                        <li><a href="javascript:void(0)" onclick="document.getElementById(\'sec-3\')?.scrollIntoView({behavior:\'smooth\'})"><span class="toc-num">৩</span> নিবন্ধন ও অনুমোদন</a></li>
+                        <li><a href="javascript:void(0)" onclick="document.getElementById(\'sec-4\')?.scrollIntoView({behavior:\'smooth\'})"><span class="toc-num">৪</span> প্রশাসনিক কাঠামো</a></li>
+                        <li><a href="javascript:void(0)" onclick="document.getElementById(\'sec-5\')?.scrollIntoView({behavior:\'smooth\'})"><span class="toc-num">৫</span> শিক্ষা ও প্রশিক্ষণ কার্যক্রম</a></li>
+                        <li><a href="javascript:void(0)" onclick="document.getElementById(\'sec-6\')?.scrollIntoView({behavior:\'smooth\'})"><span class="toc-num">৬</span> সার্টিফিকেটের সত্যতা যাচাই</a></li>
+                        <li><a href="javascript:void(0)" onclick="document.getElementById(\'sec-7\')?.scrollIntoView({behavior:\'smooth\'})"><span class="toc-num">৭</span> আর্থিক ও প্রশাসনিক স্বচ্ছতা</a></li>
+                        <li><a href="javascript:void(0)" onclick="document.getElementById(\'sec-8\')?.scrollIntoView({behavior:\'smooth\'})"><span class="toc-num">৮</span> শিক্ষার্থী ও অভিভাবকদের অধিকার</a></li>
+                        <li><a href="javascript:void(0)" onclick="document.getElementById(\'sec-9\')?.scrollIntoView({behavior:\'smooth\'})"><span class="toc-num">৯</span> অভিযোগ ও তথ্য যাচাই</a></li>
+                        <li><a href="javascript:void(0)" onclick="document.getElementById(\'sec-10\')?.scrollIntoView({behavior:\'smooth\'})"><span class="toc-num">১০</span> আমাদের অঙ্গীকার ও যোগাযোগ</a></li>
                     </ul>
 
                     <div class="mt-4 pt-3 border-top text-center no-print">
-                        <p class="small text-muted mb-2">অনলাইনে সনদ যাচাই করতে চান?[cite: 1]</p>
+                        <p class="small text-muted mb-2">অনলাইনে সনদ যাচাই করতে চান?</p>
                         <a href="#certificates" onclick="navigateView('certificates')" class="btn btn-primary w-100 btn-sm fw-semibold py-2 rounded-3">
-                            <i class="fa-solid fa-magnifying-glass-check me-1"></i> Certificate Verification[cite: 1]
+                            <i class="fa-solid fa-magnifying-glass-check me-1"></i> Certificate Verification
                         </a>
                     </div>
                 </aside>
@@ -4406,34 +4461,34 @@ function renderLicense(main) {
                             <i class="fa-solid fa-id-card-clip"></i>
                         </div>
                         <div>
-                            <h2 class="section-title-bn">১. প্রতিষ্ঠানের পরিচিতি[cite: 1]</h2>
-                            <div class="section-title-en">Institutional Identity[cite: 1]</div>
+                            <h2 class="section-title-bn">১. প্রতিষ্ঠানের পরিচিতি</h2>
+                            <div class="section-title-en">Institutional Identity</div>
                         </div>
                     </div>
 
                     <div class="identity-info-grid">
                         <div class="identity-item">
-                            <div class="identity-label"><i class="fa-solid fa-building text-primary"></i> প্রতিষ্ঠানের নাম[cite: 1]</div>
-                            <div class="identity-value">Dream Career IT[cite: 1]</div>
+                            <div class="identity-label"><i class="fa-solid fa-building text-primary"></i> প্রতিষ্ঠানের নাম</div>
+                            <div class="identity-value">Dream Career IT</div>
                         </div>
                         <div class="identity-item">
-                            <div class="identity-label"><i class="fa-solid fa-laptop-code text-primary"></i> প্রতিষ্ঠানের ধরন[cite: 1]</div>
-                            <div class="identity-value">কম্পিউটার ও কারিগরি প্রশিক্ষণ কেন্দ্র[cite: 1]</div>
+                            <div class="identity-label"><i class="fa-solid fa-laptop-code text-primary"></i> প্রতিষ্ঠানের ধরন</div>
+                            <div class="identity-value">কম্পিউটার ও কারিগরি প্রশিক্ষণ কেন্দ্র</div>
                         </div>
                         <div class="identity-item">
-                            <div class="identity-label"><i class="fa-solid fa-briefcase text-primary"></i> প্রতিষ্ঠানের কার্যক্রম[cite: 1]</div>
-                            <div class="identity-value">তথ্যপ্রযুক্তি শিক্ষা, কম্পিউটার প্রশিক্ষণ, ডিজিটাল দক্ষতা উন্নয়ন ও পেশাগত প্রশিক্ষণ[cite: 1]</div>
+                            <div class="identity-label"><i class="fa-solid fa-briefcase text-primary"></i> প্রতিষ্ঠানের কার্যক্রম</div>
+                            <div class="identity-value">তথ্যপ্রযুক্তি শিক্ষা, কম্পিউটার প্রশিক্ষণ, ডিজিটাল দক্ষতা উন্নয়ন ও পেশাগত প্রশিক্ষণ</div>
                         </div>
                         <div class="identity-item">
-                            <div class="identity-label"><i class="fa-solid fa-map-location-dot text-primary"></i> অবস্থান[cite: 1]</div>
-                            <div class="identity-value">পদুয়ার বাজার, বিশ্বরোড, কুমিল্লা-৩৫০০, বাংলাদেশ[cite: 1]</div>
+                            <div class="identity-label"><i class="fa-solid fa-map-location-dot text-primary"></i> অবস্থান</div>
+                            <div class="identity-value">পদুয়ার বাজার, বিশ্বরোড, কুমিল্লা-৩৫০০, বাংলাদেশ</div>
                         </div>
                     </div>
 
                     <div class="p-3 rounded-3" style="background: var(--dcit-accent-light); border: 1px solid #bfdbfe;">
                         <p class="mb-0 text-dark fw-medium">
                             <i class="fa-solid fa-bullseye text-primary me-2"></i>
-                            <strong>মূল উদ্দেশ্য:</strong> Dream Career IT একটি দক্ষতাভিত্তিক প্রশিক্ষণ প্রতিষ্ঠান[cite: 1]। তথ্যপ্রযুক্তি ও কারিগরি শিক্ষার মাধ্যমে শিক্ষার্থীদের বাস্তবমুখী দক্ষতা অর্জন এবং কর্মসংস্থানের উপযোগী করে গড়ে তোলাই আমাদের কার্যক্রমের মূল উদ্দেশ্য[cite: 1]।
+                            <strong>মূল উদ্দেশ্য:</strong> Dream Career IT একটি দক্ষতাভিত্তিক প্রশিক্ষণ প্রতিষ্ঠান। তথ্যপ্রযুক্তি ও কারিগরি শিক্ষার মাধ্যমে শিক্ষার্থীদের বাস্তবমুখী দক্ষতা অর্জন এবং কর্মসংস্থানের উপযোগী করে গড়ে তোলাই আমাদের কার্যক্রমের মূল উদ্দেশ্য।
                         </p>
                     </div>
                 </section>
@@ -4445,30 +4500,30 @@ function renderLicense(main) {
                             <i class="fa-solid fa-scale-balanced"></i>
                         </div>
                         <div>
-                            <h2 class="section-title-bn">২. প্রতিষ্ঠানের আইনগত অবস্থান[cite: 1]</h2>
-                            <div class="section-title-en">Legal Status[cite: 1]</div>
+                            <h2 class="section-title-bn">২. প্রতিষ্ঠানের আইনগত অবস্থান</h2>
+                            <div class="section-title-en">Legal Status</div>
                         </div>
                     </div>
 
                     <p class="mb-3">
-                        প্রতিষ্ঠানের আইনগত পরিচয়, নিবন্ধন ও অনুমোদনসংক্রান্ত তথ্য যথাযথ সরকারি বা সংশ্লিষ্ট কর্তৃপক্ষের নথির ভিত্তিতে প্রকাশ করা হবে[cite: 1]। প্রযোজ্য ক্ষেত্রে নিম্নলিখিত তথ্য সংরক্ষণ ও প্রদর্শন করা হবে[cite: 1]:
+                        প্রতিষ্ঠানের আইনগত পরিচয়, নিবন্ধন ও অনুমোদনসংক্রান্ত তথ্য যথাযথ সরকারি বা সংশ্লিষ্ট কর্তৃপক্ষের নথির ভিত্তিতে প্রকাশ করা হবে। প্রযোজ্য ক্ষেত্রে নিম্নলিখিত তথ্য সংরক্ষণ ও প্রদর্শন করা হবে:
                     </p>
 
                     <div class="row g-2">
                         <div class="col-md-6">
                             <ul class="custom-check-list">
-                                <li><i class="fa-solid fa-circle-check"></i> <span>প্রতিষ্ঠানের নিবন্ধন নম্বর[cite: 1]।</span></li>
-                                <li><i class="fa-solid fa-circle-check"></i> <span>নিবন্ধন প্রদানকারী কর্তৃপক্ষের নাম[cite: 1]।</span></li>
-                                <li><i class="fa-solid fa-circle-check"></i> <span>নিবন্ধনের তারিখ[cite: 1]।</span></li>
-                                <li><i class="fa-solid fa-circle-check"></i> <span>নিবন্ধনের মেয়াদ ও বর্তমান অবস্থা[cite: 1]।</span></li>
+                                <li><i class="fa-solid fa-circle-check"></i> <span>প্রতিষ্ঠানের নিবন্ধন নম্বর।</span></li>
+                                <li><i class="fa-solid fa-circle-check"></i> <span>নিবন্ধন প্রদানকারী কর্তৃপক্ষের নাম।</span></li>
+                                <li><i class="fa-solid fa-circle-check"></i> <span>নিবন্ধনের তারিখ।</span></li>
+                                <li><i class="fa-solid fa-circle-check"></i> <span>নিবন্ধনের মেয়াদ ও বর্তমান অবস্থা।</span></li>
                             </ul>
                         </div>
                         <div class="col-md-6">
                             <ul class="custom-check-list">
-                                <li><i class="fa-solid fa-circle-check"></i> <span>ট্রেড লাইসেন্স নম্বর ও ইস্যুকারী কর্তৃপক্ষ[cite: 1]।</span></li>
-                                <li><i class="fa-solid fa-circle-check"></i> <span>প্রযোজ্য ক্ষেত্রে TIN ও BIN নম্বর[cite: 1]।</span></li>
-                                <li><i class="fa-solid fa-circle-check"></i> <span>সংশ্লিষ্ট শিক্ষা বা কারিগরি কর্তৃপক্ষের অনুমোদন[cite: 1]।</span></li>
-                                <li><i class="fa-solid fa-circle-check"></i> <span>প্রতিষ্ঠানের কার্যক্রম পরিচালনার প্রযোজ্য অনুমতিপত্র[cite: 1]।</span></li>
+                                <li><i class="fa-solid fa-circle-check"></i> <span>ট্রেড লাইসেন্স নম্বর ও ইস্যুকারী কর্তৃপক্ষ।</span></li>
+                                <li><i class="fa-solid fa-circle-check"></i> <span>প্রযোজ্য ক্ষেত্রে TIN ও BIN নম্বর।</span></li>
+                                <li><i class="fa-solid fa-circle-check"></i> <span>সংশ্লিষ্ট শিক্ষা বা কারিগরি কর্তৃপক্ষের অনুমোদন।</span></li>
+                                <li><i class="fa-solid fa-circle-check"></i> <span>প্রতিষ্ঠানের কার্যক্রম পরিচালনার প্রযোজ্য অনুমতিপত্র।</span></li>
                             </ul>
                         </div>
                     </div>
@@ -4476,7 +4531,7 @@ function renderLicense(main) {
                     <div class="legal-disclaimer-box">
                         <i class="fa-solid fa-triangle-exclamation"></i>
                         <div>
-                            <strong class="text-dark">বিশেষ দ্রষ্টব্য:</strong> কোনো নিবন্ধন বা সরকারি অনুমোদন না থাকলে সেটিকে নিবন্ধিত বা অনুমোদিত হিসেবে দাবি করা হবে না[cite: 1]। আমরা শতভাগ নৈতিক ও আইনগত স্বচ্ছতা বজায় রাখতে বদ্ধপরিকর।
+                            <strong class="text-dark">বিশেষ দ্রষ্টব্য:</strong> কোনো নিবন্ধন বা সরকারি অনুমোদন না থাকলে সেটিকে নিবন্ধিত বা অনুমোদিত হিসেবে দাবি করা হবে না। আমরা শতভাগ নৈতিক ও আইনগত স্বচ্ছতা বজায় রাখতে বদ্ধপরিকর।
                         </div>
                     </div>
                 </section>
@@ -4488,44 +4543,44 @@ function renderLicense(main) {
                             <i class="fa-solid fa-file-shield"></i>
                         </div>
                         <div>
-                            <h2 class="section-title-bn">৩. নিবন্ধন ও অনুমোদন[cite: 1]</h2>
-                            <div class="section-title-en">Registration &amp; Authorization[cite: 1]</div>
+                            <h2 class="section-title-bn">৩. নিবন্ধন ও অনুমোদন</h2>
+                            <div class="section-title-en">Registration &amp; Authorization</div>
                         </div>
                     </div>
 
                     <p class="mb-3">
-                        প্রতিষ্ঠানের প্রযোজ্য নিবন্ধন, লাইসেন্স ও অনুমোদনসংক্রান্ত নথি এই বিভাগে প্রকাশ করা হবে[cite: 1]। প্রতিটি নথির ক্ষেত্রে নিম্নোক্ত বিবরণী সুস্পষ্টভাবে উল্লেখ থাকবে[cite: 1]:
+                        প্রতিষ্ঠানের প্রযোজ্য নিবন্ধন, লাইসেন্স ও অনুমোদনসংক্রান্ত নথি এই বিভাগে প্রকাশ করা হবে। প্রতিটি নথির ক্ষেত্রে নিম্নোক্ত বিবরণী সুস্পষ্টভাবে উল্লেখ থাকবে:
                     </p>
 
                     <div class="table-responsive rounded-3 border">
                         <table class="table table-hover align-middle mb-0">
                             <thead class="table-light">
                                 <tr>
-                                    <th class="py-3 ps-3"><i class="fa-solid fa-file-lines text-primary me-1"></i> নথির নাম[cite: 1]</th>
-                                    <th class="py-3"><i class="fa-solid fa-landmark text-primary me-1"></i> ইস্যুকারী কর্তৃপক্ষ[cite: 1]</th>
-                                    <th class="py-3"><i class="fa-solid fa-hashtag text-primary me-1"></i> নথি বা নিবন্ধন নম্বর[cite: 1]</th>
-                                    <th class="py-3"><i class="fa-regular fa-calendar-check text-primary me-1"></i> ইস্যু ও মেয়াদ[cite: 1]</th>
-                                    <th class="py-3 pe-3 text-end">যাচাইযোগ্য কপি[cite: 1]</th>
+                                    <th class="py-3 ps-3"><i class="fa-solid fa-file-lines text-primary me-1"></i> নথির নাম</th>
+                                    <th class="py-3"><i class="fa-solid fa-landmark text-primary me-1"></i> ইস্যুকারী কর্তৃপক্ষ</th>
+                                    <th class="py-3"><i class="fa-solid fa-hashtag text-primary me-1"></i> নথি বা নিবন্ধন নম্বর</th>
+                                    <th class="py-3"><i class="fa-regular fa-calendar-check text-primary me-1"></i> ইস্যু ও মেয়াদ</th>
+                                    <th class="py-3 pe-3 text-end">যাচাইযোগ্য কপি</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td class="ps-3 fw-semibold">ট্রেড লাইসেন্স (Trade License)[cite: 1]</td>
+                                    <td class="ps-3 fw-semibold">ট্রেড লাইসেন্স (Trade License)</td>
                                     <td>স্থানীয় সরকার / সংশ্লিষ্ট কর্তৃপক্ষ</td>
                                     <td><span class="badge bg-secondary bg-opacity-10 text-dark border">অফিসে সংরক্ষিত</span></td>
                                     <td>ইস্যু ও মেয়াদ হালনাগাদকৃত</td>
                                     <td class="pe-3 text-end"><span class="badge bg-success-subtle text-success"><i class="fa-solid fa-check me-1"></i> যাচাইযোগ্য</span></td>
                                 </tr>
                                 <tr>
-                                    <td class="ps-3 fw-semibold">TIN / ট্যাক্স নিবন্ধন (প্রযোজ্য ক্ষেত্রে)[cite: 1]</td>
+                                    <td class="ps-3 fw-semibold">TIN / ট্যাক্স নিবন্ধন (প্রযোজ্য ক্ষেত্রে)</td>
                                     <td>জাতীয় রাজস্ব বোর্ড (NBR)</td>
                                     <td><span class="badge bg-secondary bg-opacity-10 text-dark border">অফিসে সংরক্ষিত</span></td>
                                     <td>প্রযোজ্য অর্থবছর</td>
                                     <td class="pe-3 text-end"><span class="badge bg-success-subtle text-success"><i class="fa-solid fa-check me-1"></i> যাচাইযোগ্য</span></td>
                                 </tr>
                                 <tr>
-                                    <td class="ps-3 fw-semibold">প্রাতিষ্ঠানিক অনুমোদন ও নথিপত্র[cite: 1]</td>
-                                    <td>সংশ্লিষ্ট কর্তৃপক্ষ[cite: 1]</td>
+                                    <td class="ps-3 fw-semibold">প্রাতিষ্ঠানিক অনুমোদন ও নথিপত্র</td>
+                                    <td>সংশ্লিষ্ট কর্তৃপক্ষ</td>
                                     <td><span class="badge bg-secondary bg-opacity-10 text-dark border">নথি অনুযায়ী</span></td>
                                     <td>হালনাগাদ প্রক্রিয়াধীন</td>
                                     <td class="pe-3 text-end"><span class="badge bg-primary-subtle text-primary"><i class="fa-solid fa-eye me-1"></i> অফিসে প্রদর্শনযোগ্য</span></td>
@@ -4542,41 +4597,41 @@ function renderLicense(main) {
                             <i class="fa-solid fa-sitemap"></i>
                         </div>
                         <div>
-                            <h2 class="section-title-bn">৪. প্রতিষ্ঠানের প্রশাসনিক কাঠামো[cite: 1]</h2>
-                            <div class="section-title-en">Management &amp; Administration[cite: 1]</div>
+                            <h2 class="section-title-bn">৪. প্রতিষ্ঠানের প্রশাসনিক কাঠামো</h2>
+                            <div class="section-title-en">Management &amp; Administration</div>
                         </div>
                     </div>
 
                     <p class="mb-4">
-                        প্রতিষ্ঠানের কার্যক্রম সুষ্ঠুভাবে পরিচালনা ও প্রশাসনিক দায়িত্ব বণ্টনের জন্য নির্ধারিত ব্যবস্থাপনা কাঠামো রয়েছে[cite: 1]। এখানে প্রতিষ্ঠানের প্রতিষ্ঠাতা, পরিচালক, প্রশাসনিক কর্মকর্তা, প্রশিক্ষক এবং দায়িত্বপ্রাপ্ত ব্যক্তিদের পরিচয় ও পদবি প্রকাশ করা হয়[cite: 1]।
+                        প্রতিষ্ঠানের কার্যক্রম সুষ্ঠুভাবে পরিচালনা ও প্রশাসনিক দায়িত্ব বণ্টনের জন্য নির্ধারিত ব্যবস্থাপনা কাঠামো রয়েছে। এখানে প্রতিষ্ঠানের প্রতিষ্ঠাতা, পরিচালক, প্রশাসনিক কর্মকর্তা, প্রশিক্ষক এবং দায়িত্বপ্রাপ্ত ব্যক্তিদের পরিচয় ও পদবি প্রকাশ করা হয়।
                     </p>
 
                     <div class="row g-3">
                         <div class="col-sm-6 col-md-3">
                             <div class="p-3 border rounded-3 text-center bg-light h-100">
                                 <i class="fa-solid fa-user-tie fs-3 text-primary mb-2"></i>
-                                <h6 class="fw-bold mb-1">প্রতিষ্ঠাতা ও পরিচালক[cite: 1]</h6>
+                                <h6 class="fw-bold mb-1">প্রতিষ্ঠাতা ও পরিচালক</h6>
                                 <p class="small text-muted mb-0">নীতি নির্ধারণ ও সার্বিক তত্ত্বাবধান</p>
                             </div>
                         </div>
                         <div class="col-sm-6 col-md-3">
                             <div class="p-3 border rounded-3 text-center bg-light h-100">
                                 <i class="fa-solid fa-user-gear fs-3 text-primary mb-2"></i>
-                                <h6 class="fw-bold mb-1">প্রশাসনিক কর্মকর্তা[cite: 1]</h6>
+                                <h6 class="fw-bold mb-1">প্রশাসনিক কর্মকর্তা</h6>
                                 <p class="small text-muted mb-0">ভর্তি, নথি ও দাপ্তরিক ব্যবস্থাপনা</p>
                             </div>
                         </div>
                         <div class="col-sm-6 col-md-3">
                             <div class="p-3 border rounded-3 text-center bg-light h-100">
                                 <i class="fa-solid fa-chalkboard-user fs-3 text-primary mb-2"></i>
-                                <h6 class="fw-bold mb-1">প্রশিক্ষকবৃন্দ (Instructors)[cite: 1]</h6>
+                                <h6 class="fw-bold mb-1">প্রশিক্ষকবৃন্দ (Instructors)</h6>
                                 <p class="small text-muted mb-0">ক্লাস পরিচালনা ও হাতে-কলমে প্রশিক্ষণ</p>
                             </div>
                         </div>
                         <div class="col-sm-6 col-md-3">
                             <div class="p-3 border rounded-3 text-center bg-light h-100">
                                 <i class="fa-solid fa-headset fs-3 text-primary mb-2"></i>
-                                <h6 class="fw-bold mb-1">দায়িত্বপ্রাপ্ত সহায়তা টিম[cite: 1]</h6>
+                                <h6 class="fw-bold mb-1">দায়িত্বপ্রাপ্ত সহায়তা টিম</h6>
                                 <p class="small text-muted mb-0">শিক্ষার্থী সহায়তা ও তথ্য যাচাই</p>
                             </div>
                         </div>
@@ -4584,7 +4639,7 @@ function renderLicense(main) {
 
                     <div class="mt-3 text-end no-print">
                         <a href="#teachers" onclick="navigateView('teachers')" class="btn btn-outline-primary btn-sm rounded-pill px-3">
-                            <i class="fa-solid fa-users me-1"></i> আমাদের প্রশিক্ষক প্যানেল দেখুন[cite: 1]
+                            <i class="fa-solid fa-users me-1"></i> আমাদের প্রশিক্ষক প্যানেল দেখুন
                         </a>
                     </div>
                 </section>
@@ -4596,13 +4651,13 @@ function renderLicense(main) {
                             <i class="fa-solid fa-graduation-cap"></i>
                         </div>
                         <div>
-                            <h2 class="section-title-bn">৫. শিক্ষা ও প্রশিক্ষণ কার্যক্রম[cite: 1]</h2>
-                            <div class="section-title-en">Educational Activities[cite: 1]</div>
+                            <h2 class="section-title-bn">৫. শিক্ষা ও প্রশিক্ষণ কার্যক্রম</h2>
+                            <div class="section-title-en">Educational Activities</div>
                         </div>
                     </div>
 
                     <p class="mb-3">
-                        Dream Career IT-তে বিভিন্ন তথ্যপ্রযুক্তি ও দক্ষতাভিত্তিক প্রশিক্ষণ কার্যক্রম পরিচালিত হয়[cite: 1]। আমাদের চলমান প্রশিক্ষণ কার্যক্রমের মধ্যে রয়েছে[cite: 1]:
+                        Dream Career IT-তে বিভিন্ন তথ্যপ্রযুক্তি ও দক্ষতাভিত্তিক প্রশিক্ষণ কার্যক্রম পরিচালিত হয়। আমাদের চলমান প্রশিক্ষণ কার্যক্রমের মধ্যে রয়েছে:
                     </p>
 
                     <div class="row g-3 mb-4">
@@ -4610,7 +4665,7 @@ function renderLicense(main) {
                             <div class="course-pill-card">
                                 <div class="course-pill-icon"><i class="fa-solid fa-desktop"></i></div>
                                 <div>
-                                    <div class="fw-bold text-dark">Computer Fundamentals[cite: 1]</div>
+                                    <div class="fw-bold text-dark">Computer Fundamentals</div>
                                     <div class="small text-muted">বেসিক কম্পিউটার ও হার্ডওয়্যার পরিচিতি</div>
                                 </div>
                             </div>
@@ -4619,7 +4674,7 @@ function renderLicense(main) {
                             <div class="course-pill-card">
                                 <div class="course-pill-icon"><i class="fa-solid fa-file-word"></i></div>
                                 <div>
-                                    <div class="fw-bold text-dark">Microsoft Office Application[cite: 1]</div>
+                                    <div class="fw-bold text-dark">Microsoft Office Application</div>
                                     <div class="small text-muted">MS Word, Excel, PowerPoint ও ইন্টারনেট</div>
                                 </div>
                             </div>
@@ -4628,7 +4683,7 @@ function renderLicense(main) {
                             <div class="course-pill-card">
                                 <div class="course-pill-icon"><i class="fa-solid fa-chart-pie"></i></div>
                                 <div>
-                                    <div class="fw-bold text-dark">Advanced Microsoft Office[cite: 1]</div>
+                                    <div class="fw-bold text-dark">Advanced Microsoft Office</div>
                                     <div class="small text-muted">প্রফেশনাল ডাটা ম্যানেজমেন্ট ও অফিস অটোমেশন</div>
                                 </div>
                             </div>
@@ -4637,8 +4692,8 @@ function renderLicense(main) {
                             <div class="course-pill-card">
                                 <div class="course-pill-icon"><i class="fa-solid fa-pen-nib"></i></div>
                                 <div>
-                                    <div class="fw-bold text-dark">Graphic Design[cite: 1]</div>
-                                    <div class="small text-muted">Adobe Photoshop ও Adobe Illustrator প্র্যাকটিক্যাল[cite: 1]</div>
+                                    <div class="fw-bold text-dark">Graphic Design</div>
+                                    <div class="small text-muted">Adobe Photoshop ও Adobe Illustrator প্র্যাকটিক্যাল</div>
                                 </div>
                             </div>
                         </div>
@@ -4646,7 +4701,7 @@ function renderLicense(main) {
                             <div class="course-pill-card">
                                 <div class="course-pill-icon"><i class="fa-solid fa-code"></i></div>
                                 <div>
-                                    <div class="fw-bold text-dark">Web Design &amp; Development[cite: 1]</div>
+                                    <div class="fw-bold text-dark">Web Design &amp; Development</div>
                                     <div class="small text-muted">আধুনিক রেসপনসিভ ওয়েবসাইট ও ওয়েব অ্যাপ্লিকেশন তৈরি</div>
                                 </div>
                             </div>
@@ -4655,7 +4710,7 @@ function renderLicense(main) {
                             <div class="course-pill-card">
                                 <div class="course-pill-icon"><i class="fa-solid fa-comments"></i></div>
                                 <div>
-                                    <div class="fw-bold text-dark">Spoken English[cite: 1]</div>
+                                    <div class="fw-bold text-dark">Spoken English</div>
                                     <div class="small text-muted">ইংরেজিতে সাবলীল কথা বলা ও কমিউনিকেশন স্কিল</div>
                                 </div>
                             </div>
@@ -4664,7 +4719,7 @@ function renderLicense(main) {
                             <div class="course-pill-card">
                                 <div class="course-pill-icon"><i class="fa-solid fa-earth-americas"></i></div>
                                 <div>
-                                    <div class="fw-bold text-dark">IELTS Preparation[cite: 1]</div>
+                                    <div class="fw-bold text-dark">IELTS Preparation</div>
                                     <div class="small text-muted">উচ্চশিক্ষা ও ক্যারিয়ারের জন্য পূর্ণাঙ্গ IELTS প্রস্তুতি</div>
                                 </div>
                             </div>
@@ -4673,7 +4728,7 @@ function renderLicense(main) {
                             <div class="course-pill-card">
                                 <div class="course-pill-icon"><i class="fa-solid fa-microchip"></i></div>
                                 <div>
-                                    <div class="fw-bold text-dark">অন্যান্য দক্ষতাভিত্তিক প্রশিক্ষণ[cite: 1]</div>
+                                    <div class="fw-bold text-dark">অন্যান্য দক্ষতাভিত্তিক প্রশিক্ষণ</div>
                                     <div class="small text-muted">ফ্রিল্যান্সিং, ডিজিটাল লিটারেসি ও প্রফেশনাল আইটি কোর্স</div>
                                 </div>
                             </div>
@@ -4683,9 +4738,9 @@ function renderLicense(main) {
                     <div class="alert alert-light border d-flex align-items-center justify-content-between flex-wrap gap-2 mb-0">
                         <div>
                             <i class="fa-solid fa-circle-info text-primary me-2"></i>
-                            কোর্সের মেয়াদ, ফি, সিলেবাস, ক্লাস রুটিন ও প্রশিক্ষণসংক্রান্ত সকল তথ্য ওয়েবসাইটে নিয়মিত প্রকাশ করা হয়[cite: 1]।
+                            কোর্সের মেয়াদ, ফি, সিলেবাস, ক্লাস রুটিন ও প্রশিক্ষণসংক্রান্ত সকল তথ্য ওয়েবসাইটে নিয়মিত প্রকাশ করা হয়।
                         </div>
-                        <a href="#courses" onclick="navigateView('courses')" class="btn btn-primary btn-sm rounded-pill px-3 no-print">সকল কোর্স দেখুন[cite: 1]</a>
+                        <a href="#courses" onclick="navigateView('courses')" class="btn btn-primary btn-sm rounded-pill px-3 no-print">সকল কোর্স দেখুন</a>
                     </div>
                 </section>
 
@@ -4696,46 +4751,46 @@ function renderLicense(main) {
                             <i class="fa-solid fa-award"></i>
                         </div>
                         <div>
-                            <h2 class="section-title-bn">৬. সার্টিফিকেটের সত্যতা যাচাই[cite: 1]</h2>
-                            <div class="section-title-en">Certificate Verification[cite: 1]</div>
+                            <h2 class="section-title-bn">৬. সার্টিফিকেটের সত্যতা যাচাই</h2>
+                            <div class="section-title-en">Certificate Verification</div>
                         </div>
                     </div>
 
                     <p class="mb-3">
-                        প্রতিষ্ঠান থেকে ইস্যু করা সার্টিফিকেটের সত্যতা যাচাইয়ের জন্য আমাদের নিজস্ব অনলাইন ভেরিফিকেশন ব্যবস্থা রয়েছে[cite: 1]। প্রতিটি যাচাইযোগ্য সার্টিফিকেটের ক্ষেত্রে প্রযোজ্য তথ্যসমূহ[cite: 1]:
+                        প্রতিষ্ঠান থেকে ইস্যু করা সার্টিফিকেটের সত্যতা যাচাইয়ের জন্য আমাদের নিজস্ব অনলাইন ভেরিফিকেশন ব্যবস্থা রয়েছে। প্রতিটি যাচাইযোগ্য সার্টিফিকেটের ক্ষেত্রে প্রযোজ্য তথ্যসমূহ:
                     </p>
 
                     <div class="row g-2 mb-4">
                         <div class="col-sm-6 col-md-4">
-                            <div class="verify-param-box"><i class="fa-solid fa-hashtag text-success"></i> Certificate Number[cite: 1]</div>
+                            <div class="verify-param-box"><i class="fa-solid fa-hashtag text-success"></i> Certificate Number</div>
                         </div>
                         <div class="col-sm-6 col-md-4">
-                            <div class="verify-param-box"><i class="fa-solid fa-id-badge text-success"></i> Student Registration Number[cite: 1]</div>
+                            <div class="verify-param-box"><i class="fa-solid fa-id-badge text-success"></i> Student Registration Number</div>
                         </div>
                         <div class="col-sm-6 col-md-4">
-                            <div class="verify-param-box"><i class="fa-solid fa-user-check text-success"></i> শিক্ষার্থীর নাম[cite: 1]</div>
+                            <div class="verify-param-box"><i class="fa-solid fa-user-check text-success"></i> শিক্ষার্থীর নাম</div>
                         </div>
                         <div class="col-sm-6 col-md-4">
-                            <div class="verify-param-box"><i class="fa-solid fa-book-open text-success"></i> কোর্সের নাম[cite: 1]</div>
+                            <div class="verify-param-box"><i class="fa-solid fa-book-open text-success"></i> কোর্সের নাম</div>
                         </div>
                         <div class="col-sm-6 col-md-4">
-                            <div class="verify-param-box"><i class="fa-solid fa-users-rectangle text-success"></i> ব্যাচ ও সেশন[cite: 1]</div>
+                            <div class="verify-param-box"><i class="fa-solid fa-users-rectangle text-success"></i> ব্যাচ ও সেশন</div>
                         </div>
                         <div class="col-sm-6 col-md-4">
-                            <div class="verify-param-box"><i class="fa-regular fa-calendar-days text-success"></i> সার্টিফিকেট ইস্যুর তারিখ[cite: 1]</div>
+                            <div class="verify-param-box"><i class="fa-regular fa-calendar-days text-success"></i> সার্টিফিকেট ইস্যুর তারিখ</div>
                         </div>
                         <div class="col-sm-6 col-md-6">
-                            <div class="verify-param-box"><i class="fa-solid fa-key text-success"></i> Verification Code[cite: 1]</div>
+                            <div class="verify-param-box"><i class="fa-solid fa-key text-success"></i> Verification Code</div>
                         </div>
                         <div class="col-sm-6 col-md-6">
-                            <div class="verify-param-box"><i class="fa-solid fa-circle-check text-success"></i> সার্টিফিকেটের বর্তমান অবস্থা (Status)[cite: 1]</div>
+                            <div class="verify-param-box"><i class="fa-solid fa-circle-check text-success"></i> সার্টিফিকেটের বর্তমান অবস্থা (Status)</div>
                         </div>
                     </div>
 
                     <div class="p-3 rounded-3 d-flex align-items-center justify-content-between flex-wrap gap-3" style="background: var(--dcit-emerald-light); border: 1px solid #a7f3d0;">
                         <div>
                             <h6 class="fw-bold text-dark mb-1"><i class="fa-solid fa-shield-check text-success me-1"></i> অনলাইন সার্টিফিকেট যাচাই পোর্টাল</h6>
-                            <p class="small text-muted mb-0">সার্টিফিকেটের অনলাইন যাচাইয়ের জন্য ওয়েবসাইটের Certificate Verification পেজ ব্যবহার করা যাবে[cite: 1]।</p>
+                            <p class="small text-muted mb-0">সার্টিফিকেটের অনলাইন যাচাইয়ের জন্য ওয়েবসাইটের Certificate Verification পেজ ব্যবহার করা যাবে।</p>
                         </div>
                         <a href="#certificates" onclick="navigateView('certificates')" class="btn btn-success fw-semibold px-4 rounded-pill no-print">
                             যাচাই করুন <i class="fa-solid fa-arrow-right ms-1"></i>
@@ -4750,17 +4805,17 @@ function renderLicense(main) {
                             <i class="fa-solid fa-receipt"></i>
                         </div>
                         <div>
-                            <h2 class="section-title-bn">৭. আর্থিক ও প্রশাসনিক স্বচ্ছতা[cite: 1]</h2>
-                            <div class="section-title-en">Financial &amp; Administrative Transparency[cite: 1]</div>
+                            <h2 class="section-title-bn">৭. আর্থিক ও প্রশাসনিক স্বচ্ছতা</h2>
+                            <div class="section-title-en">Financial &amp; Administrative Transparency</div>
                         </div>
                     </div>
 
                     <p class="mb-3">
-                        শিক্ষার্থী ও অভিভাবকদের সঙ্গে আর্থিক লেনদেনের স্বচ্ছতা বজায় রাখতে প্রতিষ্ঠানের ভর্তি ফি, কোর্স ফি, পেমেন্ট রেকর্ড, মানি রিসিট এবং বকেয়া সংক্রান্ত তথ্য সংরক্ষণের সুশৃঙ্খল ব্যবস্থা রয়েছে[cite: 1]।
+                        শিক্ষার্থী ও অভিভাবকদের সঙ্গে আর্থিক লেনদেনের স্বচ্ছতা বজায় রাখতে প্রতিষ্ঠানের ভর্তি ফি, কোর্স ফি, পেমেন্ট রেকর্ড, মানি রিসিট এবং বকেয়া সংক্রান্ত তথ্য সংরক্ষণের সুশৃঙ্খল ব্যবস্থা রয়েছে।
                     </p>
                     <div class="p-3 bg-light rounded-3 border">
                         <i class="fa-solid fa-file-invoice text-primary me-2"></i>
-                        <strong>পেমেন্ট রসিদ সংগ্রহ:</strong> প্রযোজ্য ক্ষেত্রে শিক্ষার্থীরা প্রতিটি লেনদেনের বিপরীতে তাদের পেমেন্টের আনুষ্ঠানিক রসিদ (Money Receipt / Invoice) অফিস অথবা পোর্টাল থেকে সংগ্রহ করতে পারবেন[cite: 1]।
+                        <strong>পেমেন্ট রসিদ সংগ্রহ:</strong> প্রযোজ্য ক্ষেত্রে শিক্ষার্থীরা প্রতিটি লেনদেনের বিপরীতে তাদের পেমেন্টের আনুষ্ঠানিক রসিদ (Money Receipt / Invoice) অফিস অথবা পোর্টাল থেকে সংগ্রহ করতে পারবেন।
                     </div>
                 </section>
 
@@ -4771,26 +4826,26 @@ function renderLicense(main) {
                             <i class="fa-solid fa-users-Gear"></i>
                         </div>
                         <div>
-                            <h2 class="section-title-bn">৮. শিক্ষার্থী ও অভিভাবকদের অধিকার[cite: 1]</h2>
-                            <div class="section-title-en">Student &amp; Guardian Rights[cite: 1]</div>
+                            <h2 class="section-title-bn">৮. শিক্ষার্থী ও অভিভাবকদের অধিকার</h2>
+                            <div class="section-title-en">Student &amp; Guardian Rights</div>
                         </div>
                     </div>
 
-                    <p class="mb-3">প্রতিটি শিক্ষার্থী ও অভিভাবকের নিম্নলিখিত মৌলিক অধিকার সংরক্ষিত রয়েছে[cite: 1]:</p>
+                    <p class="mb-3">প্রতিটি শিক্ষার্থী ও অভিভাবকের নিম্নলিখিত মৌলিক অধিকার সংরক্ষিত রয়েছে:</p>
 
                     <div class="row g-2">
                         <div class="col-md-6">
                             <ul class="custom-check-list">
-                                <li><i class="fa-solid fa-check-double"></i> <span>কোর্স ও প্রশিক্ষণ সম্পর্কে সঠিক তথ্য জানা[cite: 1]।</span></li>
-                                <li><i class="fa-solid fa-check-double"></i> <span>কোর্স ফি ও অন্যান্য চার্জ সম্পর্কে পূর্বেই অবগত হওয়া[cite: 1]।</span></li>
-                                <li><i class="fa-solid fa-check-double"></i> <span>ভর্তি ও পেমেন্টের প্রমাণ (রসিদ) সংগ্রহ করা[cite: 1]।</span></li>
+                                <li><i class="fa-solid fa-check-double"></i> <span>কোর্স ও প্রশিক্ষণ সম্পর্কে সঠিক তথ্য জানা।</span></li>
+                                <li><i class="fa-solid fa-check-double"></i> <span>কোর্স ফি ও অন্যান্য চার্জ সম্পর্কে পূর্বেই অবগত হওয়া।</span></li>
+                                <li><i class="fa-solid fa-check-double"></i> <span>ভর্তি ও পেমেন্টের প্রমাণ (রসিদ) সংগ্রহ করা।</span></li>
                             </ul>
                         </div>
                         <div class="col-md-6">
                             <ul class="custom-check-list">
-                                <li><i class="fa-solid fa-check-double"></i> <span>নির্ধারিত ক্লাস ও প্রশিক্ষণ সুবিধা সম্পর্কে তথ্য পাওয়া[cite: 1]।</span></li>
-                                <li><i class="fa-solid fa-check-double"></i> <span>অভিযোগ, পরামর্শ ও মতামত প্রদান করা[cite: 1]।</span></li>
-                                <li><i class="fa-solid fa-check-double"></i> <span>সার্টিফিকেটের সত্যতা যাচাই করা[cite: 1]।</span></li>
+                                <li><i class="fa-solid fa-check-double"></i> <span>নির্ধারিত ক্লাস ও প্রশিক্ষণ সুবিধা সম্পর্কে তথ্য পাওয়া।</span></li>
+                                <li><i class="fa-solid fa-check-double"></i> <span>অভিযোগ, পরামর্শ ও মতামত প্রদান করা।</span></li>
+                                <li><i class="fa-solid fa-check-double"></i> <span>সার্টিফিকেটের সত্যতা যাচাই করা।</span></li>
                             </ul>
                         </div>
                     </div>
@@ -4803,16 +4858,16 @@ function renderLicense(main) {
                             <i class="fa-solid fa-comments-question"></i>
                         </div>
                         <div>
-                            <h2 class="section-title-bn">৯. অভিযোগ ও তথ্য যাচাই[cite: 1]</h2>
-                            <div class="section-title-en">Complaints &amp; Verification[cite: 1]</div>
+                            <h2 class="section-title-bn">৯. অভিযোগ ও তথ্য যাচাই</h2>
+                            <div class="section-title-en">Complaints &amp; Verification</div>
                         </div>
                     </div>
 
                     <p class="mb-3">
-                        প্রতিষ্ঠানের পরিচয়, কার্যক্রম, প্রশিক্ষণ, ভর্তি, পেমেন্ট কিংবা সার্টিফিকেট সম্পর্কে কোনো প্রশ্ন বা অভিযোগ থাকলে সরাসরি প্রতিষ্ঠানের অফিসে যোগাযোগ করা যাবে[cite: 1]।
+                        প্রতিষ্ঠানের পরিচয়, কার্যক্রম, প্রশিক্ষণ, ভর্তি, পেমেন্ট কিংবা সার্টিফিকেট সম্পর্কে কোনো প্রশ্ন বা অভিযোগ থাকলে সরাসরি প্রতিষ্ঠানের অফিসে যোগাযোগ করা যাবে।
                     </p>
                     <p class="mb-0">
-                        প্রয়োজনে সংশ্লিষ্ট নথি ও তথ্য যাচাইয়ের জন্য দায়িত্বপ্রাপ্ত কর্তৃপক্ষের কাছে সরাসরি আবেদন করা যাবে এবং কর্তৃপক্ষ তা দ্রুততম সময়ে নিষ্পত্তি করতে সচেষ্ট থাকবে[cite: 1]।
+                        প্রয়োজনে সংশ্লিষ্ট নথি ও তথ্য যাচাইয়ের জন্য দায়িত্বপ্রাপ্ত কর্তৃপক্ষের কাছে সরাসরি আবেদন করা যাবে এবং কর্তৃপক্ষ তা দ্রুততম সময়ে নিষ্পত্তি করতে সচেষ্ট থাকবে।
                     </p>
                 </section>
 
@@ -4821,38 +4876,38 @@ function renderLicense(main) {
                     <div class="row align-items-center g-4">
                         <div class="col-lg-12">
                             <div class="d-inline-flex align-items-center gap-2 px-3 py-1 rounded-pill bg-primary bg-opacity-25 text-info small fw-semibold mb-3">
-                                <i class="fa-solid fa-handshake"></i> ১০. আমাদের অঙ্গীকার (Our Commitment)[cite: 1]
+                                <i class="fa-solid fa-handshake"></i> ১০. আমাদের অঙ্গীকার (Our Commitment)
                             </div>
-                            <h3 class="fw-bold mb-3">স্বচ্ছতা, দায়িত্বশীলতা ও পেশাদার আচরণের অঙ্গীকার[cite: 1]</h3>
+                            <h3 class="fw-bold mb-3">স্বচ্ছতা, দায়িত্বশীলতা ও পেশাদার আচরণের অঙ্গীকার</h3>
                             <p class="text-light opacity-75 mb-4">
-                                Dream Career IT শিক্ষার্থীদের সঙ্গে স্বচ্ছতা, দায়িত্বশীলতা ও পেশাদার আচরণ বজায় রাখতে প্রতিশ্রুতিবদ্ধ[cite: 1]। আমরা প্রতিষ্ঠানের পরিচয়, কার্যক্রম, প্রশিক্ষণ, ফি এবং সার্টিফিকেটসংক্রান্ত তথ্য যথাসম্ভব নির্ভুলভাবে প্রকাশ এবং প্রয়োজন অনুযায়ী হালনাগাদ করার নীতি অনুসরণ করি[cite: 1]। প্রতিষ্ঠান সম্পর্কে যেকোনো তথ্য যাচাইয়ের জন্য আমাদের অফিসে যোগাযোগ করুন[cite: 1]।
+                                Dream Career IT শিক্ষার্থীদের সঙ্গে স্বচ্ছতা, দায়িত্বশীলতা ও পেশাদার আচরণ বজায় রাখতে প্রতিশ্রুতিবদ্ধ। আমরা প্রতিষ্ঠানের পরিচয়, কার্যক্রম, প্রশিক্ষণ, ফি এবং সার্টিফিকেটসংক্রান্ত তথ্য যথাসম্ভব নির্ভুলভাবে প্রকাশ এবং প্রয়োজন অনুযায়ী হালনাগাদ করার নীতি অনুসরণ করি। প্রতিষ্ঠান সম্পর্কে যেকোনো তথ্য যাচাইয়ের জন্য আমাদের অফিসে যোগাযোগ করুন।
                             </p>
                         </div>
 
                         <div class="col-md-6">
                             <div class="contact-info-pill">
-                                <div class="small text-info fw-semibold mb-1"><i class="fa-solid fa-building me-1"></i> প্রতিষ্ঠান ও ঠিকানা[cite: 1]</div>
-                                <div class="fw-bold fs-5 mb-1">Dream Career IT[cite: 1]</div>
+                                <div class="small text-info fw-semibold mb-1"><i class="fa-solid fa-building me-1"></i> প্রতিষ্ঠান ও ঠিকানা</div>
+                                <div class="fw-bold fs-5 mb-1">Dream Career IT</div>
                                 <div class="small text-light opacity-75">
-                                    ভাই ভাই সুপার মার্কেট, নতুন পদুয়ার বাজার মসজিদের পাশে, পদুয়ার বাজার, বিশ্বরোড, কুমিল্লা-৩৫০০[cite: 1]।
+                                    ভাই ভাই সুপার মার্কেট, নতুন পদুয়ার বাজার মসজিদের পাশে, পদুয়ার বাজার, বিশ্বরোড, কুমিল্লা-৩৫০০।
                                 </div>
                             </div>
                         </div>
 
                         <div class="col-md-6">
                             <div class="contact-info-pill">
-                                <div class="small text-info fw-semibold mb-2"><i class="fa-solid fa-address-book me-1"></i> সরাসরি যোগাযোগ ও যাচাই[cite: 1]</div>
+                                <div class="small text-info fw-semibold mb-2"><i class="fa-solid fa-address-book me-1"></i> সরাসরি যোগাযোগ ও যাচাই</div>
                                 <div class="mb-1">
                                     <i class="fa-solid fa-phone-volume text-success me-2"></i>
-                                    <strong>মোবাইল:</strong> <a href="tel:01771770044" class="text-white text-decoration-none">01771770044[cite: 1]</a>
+                                    <strong>মোবাইল:</strong> <a href="tel:01771770044" class="text-white text-decoration-none">01771770044</a>
                                 </div>
                                 <div class="mb-1">
                                     <i class="fa-solid fa-envelope text-warning me-2"></i>
-                                    <strong>ইমেইল:</strong> <a href="mailto:dc13edubd@gmail.com" class="text-white text-decoration-none">dc13edubd@gmail.com[cite: 1]</a>
+                                    <strong>ইমেইল:</strong> <a href="mailto:dc13edubd@gmail.com" class="text-white text-decoration-none">dc13edubd@gmail.com</a>
                                 </div>
                                 <div>
                                     <i class="fa-solid fa-globe text-info me-2"></i>
-                                    <strong>ওয়েবসাইট:</strong> প্রতিষ্ঠানের অফিসিয়াল ওয়েবসাইট[cite: 1]
+                                    <strong>ওয়েবসাইট:</strong> প্রতিষ্ঠানের অফিসিয়াল ওয়েবসাইট
                                 </div>
                             </div>
                         </div>
@@ -4864,7 +4919,7 @@ function renderLicense(main) {
                         </div>
                         <div class="no-print">
                             <a href="#contact" onclick="navigateView('contact')" class="btn btn-sm btn-info fw-semibold rounded-pill px-3">
-                                <i class="fa-solid fa-paper-plane me-1"></i> সরাসরি মেসেজ পাঠান[cite: 1]
+                                <i class="fa-solid fa-paper-plane me-1"></i> সরাসরি মেসেজ পাঠান
                             </a>
                         </div>
                     </div>
@@ -4948,7 +5003,7 @@ function bindSubscribeAndContactForms() {
             curDB.subscribers = curDB.subscribers || [];
             curDB.subscribers.unshift({ id: Date.now(), contact_info: val, status: 'Active', created_at: new Date().toISOString().slice(0,10) });
             DCITStore.saveDB(curDB);
-            showAwesomeToast('success', 'সাবস্ক্রিপশন সম্পন্ন!', 'আপনার ইমেইল/মোবাইল নম্বর আমাদের এডমিন সাবস্ক্রাইবার লিস্টে যুক্ত হয়েছে।');
+            showAwesomeToast('success', 'সাবস্ক্রিপশন সম্পন্ন!', 'নতুন ব্যাচ ও বিজ্ঞপ্তির আপডেট পেতে আপনার সাবস্ক্রিপশন সফলভাবে সম্পন্ন হয়েছে।');
             this.reset();
         });
     }
@@ -4970,7 +5025,7 @@ function bindSubscribeAndContactForms() {
                 created_at: new Date().toISOString().slice(0, 10)
             });
             DCITStore.saveDB(curDB);
-            showAwesomeToast('success', 'মেসেজ প্রেরিত হয়েছে!', 'আপনার বার্তাটি এডমিন প্যানেলের ইনবক্সে জমা হয়েছে।');
+            showAwesomeToast('success', 'বার্তা প্রেরিত হয়েছে!', 'ধন্যবাদ! আপনার বার্তাটি আমাদের কাছে পৌঁছেছে। শীঘ্রই আপনার সাথে যোগাযোগ করা হবে।');
             this.reset();
         });
     }
@@ -5399,7 +5454,7 @@ function renderDesigner(main) {
             DCITStore.saveDB(curDB);
             const alertBox = document.getElementById('designerAlertBox');
             if (alertBox) {
-                alertBox.innerHTML = `<div class="alert alert-success"><i class="fa fa-check-circle"></i> ধন্যবাদ! আপনার মেসেজ সফলভাবে ওয়েব ডিজাইনারের ইনবক্সে জমা হয়েছে।</div>`;
+                alertBox.innerHTML = `<div class="alert alert-success"><i class="fa fa-check-circle"></i> ধন্যবাদ! আপনার বার্তাটি সফলভাবে প্রেরিত হয়েছে। শীঘ্রই আপনার সাথে যোগাযোগ করা হবে।</div>`;
             }
             this.reset();
             window.scrollTo({ top: 200, behavior: 'smooth' });

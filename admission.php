@@ -158,7 +158,7 @@ require_once __DIR__ . '/includes/header.php';
                     </div>
                     <div class="form-group">
                         <label>প্রদত্ত ভর্তি ফি (টাকা - ঐচ্ছিক)</label>
-                        <input type="number" name="paid_amount" class="form-control" value="500" placeholder="যেমন: 500">
+                        <input type="number" name="paid_amount" class="form-control" value="500" placeholder="টাকার পরিমাণ লিখুন">
                     </div>
                     <div class="form-group">
                         <label>বিকাশ/নগদ TrxID (যদি অনলাইনে পাঠিয়ে থাকেন)</label>

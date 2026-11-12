@@ -4,6 +4,8 @@
  * Supports BOTH MySQL (XAMPP/cPanel) AND Zero-Config SQLite out of the box!
  */
 if (session_status() === PHP_SESSION_NONE) {
+    @ini_set('session.cookie_httponly', '1');
+    @ini_set('session.use_strict_mode', '1');
     session_start();
 }
 date_default_timezone_set('Asia/Dhaka');
@@ -23,7 +25,6 @@ if (php_sapi_name() !== 'cli') {
     header('X-XSS-Protection: 1; mode=block');
     header('Referrer-Policy: strict-origin-when-cross-origin');
 }
-
 
 // Database Mode: 'sqlite' (works immediately without setup) or 'mysql' (for cPanel/XAMPP MySQL)
 define('DB_DRIVER', getenv('AG_DB_DRIVER') ?: 'sqlite');
@@ -124,7 +125,7 @@ function require_admin(): void {
     }
 }
 
-function handle_image_upload(string $field_name, string $default_path = 'assets/img/home-icon.png'): string {
+function handle_image_upload(string $field_name, string $default_path = 'assets/img/logo.jpg'): string {
     if (!empty($_FILES[$field_name]['name']) && $_FILES[$field_name]['error'] === UPLOAD_ERR_OK) {
         $ext = strtolower(pathinfo($_FILES[$field_name]['name'], PATHINFO_EXTENSION));
         $allowed = ['jpg', 'jpeg', 'png', 'webp', 'gif', 'pdf'];
@@ -153,4 +154,42 @@ function next_roll_no(): string {
     $stmt = get_db()->query("SELECT COUNT(*) FROM students");
     $cnt = (int)$stmt->fetchColumn() + 1;
     return str_pad((string)$cnt, 2, '0', STR_PAD_LEFT);
+}
+
+function is_student_course_completed(?array $st): bool {
+    if (!$st) return false;
+    $exam_st = trim((string)($st['exam_status'] ?? ''));
+    $status  = trim((string)($st['status'] ?? ''));
+    $grade   = strtolower(trim((string)($st['result_grade'] ?? '')));
+
+    if (in_array($exam_st, ['নতুন স্টুডেন্ট', 'পরীক্ষায় অংশগ্রহণ করেছে', 'চলমান'], true)) {
+        return false;
+    }
+    if (in_array($grade, ['pending', 'running', ''], true) && $exam_st !== 'ফেইল করেছে') {
+        return false;
+    }
+    if ($status === 'Dropped') {
+        return false;
+    }
+    if (in_array($exam_st, ['পাস করেছে', 'ফেইল করেছে'], true) || $status === 'Completed') {
+        return true;
+    }
+    return false;
+}
+
+function is_student_failed(?array $st): bool {
+    if (!$st || !is_student_course_completed($st)) return false;
+    $exam_st = trim((string)($st['exam_status'] ?? ''));
+    $grade   = strtolower(trim((string)($st['result_grade'] ?? '')));
+    if ($exam_st === 'ফেইল করেছে' || in_array($grade, ['f', 'fail', 'failed', 'ফেইল'], true)) {
+        return true;
+    }
+    return false;
+}
+
+function is_student_passed(?array $st): bool {
+    if (!$st || !is_student_course_completed($st) || is_student_failed($st)) {
+        return false;
+    }
+    return true;
 }

@@ -1,7 +1,7 @@
 /**
- * DREAM CAREER IT - Enterprise Viewer Security Shield & Preloader (v3.0)
+ * DREAM CAREER IT - Enterprise Viewer Security Shield & Preloader
  * Blocks F12, DevTools Console, Right-Click, Copy/Paste, Save (Ctrl+S),
- * Unauthorized Print (Ctrl+P), Image Drag/Save, and Screenshot keys!
+ * Unauthorized Print (Ctrl+P), Image Drag/Save, and Screenshot keys on all Viewer pages.
  */
 (function () {
     function showSecurityAlert(msg) {
@@ -76,9 +76,9 @@
             e.preventDefault();
             e.stopPropagation();
             if (key === 'p') {
-                showSecurityAlert('Ctrl+P দিয়ে প্রিন্ট নিষিদ্ধ! শুধুমাত্র গোপন কোড দিয়ে সার্টিফিকেট প্রিন্ট করা যাবে।');
+                showSecurityAlert('সরাসরি প্রিন্ট নিষিদ্ধ! শুধুমাত্র উত্তীর্ণ শিক্ষার্থীরা গোপন কোড দিয়ে সার্টিফিকেট প্রিন্ট করতে পারবেন।');
             } else {
-                showSecurityAlert('সিকিউরিটি লকঃ HTML ফাইল সেভ বা সোর্স কোড দেখা নিষিদ্ধ!');
+                showSecurityAlert('সিকিউরিটি লকঃ সোর্স কোড দেখা বা ফাইল সেভ করা নিষিদ্ধ!');
             }
             return false;
         }
@@ -117,9 +117,14 @@
         }
     });
 
-    // 5. Authorized Landscape Letter Certificate Print Function
+    // 5. Authorized Landscape Letter Certificate Print Function (Only for Course-Completed & Passed Students)
     window.printAuthorizedCertificate = function (certObj) {
         if (!certObj) return;
+        const g = String(certObj.grade || '').trim().toLowerCase();
+        if (['f', 'fail', 'failed', 'ফেইল', 'pending', 'running', ''].includes(g)) {
+            showSecurityAlert('শুধুমাত্র কোর্স সম্পন্নকারী ও উত্তীর্ণ শিক্ষার্থীদের সার্টিফিকেট প্রিন্ট করা যাবে!');
+            return;
+        }
         let sheet = document.getElementById('authorizedCertPrintSheet');
         if (!sheet) {
             sheet = document.createElement('div');

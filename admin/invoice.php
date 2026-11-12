@@ -88,5 +88,6 @@ if (!$inv) {
         <div class="sign-col">কর্তৃপক্ষের স্বাক্ষর (<?= h($inv['collected_by'] ?: 'Authorized Signature') ?>)</div>
     </div>
 </div>
+<script src="../assets/js/panel.js"></script>
 </body>
 </html>

@@ -457,7 +457,7 @@ if ($hasHeader) {
 
                     <div class="mt-4 pt-3 border-top border-secondary border-opacity-50 d-flex align-items-center justify-content-between position-relative" style="z-index: 2;">
                         <span class="small text-info fw-semibold"><i class="fa-solid fa-check-double me-1"></i> ১০০% বাস্তবমুখী ও কর্মমুখী শিক্ষা</span>
-                        <a href="course.php" class="btn btn-sm btn-outline-light rounded-pill px-3">কোর্সসমূহ[cite: 1]</a>
+                        <a href="course.php" class="btn btn-sm btn-outline-light rounded-pill px-3">কোর্সসমূহ</a>
                     </div>
                 </div>
             </div>
@@ -831,10 +831,10 @@ if ($hasHeader) {
                 </div>
                 <div class="d-flex flex-wrap gap-2">
                     <a href="admission.php" class="btn btn-primary btn-sm rounded-pill px-4 py-2 fw-semibold">
-                        <i class="fa-solid fa-user-plus me-1"></i> ভর্তি আবেদন করুন[cite: 1]
+                        <i class="fa-solid fa-user-plus me-1"></i> ভর্তি আবেদন করুন
                     </a>
                     <a href="contact.php" class="btn btn-outline-light btn-sm rounded-pill px-4 py-2">
-                        <i class="fa-solid fa-paper-plane me-1"></i> যোগাযোগ পেজ[cite: 1]
+                        <i class="fa-solid fa-paper-plane me-1"></i> যোগাযোগ পেজ
                     </a>
                 </div>
             </div>

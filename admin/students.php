@@ -33,17 +33,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $result_grade = trim($_POST['result_grade'] ?? 'A+');
         $cgpa = trim($_POST['cgpa'] ?? '5.00');
         $status = trim($_POST['status'] ?? 'Active');
-        $existing_photo = trim($_POST['existing_photo'] ?? 'assets/img/home-icon.png');
+        if (in_array(strtolower($result_grade), ['fail', 'f'], true)) {
+            $exam_status = 'ফেইল করেছে';
+            $cgpa = '0.00';
+            $status = 'Completed';
+        } elseif (in_array(strtolower($result_grade), ['pending', 'running'], true)) {
+            $exam_status = 'নতুন স্টুডেন্ট';
+            $cgpa = '0.00';
+            $status = 'Active';
+        } else {
+            $exam_status = 'পাস করেছে';
+            $status = 'Completed';
+        }
+        $existing_photo = trim($_POST['existing_photo'] ?? 'assets/img/logo.jpg');
         $photo = handle_image_upload('photo_file', $existing_photo);
 
         if ($id > 0) {
-            $stmt = $pdo->prepare("UPDATE students SET reg_no=?, roll_no=?, name=?, father_name=?, mother_name=?, present_address=?, permanent_address=?, phone=?, email=?, dob=?, religion=?, marital_status=?, height=?, weight=?, blood_group=?, education=?, school_college=?, experience=?, course_name=?, batch_year=?, session_quarter=?, batch_type=?, class_slot=?, result_grade=?, cgpa=?, photo=?, status=? WHERE id=?");
-            $stmt->execute([$reg_no, $roll_no, $name, $father_name, $mother_name, $present_address, $permanent_address, $phone, $email, $dob, $religion, $marital_status, $height, $weight, $blood_group, $education, $school_college, $experience, $course_name, $batch_year, $session_quarter, $batch_type, $class_slot, $result_grade, $cgpa, $photo, $status, $id]);
+            $stmt = $pdo->prepare("UPDATE students SET reg_no=?, roll_no=?, name=?, father_name=?, mother_name=?, present_address=?, permanent_address=?, phone=?, email=?, dob=?, religion=?, marital_status=?, height=?, weight=?, blood_group=?, education=?, school_college=?, experience=?, course_name=?, batch_year=?, session_quarter=?, batch_type=?, class_slot=?, result_grade=?, cgpa=?, photo=?, status=?, exam_status=? WHERE id=?");
+            $stmt->execute([$reg_no, $roll_no, $name, $father_name, $mother_name, $present_address, $permanent_address, $phone, $email, $dob, $religion, $marital_status, $height, $weight, $blood_group, $education, $school_college, $experience, $course_name, $batch_year, $session_quarter, $batch_type, $class_slot, $result_grade, $cgpa, $photo, $status, $exam_status, $id]);
             set_flash('success', 'স্টুডেন্ট ও বায়োডাটা সফলভাবে আপডেট হয়েছে!');
         } else {
             $pw = hash_password_custom('123456');
-            $stmt = $pdo->prepare("INSERT INTO students (reg_no, roll_no, name, father_name, mother_name, present_address, permanent_address, phone, email, dob, religion, marital_status, height, weight, blood_group, education, school_college, experience, course_name, batch_year, session_quarter, batch_type, class_slot, result_grade, cgpa, photo, password_hash, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-            $stmt->execute([$reg_no, $roll_no, $name, $father_name, $mother_name, $present_address, $permanent_address, $phone, $email, $dob, $religion, $marital_status, $height, $weight, $blood_group, $education, $school_college, $experience, $course_name, $batch_year, $session_quarter, $batch_type, $class_slot, $result_grade, $cgpa, $photo, $pw, $status]);
+            $stmt = $pdo->prepare("INSERT INTO students (reg_no, roll_no, name, father_name, mother_name, present_address, permanent_address, phone, email, dob, religion, marital_status, height, weight, blood_group, education, school_college, experience, course_name, batch_year, session_quarter, batch_type, class_slot, result_grade, cgpa, photo, password_hash, status, exam_status, secret_code) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+            $stmt->execute([$reg_no, $roll_no, $name, $father_name, $mother_name, $present_address, $permanent_address, $phone, $email, $dob, $religion, $marital_status, $height, $weight, $blood_group, $education, $school_college, $experience, $course_name, $batch_year, $session_quarter, $batch_type, $class_slot, $result_grade, $cgpa, $photo, $pw, $status, $exam_status, 'DC' . substr((string)$batch_year, -2) . 'STD' . substr($reg_no, -3)]);
             set_flash('success', 'নতুন স্টুডেন্ট সফলভাবে যুক্ত করা হয়েছে!');
         }
         header("Location: students.php");
@@ -82,7 +94,7 @@ require_once __DIR__ . '/header.php';
         <form method="post" enctype="multipart/form-data">
             <input type="hidden" name="form_action" value="save">
             <input type="hidden" name="id" value="<?= (int)($edit_student['id'] ?? 0) ?>">
-            <input type="hidden" name="existing_photo" value="<?= h($edit_student['photo'] ?? 'assets/img/home-icon.png') ?>">
+            <input type="hidden" name="existing_photo" value="<?= h($edit_student['photo'] ?? 'assets/img/logo.jpg') ?>">
 
             <div class="form-grid">
                 <div class="form-group">
@@ -155,7 +167,7 @@ require_once __DIR__ . '/header.php';
                 <div class="form-group">
                     <label>রেজাল্ট / গ্রেড (Result Grade)</label>
                     <select name="result_grade" class="form-control">
-                        <?php foreach (['A+', 'A', 'A-', 'B', 'C', 'Passed', 'Running'] as $gr): ?>
+                        <?php foreach (['A+', 'A', 'A-', 'B', 'C', 'Passed', 'Fail', 'Pending'] as $gr): ?>
                             <option value="<?= $gr ?>" <?= ($edit_student['result_grade'] ?? 'A+') === $gr ? 'selected' : '' ?>><?= $gr ?></option>
                         <?php endforeach; ?>
                     </select>
@@ -246,7 +258,7 @@ require_once __DIR__ . '/header.php';
             <tbody>
                 <?php foreach ($students as $s): ?>
                 <tr>
-                    <td><img src="../<?= h($s['photo'] ?: 'assets/img/home-icon.png') ?>" style="width:40px; height:40px; border-radius:50%; object-fit:cover;"></td>
+                    <td><img src="../<?= h($s['photo'] ?: 'assets/img/logo.jpg') ?>" style="width:40px; height:40px; border-radius:50%; object-fit:cover;"></td>
                     <td><strong>Reg: <?= h($s['reg_no']) ?></strong><br><small>Roll: <?= h($s['roll_no']) ?></small></td>
                     <td><strong><?= h($s['name']) ?></strong><br><small>পিতা: <?= h($s['father_name']) ?></small></td>
                     <td><?= h($s['phone']) ?></td>

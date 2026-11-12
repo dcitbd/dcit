@@ -45,7 +45,7 @@ if ($method === 'POST') {
         'count' => $cnt,
         'gateway' => $channel,
         'timestamp' => date('Y-m-d h:i:s A'),
-        'message' => "সিম/মোবাইল ছাড়াই স্বয়ংক্রিয় গেটওয়ের মাধ্যমে {$cnt} জন প্রাপকের কাছে মেসেজ সফলভাবে প্রেরণ করা হয়েছে!"
+        'message' => "{$cnt} জন প্রাপকের কাছে বার্তা সফলভাবে প্রেরণ করা হয়েছে।"
     ], JSON_UNESCAPED_UNICODE);
     exit;
 }

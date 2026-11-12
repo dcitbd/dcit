@@ -1,4 +1,4 @@
-# ড্রিম ক্যারিয়ার আইটি (Dream Career IT) (Dream Career IT) — সম্পূর্ণ ডাইনামিক ওয়েবসাইট ও এডমিন প্যানেল
+# ড্রিম ক্যারিয়ার আইটি (Dream Career IT) — সম্পূর্ণ ডাইনামিক ওয়েবসাইট ও এডমিন প্যানেল
 
 ## প্রজেক্টের বৈশিষ্ট্যসমূহ (Key Features)
 ১. **সম্পূর্ণ ডাইনামিক এডমিন প্যানেল (`/admin`)**:
@@ -16,8 +16,8 @@
 
 ৩. **ডুয়াল ডাটাবেজ সাপোর্ট (Zero-Config SQLite + MySQL)**:
    - **SQLite (অটোমেটিক)**: প্রজেক্টে `data/dream_career_it.sqlite` প্রি-লোডেড আছে। কোনো ডাটাবেজ কনফিগারেশন ছাড়াই সরাসরি যেকোনো PHP সার্ভারে (`php -S localhost:8000` বা XAMPP/WAMP) সাথে সাথে চলবে!
-   - **MySQL / phpMyAdmin**: আপনি যদি cPanel বা XAMPP MySQL ব্যবহার করতে চান, তাহলে `database/amader_gram_mysql.sql` ফাইলটি phpMyAdmin-এ ইমপোর্ট করুন এবং `config/db.php` ফাইলে `DB_DRIVER`-কে `'mysql'` করে দিন।
-   - **Java Verification Utility**: `java/AmaderGramCertificateVerifier.java` ফাইলে সার্টিফিকেট ভেরিফিকেশনের জাভা মডিউল যুক্ত করা আছে।
+   - **MySQL / phpMyAdmin**: আপনি যদি cPanel বা XAMPP MySQL ব্যবহার করতে চান, তাহলে `database/dream_career_it_mysql.sql` ফাইলটি phpMyAdmin-এ ইমপোর্ট করুন এবং `config/db.php` ফাইলে `DB_DRIVER`-কে `'mysql'` করে দিন।
+   - **Java Verification Utility**: `java/DreamCareerCertificateVerifier.java` ফাইলে সার্টিফিকেট ভেরিফিকেশনের জাভা মডিউল যুক্ত করা আছে।
 
 ## এডমিন প্যানেল লগইন তথ্য (Default Admin Login)
 - **URL**: `http://localhost:8000/admin/login.php` (অথবা আপনার ডোমেইন `/admin`)

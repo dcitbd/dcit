@@ -117,7 +117,7 @@ require_once __DIR__ . '/includes/header.php';
                             <td><?= h($s['course_name']) ?></td>
                             <td><?= h($s['session_quarter']) ?> (<?= (int)$s['batch_year'] ?>)</td>
                             <td><span class="badge badge-info"><?= h($s['class_slot']) ?></span></td>
-                            <td><span class="badge badge-success"><?= h($s['result_grade']) ?></span></td>
+                            <td><?php if (!is_student_course_completed($s)): ?><span class="badge badge-warning">চলমান</span><?php elseif (is_student_failed($s)): ?><span class="badge badge-danger">ফেইল (Fail)</span><?php else: ?><span class="badge badge-success"><?= h($s['result_grade']) ?></span><?php endif; ?></td>
                         </tr>
                         <?php endforeach; ?>
                     <?php endif; ?>

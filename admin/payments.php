@@ -164,7 +164,7 @@ require_once __DIR__ . '/header.php';
                 </div>
                 <div class="form-group">
                     <label>মন্তব্য (Remarks)</label>
-                    <input type="text" name="remarks" class="form-control" value="<?= h($edit_pay['remarks'] ?? '') ?>" placeholder="যেমন: ১ম কিস্তি পরিশোধ">
+                    <input type="text" name="remarks" class="form-control" value="<?= h($edit_pay['remarks'] ?? '') ?>" placeholder="মন্তব্য লিখুন">
                 </div>
             </div>
             <button type="submit" class="btn btn-success"><i class="fa fa-check-circle"></i> <?= $edit_pay ? 'পেমেন্ট আপডেট করুন' : 'পেমেন্ট সেভ ও মেমো তৈরি করুন' ?></button>
