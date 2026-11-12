@@ -413,20 +413,519 @@ function switchTab(tab, msg = '', filter = 'ALL') {
 }
 
 /* ==========================================================================
+   LOGIN PAGE CYBER BINARY 0/1 ANIMATION, CARD ANIMATION & DIGITAL WATCH
+   ========================================================================== */
+function ensureLoginCyberStyles() {
+    if (document.getElementById('dcitLoginCyberStyles')) return;
+    const st = document.createElement('style');
+    st.id = 'dcitLoginCyberStyles';
+    st.textContent = `
+        .login-stage-wrap {
+            position: relative;
+            width: 100%;
+            min-height: 100vh;
+            background: radial-gradient(circle at 50% 25%, #0a192f 0%, #050b18 55%, #02050b 100%) !important;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 24px 16px;
+            overflow: hidden;
+            z-index: 1;
+        }
+        #dcitBinaryCanvas {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            pointer-events: none;
+            opacity: 0.85;
+        }
+        .dcit-binary-grid-overlay {
+            position: absolute;
+            inset: 0;
+            background-image:
+                linear-gradient(rgba(16, 185, 129, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(56, 189, 248, 0.05) 1px, transparent 1px);
+            background-size: 36px 36px;
+            z-index: 2;
+            pointer-events: none;
+        }
+        .dcit-glow-orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(75px);
+            z-index: 2;
+            pointer-events: none;
+            animation: dcitOrbPulse 8s ease-in-out infinite alternate;
+        }
+        .dcit-glow-orb.orb-1 {
+            width: 320px;
+            height: 320px;
+            background: rgba(16, 185, 129, 0.22);
+            top: -80px;
+            left: -80px;
+        }
+        .dcit-glow-orb.orb-2 {
+            width: 360px;
+            height: 360px;
+            background: rgba(14, 165, 233, 0.22);
+            bottom: -100px;
+            right: -80px;
+            animation-delay: -4s;
+        }
+        @keyframes dcitOrbPulse {
+            0% { transform: scale(1) translate(0, 0); opacity: 0.65; }
+            100% { transform: scale(1.22) translate(25px, -20px); opacity: 1; }
+        }
+        @keyframes dcitCardEntrance {
+            0% { opacity: 0; transform: translateY(32px) scale(0.94) rotateX(8deg); }
+            100% { opacity: 1; transform: translateY(0) scale(1) rotateX(0deg); }
+        }
+        @keyframes dcitCardFloat {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-9px); }
+        }
+        @keyframes dcitBorderFlow {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        @keyframes dcitLogoRing {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.55), 0 0 25px rgba(56, 189, 248, 0.45); }
+            50% { box-shadow: 0 0 0 10px rgba(16, 185, 129, 0), 0 0 38px rgba(16, 185, 129, 0.75); }
+        }
+        @keyframes dcitColonBlink {
+            0%, 49% { opacity: 1; text-shadow: 0 0 12px #38bdf8; }
+            50%, 100% { opacity: 0.22; text-shadow: none; }
+        }
+        @keyframes dcitScanline {
+            0% { transform: translateY(-100%); }
+            100% { transform: translateY(1000%); }
+        }
+        .login-anim-card {
+            position: relative;
+            z-index: 5;
+            width: 100%;
+            max-width: 455px;
+            background: rgba(9, 16, 34, 0.84) !important;
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: 24px !important;
+            padding: 34px 30px !important;
+            border: 1px solid rgba(56, 189, 248, 0.28) !important;
+            border-top: none !important;
+            box-shadow:
+                0 28px 70px rgba(0, 0, 0, 0.75),
+                0 0 40px rgba(16, 185, 129, 0.16),
+                inset 0 1px 1px rgba(255, 255, 255, 0.14) !important;
+            color: #f8fafc;
+            text-align: center;
+            overflow: hidden;
+            animation: dcitCardEntrance 0.65s cubic-bezier(0.22, 1, 0.36, 1) forwards,
+                       dcitCardFloat 4.8s ease-in-out 0.65s infinite !important;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .login-anim-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #10b981, #38bdf8, #a855f7, #f59e0b, #10b981);
+            background-size: 300% 100%;
+            animation: dcitBorderFlow 5s linear infinite;
+        }
+        .login-anim-card::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            right: 0;
+            height: 28px;
+            background: linear-gradient(180deg, transparent, rgba(56, 189, 248, 0.05), transparent);
+            top: 0;
+            pointer-events: none;
+            animation: dcitScanline 7s linear infinite;
+        }
+        .login-anim-card:hover {
+            box-shadow:
+                0 32px 80px rgba(0, 0, 0, 0.85),
+                0 0 55px rgba(56, 189, 248, 0.28),
+                inset 0 1px 2px rgba(255, 255, 255, 0.22) !important;
+        }
+        .dcit-logo-wrap {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 10px;
+        }
+        .login-anim-card img {
+            width: 82px !important;
+            height: 82px !important;
+            border-radius: 50% !important;
+            border: 2.5px solid #10b981 !important;
+            object-fit: cover;
+            margin: 0 auto !important;
+            animation: dcitLogoRing 3s infinite ease-in-out;
+        }
+        .dcit-card-title {
+            font-size: 1.42rem;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+            background: linear-gradient(90deg, #ffffff, #7dd3fc, #6ee7b7);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 14px;
+        }
+
+        /* WONDERFUL DIGITAL WATCH */
+        .dcit-digital-watch {
+            background: linear-gradient(145deg, rgba(4, 9, 22, 0.95), rgba(12, 24, 48, 0.9));
+            border: 1px solid rgba(56, 189, 248, 0.32);
+            border-radius: 16px;
+            padding: 14px 16px 12px;
+            margin: 0 auto 20px;
+            box-shadow:
+                inset 0 3px 14px rgba(0, 0, 0, 0.75),
+                0 0 24px rgba(14, 165, 233, 0.14);
+            position: relative;
+        }
+        .dcit-watch-top-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 0.68rem;
+            text-transform: uppercase;
+            letter-spacing: 1.6px;
+            color: #64748b;
+            margin-bottom: 8px;
+            font-weight: 700;
+        }
+        .dcit-watch-live-dot {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            color: #10b981;
+        }
+        .dcit-watch-live-dot::before {
+            content: '';
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: #10b981;
+            box-shadow: 0 0 8px #10b981;
+            animation: dcitColonBlink 1.2s infinite;
+        }
+        .dcit-watch-digits-row {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            font-family: 'Courier New', 'Consolas', monospace;
+        }
+        .dcit-watch-seg {
+            background: rgba(15, 23, 42, 0.92);
+            border: 1px solid rgba(56, 189, 248, 0.25);
+            border-radius: 10px;
+            min-width: 56px;
+            padding: 8px 10px 6px;
+            box-shadow: inset 0 2px 6px rgba(0,0,0,0.65);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .dcit-watch-seg-val {
+            font-size: 1.7rem;
+            font-weight: 900;
+            line-height: 1.05;
+            color: #38bdf8;
+            text-shadow: 0 0 14px rgba(56, 189, 248, 0.55);
+            letter-spacing: 1.5px;
+        }
+        .dcit-watch-seg.seg-sec .dcit-watch-seg-val {
+            color: #34d399;
+            text-shadow: 0 0 14px rgba(52, 211, 153, 0.55);
+        }
+        .dcit-watch-seg-lbl {
+            font-size: 0.58rem;
+            color: #64748b;
+            letter-spacing: 1.2px;
+            margin-top: 3px;
+            font-family: system-ui, sans-serif;
+            font-weight: 700;
+        }
+        .dcit-watch-colon {
+            font-size: 1.65rem;
+            font-weight: 900;
+            color: #38bdf8;
+            animation: dcitColonBlink 1s infinite;
+            margin-top: -10px;
+        }
+        .dcit-watch-ampm {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.22), rgba(14, 165, 233, 0.22));
+            border: 1px solid rgba(52, 211, 153, 0.45);
+            color: #fde68a;
+            font-weight: 900;
+            font-size: 0.85rem;
+            padding: 8px 10px;
+            border-radius: 9px;
+            letter-spacing: 1px;
+            text-shadow: 0 0 10px rgba(253, 230, 138, 0.45);
+            align-self: stretch;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .dcit-watch-date-row {
+            margin-top: 9px;
+            padding-top: 7px;
+            border-top: 1px solid rgba(255, 255, 255, 0.07);
+            font-size: 0.74rem;
+            font-weight: 700;
+            letter-spacing: 1.4px;
+            color: #94a3b8;
+            text-transform: uppercase;
+        }
+
+        /* LOGIN FORM CONTROLS */
+        .login-anim-card .form-group {
+            margin-bottom: 15px;
+            text-align: left;
+        }
+        .login-anim-card .form-group label {
+            display: block;
+            color: #cbd5e1 !important;
+            font-size: 0.84rem;
+            font-weight: 700;
+            margin-bottom: 6px;
+            letter-spacing: 0.4px;
+        }
+        .login-anim-card .form-group label i {
+            color: #38bdf8;
+            margin-right: 5px;
+        }
+        .login-anim-card .form-control {
+            width: 100%;
+            background: rgba(15, 23, 42, 0.82) !important;
+            border: 1px solid rgba(148, 163, 184, 0.28) !important;
+            color: #f8fafc !important;
+            border-radius: 11px !important;
+            padding: 12px 14px !important;
+            font-size: 0.95rem;
+            transition: all 0.25s ease;
+            outline: none;
+        }
+        .login-anim-card .form-control:focus {
+            border-color: #38bdf8 !important;
+            background: rgba(15, 23, 42, 0.98) !important;
+            box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.2), 0 0 18px rgba(56, 189, 248, 0.25) !important;
+            transform: translateY(-1px);
+        }
+        .dcit-cyber-btn {
+            width: 100%;
+            border: none;
+            border-radius: 11px;
+            padding: 13px 18px;
+            font-size: 0.96rem;
+            font-weight: 800;
+            letter-spacing: 0.6px;
+            color: #ffffff;
+            background: linear-gradient(135deg, #0f766e 0%, #0284c7 50%, #10b981 100%);
+            background-size: 200% 200%;
+            box-shadow: 0 8px 22px rgba(14, 165, 233, 0.35);
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: all 0.25s ease;
+            margin-top: 4px;
+        }
+        .dcit-cyber-btn:hover {
+            background-position: 100% 0%;
+            transform: translateY(-2px);
+            box-shadow: 0 12px 28px rgba(16, 185, 129, 0.48);
+        }
+        .dcit-cyber-btn:active {
+            transform: translateY(0);
+        }
+        .dcit-login-footer-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            margin-top: 16px;
+            color: #7dd3fc !important;
+            font-weight: 700;
+            font-size: 0.86rem;
+            text-decoration: none;
+            transition: color 0.2s ease, transform 0.2s ease;
+        }
+        .dcit-login-footer-link:hover {
+            color: #34d399 !important;
+            transform: translateX(-3px);
+        }
+    `;
+    document.head.appendChild(st);
+}
+
+function getDigitalWatchParts() {
+    const now = new Date();
+    let h = now.getHours();
+    const m = now.getMinutes();
+    const s = now.getSeconds();
+    const ampm = h >= 12 ? 'PM' : 'AM';
+    h = h % 12;
+    if (h === 0) h = 12;
+    const hh = String(h).padStart(2, '0');
+    const mm = String(m).padStart(2, '0');
+    const ss = String(s).padStart(2, '0');
+    const days = ['SUNDAY', 'MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY'];
+    const months = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
+    const dateStr = `${days[now.getDay()]} • ${String(now.getDate()).padStart(2, '0')} ${months[now.getMonth()]} ${now.getFullYear()}`;
+    return { hh, mm, ss, ampm, dateStr, display: `${hh}:${mm} ${ampm}` };
+}
+
+function renderDigitalWatchHTML() {
+    const w = getDigitalWatchParts();
+    return `
+    <div class="dcit-digital-watch">
+        <div class="dcit-watch-top-bar">
+            <span><i class="fa fa-clock-o"></i> DIGITAL CHRONOMETER</span>
+            <span class="dcit-watch-live-dot">LIVE</span>
+        </div>
+        <div class="dcit-watch-digits-row">
+            <div class="dcit-watch-seg">
+                <span class="dcit-watch-seg-val" id="dwHours">${w.hh}</span>
+                <span class="dcit-watch-seg-lbl">HRS</span>
+            </div>
+            <span class="dcit-watch-colon">:</span>
+            <div class="dcit-watch-seg">
+                <span class="dcit-watch-seg-val" id="dwMinutes">${w.mm}</span>
+                <span class="dcit-watch-seg-lbl">MIN</span>
+            </div>
+            <span class="dcit-watch-colon">:</span>
+            <div class="dcit-watch-seg seg-sec">
+                <span class="dcit-watch-seg-val" id="dwSeconds">${w.ss}</span>
+                <span class="dcit-watch-seg-lbl">SEC</span>
+            </div>
+            <div class="dcit-watch-ampm" id="dwAmPm">${w.ampm}</div>
+        </div>
+        <div class="dcit-watch-date-row" id="dwDateStr">${w.dateStr}</div>
+        <span id="liveTimeLockClock" style="display:none;">${w.display}</span>
+    </div>`;
+}
+
+function startLoginBinaryAndWatch() {
+    clearInterval(window._timeLockInterval);
+    clearInterval(window._binaryMatrixTimer);
+
+    // Live Digital Watch Timer
+    window._timeLockInterval = setInterval(() => {
+        const w = getDigitalWatchParts();
+        const elH = document.getElementById('dwHours');
+        const elM = document.getElementById('dwMinutes');
+        const elS = document.getElementById('dwSeconds');
+        const elA = document.getElementById('dwAmPm');
+        const elD = document.getElementById('dwDateStr');
+        const clk = document.getElementById('liveTimeLockClock');
+        if (elH) elH.textContent = w.hh;
+        if (elM) elM.textContent = w.mm;
+        if (elS) elS.textContent = w.ss;
+        if (elA) elA.textContent = w.ampm;
+        if (elD) elD.textContent = w.dateStr;
+        if (clk) clk.textContent = w.display;
+    }, 500);
+
+    // 0/1 Binary Code Background Animation
+    const canvas = document.getElementById('dcitBinaryCanvas');
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    const resizeCanvas = () => {
+        canvas.width = window.innerWidth || document.documentElement.clientWidth || 1280;
+        canvas.height = window.innerHeight || document.documentElement.clientHeight || 800;
+    };
+    resizeCanvas();
+    window._dcitResizeHandler = resizeCanvas;
+    window.addEventListener('resize', resizeCanvas);
+
+    const fontSize = 17;
+    let columns = Math.max(10, Math.floor(canvas.width / fontSize));
+    let drops = Array.from({ length: columns }, () => Math.random() * -50);
+    let speeds = Array.from({ length: columns }, () => 0.55 + Math.random() * 0.75);
+
+    window._binaryMatrixTimer = setInterval(() => {
+        if (!document.getElementById('dcitBinaryCanvas')) {
+            clearInterval(window._binaryMatrixTimer);
+            return;
+        }
+        const newCols = Math.max(10, Math.floor(canvas.width / fontSize));
+        if (newCols !== columns) {
+            columns = newCols;
+            drops = Array.from({ length: columns }, () => Math.random() * -40);
+            speeds = Array.from({ length: columns }, () => 0.55 + Math.random() * 0.75);
+        }
+
+        ctx.fillStyle = 'rgba(4, 9, 20, 0.14)';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.font = 'bold ' + fontSize + 'px "Courier New", Consolas, monospace';
+
+        for (let i = 0; i < drops.length; i++) {
+            const bit = Math.random() > 0.5 ? '1' : '0';
+            const x = i * fontSize;
+            const y = drops[i] * fontSize;
+
+            if (i % 3 === 0) {
+                ctx.fillStyle = '#38bdf8';
+                ctx.shadowColor = '#38bdf8';
+            } else if (i % 5 === 0) {
+                ctx.fillStyle = '#a7f3d0';
+                ctx.shadowColor = '#10b981';
+            } else {
+                ctx.fillStyle = '#10b981';
+                ctx.shadowColor = '#10b981';
+            }
+            ctx.shadowBlur = 8;
+            ctx.fillText(bit, x, y);
+            ctx.shadowBlur = 0;
+
+            if (y > canvas.height && Math.random() > 0.965) {
+                drops[i] = 0;
+            }
+            drops[i] += speeds[i];
+        }
+    }, 45);
+}
+
+/* ==========================================================================
    MAIN ADMIN APP ROUTER & ZERO-HINT LOGIN + TIME-LOCK
    ========================================================================== */
 function renderAdminApp() {
     const root = document.getElementById('adminAppRoot');
     if (!root) return;
     clearInterval(window._timeLockInterval);
+    clearInterval(window._binaryMatrixTimer);
+    if (window._dcitResizeHandler) {
+        window.removeEventListener('resize', window._dcitResizeHandler);
+        window._dcitResizeHandler = null;
+    }
 
     // STEP 1: Zero-Hint Blank Username & Password Login
     if (!DCITStore.isStep1Passed() && !DCITStore.isLogged()) {
+        ensureLoginCyberStyles();
         root.innerHTML = `
         <div class="login-stage-wrap">
+            <canvas id="dcitBinaryCanvas"></canvas>
+            <div class="dcit-binary-grid-overlay"></div>
+            <div class="dcit-glow-orb orb-1"></div>
+            <div class="dcit-glow-orb orb-2"></div>
             <div class="login-anim-card">
-                <img src="../assets/img/logo.jpg" alt="Dream Career IT">
-                <h2 style="color:#151442; margin-bottom:18px;">Dream Career IT</h2>
+                <div class="dcit-logo-wrap">
+                    <img src="../assets/img/logo.jpg" alt="Dream Career IT">
+                </div>
+                <h2 class="dcit-card-title">Dream Career IT</h2>
+                ${renderDigitalWatchHTML()}
                 <form id="spaLoginStep1Form" style="text-align:left;" autocomplete="off">
                     <div class="form-group">
                         <label><i class="fa fa-user"></i> User ID</label>
@@ -436,13 +935,17 @@ function renderAdminApp() {
                         <label><i class="fa fa-lock"></i> Password</label>
                         <input type="password" id="lPass" class="form-control" value="" required autocomplete="new-password">
                     </div>
-                    <button type="submit" class="btn btn-primary" style="width:100%; justify-content:center; padding:12px; font-size:0.96rem;">
+                    <button type="submit" class="dcit-cyber-btn">
                         <i class="fa fa-sign-in"></i> Login
                     </button>
                 </form>
-                <p style="margin-top:16px;"><a href="../index.html" style="color:#0f766e; font-weight:700; text-decoration:none;">&larr; Website</a></p>
+                <div>
+                    <a href="../index.html" class="dcit-login-footer-link">&larr; Website</a>
+                </div>
             </div>
         </div>`;
+
+        startLoginBinaryAndWatch();
 
         document.getElementById('spaLoginStep1Form').addEventListener('submit', function(e) {
             e.preventDefault();
@@ -459,34 +962,36 @@ function renderAdminApp() {
         return;
     }
 
-    // STEP 2: Zero-Hint Digital Clock ONLY Time-Lock Screen
+    // STEP 2: Zero-Hint Digital Watch Time-Lock Screen
     if (!DCITStore.isLogged()) {
-        const tl = getTimeLockStrings();
+        ensureLoginCyberStyles();
         root.innerHTML = `
         <div class="login-stage-wrap">
-            <div class="login-anim-card" style="border-top-color:#0f766e;">
-                <img src="../assets/img/logo.jpg" alt="Dream Career IT">
-                <h2 style="color:#151442; margin-bottom:6px;">Time Lock Security</h2>
-                <div class="timelock-clock-badge" id="liveTimeLockClock">${tl.curr.display}</div>
+            <canvas id="dcitBinaryCanvas"></canvas>
+            <div class="dcit-binary-grid-overlay"></div>
+            <div class="dcit-glow-orb orb-1"></div>
+            <div class="dcit-glow-orb orb-2"></div>
+            <div class="login-anim-card">
+                <div class="dcit-logo-wrap">
+                    <img src="../assets/img/logo.jpg" alt="Dream Career IT">
+                </div>
+                <h2 class="dcit-card-title">Time Lock Security</h2>
+                ${renderDigitalWatchHTML()}
                 <form id="spaLoginStep2Form" style="text-align:left;" autocomplete="off">
                     <div class="form-group">
                         <input type="password" id="timeLockInput" class="form-control" value="" required autocomplete="off" style="text-align:center; font-size:1.25rem; font-weight:800; letter-spacing:3px;">
                     </div>
-                    <button type="submit" class="btn btn-accent" style="width:100%; justify-content:center; padding:12px; font-size:0.96rem;">
+                    <button type="submit" class="dcit-cyber-btn">
                         <i class="fa fa-unlock-alt"></i> Unlock Dashboard
                     </button>
                 </form>
-                <div style="margin-top:14px;">
-                    <a href="#back" onclick="DCITStore.setStep1Passed(false); renderAdminApp();" style="color:#64748b; text-decoration:none; font-size:0.84rem;">&larr; Back</a>
+                <div>
+                    <a href="#back" onclick="DCITStore.setStep1Passed(false); renderAdminApp();" class="dcit-login-footer-link">&larr; Back</a>
                 </div>
             </div>
         </div>`;
 
-        window._timeLockInterval = setInterval(() => {
-            const c = getTimeLockStrings().curr;
-            const clk = document.getElementById('liveTimeLockClock');
-            if (clk) clk.textContent = c.display;
-        }, 1000);
+        startLoginBinaryAndWatch();
 
         document.getElementById('spaLoginStep2Form').addEventListener('submit', function(e) {
             e.preventDefault();
@@ -499,6 +1004,7 @@ function renderAdminApp() {
             ];
             if (allowed.includes(entered)) {
                 clearInterval(window._timeLockInterval);
+                clearInterval(window._binaryMatrixTimer);
                 DCITStore.setLogged(true, entered);
                 showAdminToast('success', 'স্বাগতম!', 'টাইম-লক ভেরিফিকেশন সফল হয়েছে।');
                 renderAdminApp();
